@@ -1,0 +1,16 @@
+# .gitattributes
+
+# Exclude from git archive (ZIP, TAR, etc.)
+/tests export-ignore
+/phpunit.xml export-ignore
+.phpdoc-md export-ignore
+/composer-lock.json export-ignore
+.gitignore export-ignore
+.gitattributes export-ignore
+
+# Handle line endings automatically for files detected as text
+* text=auto
+
+# Denote all files that are truly binary and should not be modified.
+*.png binary
+*.jpg binary

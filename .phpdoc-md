@@ -1,0 +1,14 @@
+<?php
+return (object)[
+    'rootNamespace' => 'Krokedil\Shipping',
+    'destDirectory' => 'docs',
+    'format' => 'github',
+    'classes' => [
+        '\Krokedil\Shipping\PickupPoints',
+        '\Krokedil\Shipping\PickupPoint\Address',
+        '\Krokedil\Shipping\PickupPoint\Coordinates',
+        '\Krokedil\Shipping\PickupPoint\EstimatedTimeOfArrival',
+        '\Krokedil\Shipping\PickupPoint\OpenHours',
+        '\Krokedil\Shipping\PickupPoint\PickupPoint',
+    ],
+];
