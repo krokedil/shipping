@@ -12,7 +12,7 @@ You need to add the following to your `composer.json` file to ensure that the pa
 "repositories": [
     {
         "type": "vcs",
-        "url": ""
+        "url": "git@github.com:krokedil/shipping.git"
     }
 ]
 
