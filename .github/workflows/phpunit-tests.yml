@@ -7,6 +7,7 @@ on:
 
 jobs:
   tests:
+    name: PHPUnit Tests
     runs-on: ubuntu-latest
 
     steps:
@@ -16,7 +17,7 @@ jobs:
     - name: Setup PHP
       uses: shivammathur/setup-php@v2
       with:
-        php-version: '8.0'
+        php-version: '7.4'
         extensions: mbstring, xml # Add extensions you need
         coverage: xdebug
 
