@@ -1,12 +1,12 @@
 # Krokedil Shipping Extensions for WooCommerce
 
-## Description
+## Description.
 This package offers a set of shipping extensions for WooCommerce from Krokedil that can be used to provide things like Pickup points for shipping locations in a standardised way.
 
 Right now the package only offers pickup points, but more shipping extensions will be added in the future as they are developed.
 You can find a full documentation of the packages classes and methods in the [docs](docs) folder.
 
-## Installation
+## Installation.
 You need to add the following to your `composer.json` file to ensure that the package is installed from the correct repository from Github:
 ```json
 "repositories": [
@@ -29,11 +29,11 @@ Or you can add it as a dependency to your `composer.json` file:
 }
 ```
 
-## Usage
+## Usage.
 The package is built to be used by WordPress plugins that works with WooCommerce shipping methods and rates.
 To add pickup points to the shipping rates for the customer you need to get them from some source, for example an API, provided by a shipping provider.
 
-#### Register pickup points to rates
+#### Register pickup points to rates.
 When you want to add pickup points to shipping rates create a new instance of the Krokedil\Shipping\PickupPoints class, and pass the rate as a parameter to the constructor.
 Then you can add pickup points to the rate by using the `add_pickup_point()` method. You will need to get the data for the pickup points from some source, or hardcode it if you want to.
 ```php
@@ -60,7 +60,7 @@ foreach( $shipping_packages as $shipping_package ) {
 }
 ```
 
-#### Get pickup points from rates
+#### Get pickup points from rates.
 When you want to get the pickup points from the shipping rate you can use the `get_pickup_points()` method. This example will show a simple way to get the pickup points from the rate and display them to the customer using a select field.
 ```php
 <?php
@@ -87,7 +87,7 @@ foreach( $pickup_points as $pickup_point ) {
 echo '</select>';
 ```
 
-#### Add custom data as metadata to pickup points
+#### Add custom data as metadata to pickup points.
 You can add custom data to the pickup points by using the `add_meta_data()` method. This can be used to add data that you need to use for your pickup point that might be unique to your needs, and dont have any other field for it.
 ```php
 $pickup_point->add_meta_data( 'meta_key', 'My custom data' );
