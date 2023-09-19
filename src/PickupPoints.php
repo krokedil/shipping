@@ -47,6 +47,8 @@ class PickupPoints {
      * @since 1.0.0
      *
      * @return void
+     *
+
      */
 	public function __construct( $rate = null ) {
         if( $rate === null ) {

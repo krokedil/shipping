@@ -5,7 +5,7 @@ use PHPUnit\Framework\TestCase;
 class JsonFormatTest extends TestCase {
 	use JsonFormat;
 
-	public function test_json_to_array() {
+	public function testJsonToArray() {
 		$json = '{"name":"John","age":30,"city":"New York"}';
 		$array = $this->json_to_array( $json );
 		$this->assertEquals( $array['name'], 'John' );
@@ -13,7 +13,7 @@ class JsonFormatTest extends TestCase {
 		$this->assertEquals( $array['city'], 'New York' );
 	}
 
-	public function test_array_to_json() {
+	public function testArrayToJson() {
 		$array = array(
 			'name' => 'John',
 			'age' => 30,

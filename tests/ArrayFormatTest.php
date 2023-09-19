@@ -2,7 +2,7 @@
 use Krokedil\Shipping\Traits\ArrayFormat;
 
 class ArrayFormatTest extends \PHPUnit\Framework\TestCase {
-	public function test_to_array() {
+	public function testToArray() {
 		$object = new ArrayFormatClass();
 		$array = $object->to_array();
 		$this->assertEquals( $array['foo'], 'bar' );
