@@ -18,16 +18,11 @@ jobs:
       uses: shivammathur/setup-php@v2
       with:
         php-version: '7.4'
-        extensions: mbstring, xml # Add extensions you need
+        extensions: mbstring, xml
         coverage: xdebug
 
     - name: Install Dependencies
       run: composer install
 
-    - name: Run PHPUnit Tests with Coverage
-      run: ./vendor/bin/phpunit --configuration phpunit.xml --coverage-clover=coverage.xml
-
-    - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v2
-      with:
-        file: ./coverage.xml
+    - name: Run PHPUnit Tests
+      run: ./vendor/bin/phpunit --configuration phpunit.xml
