@@ -30,11 +30,18 @@ class PickupPoints {
      */
     private $pickup_points = array();
 
-    /**
-     * WooCommerce shipping rate.
-     *
-     * @var \WC_Shipping_Rate
-     */
+	/**
+	 * Selected pickup point id.
+	 *
+	 * @var PickupPoint
+	 */
+	private $selected_pickup_point;
+
+	/**
+	 * WooCommerce shipping rate.
+	 *
+	 * @var \WC_Shipping_Rate
+	 */
     private $rate;
     #endregion
 
@@ -77,13 +84,40 @@ class PickupPoints {
     public function get_rate() {
         return $this->rate;
     }
-    #endregion
+
+	/**
+	 * Get the selected pickup point.
+	 *
+	 * @return PickupPoint
+	 */
+	public function get_selected_pickup_point() {
+		return $this->selected_pickup_point;
+	}
+
+	/**
+	 * Returns the pickup point from the array of pickup points based on the ID passed.
+	 *
+	 * @param string $id The ID of the pickup point to get.
+	 *
+	 * @return PickupPoint|null
+	 */
+	public function get_pickup_point_by_id( $id ) {
+		$pickup_points = $this->get_pickup_points();
+		foreach ( $pickup_points as $pickup_point ) {
+			if ( $pickup_point->get_id() === $id ) {
+				return $pickup_point;
+			}
+		}
+		return null;
+	}
+	#endregion
 
     #region Setters
     /**
      * Set pickup points.
      *
      * @param array<PickupPoint> $pickup_points Pickup points.
+     * @return void
      */
     public function set_pickup_points( $pickup_points ) {
         $this->pickup_points = $pickup_points;
@@ -93,15 +127,32 @@ class PickupPoints {
      * Set WooCommerce shipping rate.
      *
      * @param \WC_Shipping_Rate $rate WooCommerce shipping rate.
+     * @return void
      */
     public function set_rate( $rate ) {
         $this->rate = $rate;
     }
+
+	/**
+	 * Set the selected pickup point. Pass the ID of the pickup point that has been selected by the customer.
+	 *
+	 * @param string|PickupPoint $selected_pickup_point
+	 */
+	public function set_selected_pickup_point( $selected_pickup_point ) {
+		// If the pickup point is a string, try to get the pickup point by id from the array of pickup points.
+		if ( is_string( $selected_pickup_point ) ) {
+			$selected_pickup_point = $this->get_pickup_point_by_id( $selected_pickup_point );
+		}
+
+		$this->selected_pickup_point = $selected_pickup_point;
+		$this->save_selected_pickup_point_to_rate();
+	}
     #endregion
 
     #region Methods
     /**
      * Get pickup points from WooCommerce shipping rate.
+     * @return void
      */
 	public function set_pickup_points_from_rate() {
 		$meta_data = $this->rate->get_meta_data();
@@ -125,6 +176,7 @@ class PickupPoints {
      * Add pickup point to WooCommerce shipping rate.
      *
      * @param PickupPoint $pickup_point Pickup point.
+     * @return void
      */
 	public function add_pickup_point( PickupPoint $pickup_point ) {
         $pickup_points = $this->get_pickup_points();
@@ -137,6 +189,7 @@ class PickupPoints {
      * Remove pickup point from WooCommerce shipping rate.
      *
      * @param PickupPoint $pickup_point Pickup point.
+     * @return void
      */
 	public function remove_pickup_point( PickupPoint $pickup_point ) {
 		$pickup_points = $this->get_pickup_points();
@@ -149,11 +202,24 @@ class PickupPoints {
 
     /**
      * Save pickup points to WooCommerce shipping rate as a json string.
+     *
+     * @return void
      */
     public function save_pickup_points_to_rate() {
         $pickup_points = $this->get_pickup_points();
-        $pickup_points = $this->array_to_json( $pickup_points );
+		$pickup_points = $this->to_json( $pickup_points );
         $this->rate->add_meta_data( 'krokedil_pickup_points', $pickup_points );
     }
+
+	/**
+	 * Saves the selected pickup point to the shipping rate.
+	 *
+	 * @return void
+	 */
+	public function save_selected_pickup_point_to_rate() {
+		$selected_pickup_point = $this->get_selected_pickup_point();
+		$selected_pickup_point = $this->to_json( $selected_pickup_point );
+		$this->rate->add_meta_data( 'krokedil_selected_pickup_point', $selected_pickup_point );
+	}
     #endregion
 }

@@ -303,4 +303,44 @@ class PickupPointsTest extends TestCase {
 		// Assert that the pickup point was saved correctly
 		$this->assertEquals( array( $pickup_point ), $pickup_points->get_pickup_points() );
 	}
+
+	/**
+	 * Test case for save_selected_pickup_points_to_rate method.
+	 *
+	 * Supress PHP0406 since the type for the with method on the rate mock is correct in this case, but the IDE doesn't recognize it.
+	 * @suppress PHP0406
+	 */
+	public function testSavePickupPointsFromRate() {
+		$pickup_point = new PickupPoint( self::$pickup_point );
+
+		// Create a mock WC_Shipping_Rate object
+		/** @var \WC_Shipping_Rate&\PHPUnit\Framework\MockObject\MockObject $rate */
+		$rate = $this->getMockBuilder( 'WC_Shipping_Rate' )
+			->setMethods( array( 'get_meta_data', 'add_meta_data' ) )
+			->disableOriginalConstructor()
+			->getMock();
+
+		// Set up the mock rate object to return the mock pickup point object
+		$rate->expects( $this->exactly( 2 ) ) // Should cover the call to add_meta_data and ensure that its been called with the correct data.
+			->method( 'add_meta_data' )
+			->withConsecutive(
+				array( 'krokedil_pickup_points' ),
+				array( 'krokedil_selected_pickup_point', json_encode( self::$pickup_point ) )
+			);
+
+		// Handle the consecutive calls to get_meta_data
+		$rate->expects( $this->once() )
+			->method( 'get_meta_data' )
+			->willReturn( array() );
+
+		// Create a new PickupPoints object
+		$pickup_points = new PickupPoints( $rate );
+		$pickup_points->add_pickup_point( $pickup_point );
+
+		$pickup_points->set_selected_pickup_point( '123' );
+
+		$selected_pickup_point = $pickup_points->get_selected_pickup_point();
+		$this->assertNotEmpty( $selected_pickup_point );
+		$this->assertEquals( '123', $pickup_points->get_selected_pickup_point()->get_id() );
+	}
 }
