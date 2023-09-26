@@ -24,10 +24,10 @@ trait JsonFormat {
 	/**
 	 * Convert an array to a JSON string.
 	 *
-	 * @param array $array Array.
+	 * @param array|object $item The item to convert to a json string.
 	 * @return string
 	 */
-	public function array_to_json( $array ) {
-		return json_encode( $array );
+	public function to_json( $item ) {
+		return json_encode( $item );
 	}
 }
