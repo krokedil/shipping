@@ -4,6 +4,16 @@ use Krokedil\Shipping\PickupPoints;
 use PHPUnit\Framework\TestCase;
 
 class PickupPointsTest extends TestCase {
+	/**
+	 * @var PickupPoints
+	 */
+	private $pickupPoints;
+
+	protected function setUp(): void {
+		include_once 'mock.php'; // phpcs:ignore WPThemeReview.CoreFunctionality.FileInclude.FileIncludeFound
+		$this->pickupPoints = new PickupPoints();
+	}
+
 	public static $pickup_point = array(
 		'id'          => '123',
 		'name'        => 'Test',
@@ -32,315 +42,150 @@ class PickupPointsTest extends TestCase {
 		'meta_data'   => array(),
 	);
 
-	/**
-	 * Test that the constructor sets the rate and pickup points correctly.
-	 */
-	public function testConstructor() {
-		// Create a mock WC_Shipping_Rate object
-        /** @var \WC_Shipping_Rate&\PHPUnit\Framework\MockObject\MockObject $rate */
-		$rate = $this->getMockBuilder( 'WC_Shipping_Rate' )
-			->setMethods( array( 'get_meta_data' ) )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$pickup_point = array(
-			'id'          => '123',
-			'name'        => 'Test',
-			'description' => 'Test',
-			'address'     => array(
-				'street'   => 'Test',
-				'postcode' => '12345',
-				'city'     => 'Test',
-				'country'  => 'SE',
-			),
-			'coordinates' => array(
-				'latitude'  => '123',
-				'longitude' => '123',
-			),
-			'open_hours'  => array(
-				array(
-					'day'   => 'monday',
-					'open'  => '08:00',
-					'close' => '17:00',
-				)
-			),
-			'eta'         => array(
-				'utc'   => '2019-01-01T00:00:00+00:00',
-				'local' => '2019-01-01T00:00:00+10:00',
-			),
-		);
-
-		// Set up the mock rate object to return the mock pickup point object
-		$rate->expects( $this->once() )
-			->method( 'get_meta_data' )
-			->willReturn( array( 'krokedil_pickup_points' => json_encode( array( $pickup_point ) ) ) );
-
-		// Create a new PickupPoints object
-		$pickup_points = new PickupPoints( $rate );
-
-		// Assert that the rate and pickup points were set correctly
-		$this->assertSame( $rate, $pickup_points->get_rate() );
-
-		// Assert that there is one pickup point
-		$this->assertCount( 1, $pickup_points->get_pickup_points() );
-
-		// Check each property of the pickup point
-		foreach ( $pickup_points->get_pickup_points() as $pickup_point ) {
-			$this->assertInstanceOf( 'Krokedil\Shipping\PickupPoint\PickupPoint', $pickup_point );
-
-			$this->assertEquals( '123', $pickup_point->get_id() );
-			$this->assertEquals( 'Test', $pickup_point->get_name() );
-			$this->assertEquals( 'Test', $pickup_point->get_description() );
-			$this->assertEquals( 'Test', $pickup_point->get_address()->get_street() );
-			$this->assertEquals( '12345', $pickup_point->get_address()->get_postcode() );
-			$this->assertEquals( 'Test', $pickup_point->get_address()->get_city() );
-			$this->assertEquals( 'SE', $pickup_point->get_address()->get_country() );
-			$this->assertEquals( '123', $pickup_point->get_coordinates()->get_latitude() );
-			$this->assertEquals( '123', $pickup_point->get_coordinates()->get_longitude() );
-			$this->assertEquals( 'monday', $pickup_point->get_open_hours()[0]->get_day() );
-			$this->assertEquals( '08:00', $pickup_point->get_open_hours()[0]->get_open() );
-			$this->assertEquals( '17:00', $pickup_point->get_open_hours()[0]->get_close() );
-			$this->assertEquals( '2019-01-01T00:00:00+00:00', $pickup_point->get_eta()->get_utc() );
-			$this->assertEquals( '2019-01-01T00:00:00+10:00', $pickup_point->get_eta()->get_local() );
-		}
-	}
-
-	/**
-	 * Test that the set_pickup_points_from_rate method sets the pickup points correctly.
-	 */
-	public function testSetPickupPointsFromRate() {
-		// Create a mock WC_Shipping_Rate object
-		/** @var \WC_Shipping_Rate&\PHPUnit\Framework\MockObject\MockObject $rate */
-		$rate = $this->getMockBuilder( 'WC_Shipping_Rate' )
-			->setMethods( array( 'get_meta_data' ) )
-			->disableOriginalConstructor()
-			->getMock();
-
-		// Set up the mock rate object to return the mock pickup point object
-		$rate->expects( $this->exactly( 1 ) )
-			->method( 'get_meta_data' )
-			->willReturn( array( 'krokedil_pickup_points' => json_encode( array( self::$pickup_point ) ) ) );
-
-		// Create a new PickupPoints object
-		$pickup_points = new PickupPoints( null );
-
-		// Set the rate
-		$pickup_points->set_rate( $rate );
-
-		// Call the set_pickup_points_from_rate method
-		$pickup_points->set_pickup_points_from_rate();
-
-		// Assert that there is one pickup point
-		$this->assertCount( 1, $pickup_points->get_pickup_points() );
-
-		// Check each property of the pickup point
-		foreach ( $pickup_points->get_pickup_points() as $pickup_point ) {
-			$this->assertInstanceOf( 'Krokedil\Shipping\PickupPoint\PickupPoint', $pickup_point );
-
-			$this->assertEquals( '123', $pickup_point->get_id() );
-			$this->assertEquals( 'Test', $pickup_point->get_name() );
-			$this->assertEquals( 'Test', $pickup_point->get_description() );
-			$this->assertEquals( 'Test', $pickup_point->get_address()->get_street() );
-			$this->assertEquals( '12345', $pickup_point->get_address()->get_postcode() );
-			$this->assertEquals( 'Test', $pickup_point->get_address()->get_city() );
-			$this->assertEquals( 'SE', $pickup_point->get_address()->get_country() );
-			$this->assertEquals( '123', $pickup_point->get_coordinates()->get_latitude() );
-			$this->assertEquals( '123', $pickup_point->get_coordinates()->get_longitude() );
-			$this->assertEquals( 'monday', $pickup_point->get_open_hours()[0]->get_day() );
-			$this->assertEquals( '08:00', $pickup_point->get_open_hours()[0]->get_open() );
-			$this->assertEquals( '17:00', $pickup_point->get_open_hours()[0]->get_close() );
-			$this->assertEquals( '2019-01-01T00:00:00+00:00', $pickup_point->get_eta()->get_utc() );
-			$this->assertEquals( '2019-01-01T00:00:00+10:00', $pickup_point->get_eta()->get_local() );
-		}
-	}
-
-	/**
-	 * Test that the set_pickup_points method sets the pickup points correctly.
-	 */
-	public function testSetPickupPoints() {
-		// Create a new PickupPoints object
-		$pickup_points = new PickupPoints( null );
-
-		// Create an array of mock PickupPoint objects
-		$pickup_points_array = array(
-			$this->getMockBuilder( 'Krokedil\Shipping\PickupPoint\PickupPoint' )
-				->disableOriginalConstructor()
-				->getMock(),
-			$this->getMockBuilder( 'Krokedil\Shipping\PickupPoint\PickupPoint' )
-				->disableOriginalConstructor()
-				->getMock(),
-		);
-
-		// Call the set_pickup_points method
-		$pickup_points->set_pickup_points( $pickup_points_array );
-
-		// Assert that the pickup points were set correctly
-		$this->assertEquals( $pickup_points_array, $pickup_points->get_pickup_points() );
-	}
-
-	/**
-	 * Test that the set_rate method sets the rate correctly.
-	 */
-	public function testSetRate() {
-		// Create a new PickupPoints object
-		$pickup_points = new PickupPoints( null );
-
-		// Create a mock WC_Shipping_Rate object
-		/** @var \WC_Shipping_Rate&\PHPUnit\Framework\MockObject\MockObject $rate */
-		$rate = $this->getMockBuilder( 'WC_Shipping_Rate' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		// Call the set_rate method
-		$pickup_points->set_rate( $rate );
-
-		// Assert that the rate was set correctly
-		$this->assertSame( $rate, $pickup_points->get_rate() );
-	}
-
-	/**
-	 * Test that add_pickup_point adds a pickup point correctly.
-	 */
-	public function testAddPickupPoint() {
-		$pickup_point = new PickupPoint( self::$pickup_point );
-
-		// Create a mock WC_Shipping_Rate object
-		/** @var \WC_Shipping_Rate&\PHPUnit\Framework\MockObject\MockObject $rate */
-		$rate = $this->getMockBuilder( 'WC_Shipping_Rate' )
-			->setMethods( array( 'get_meta_data', 'add_meta_data' ) )
-			->disableOriginalConstructor()
-			->getMock();
-
-		// Set up the mock rate object to return the mock pickup point object
-		$rate->expects( $this->once() )
-			->method( 'add_meta_data' );
-
-		// Handle the consecutive calls to get_meta_data
-		$rate->expects( $this->once() )
-			->method( 'get_meta_data' )
-			->willReturn( array() );
-
-		// Create a new PickupPoints object
-		$pickup_points = new PickupPoints( $rate );
-
-		// Call the add_pickup_point method
-		$pickup_points->add_pickup_point( $pickup_point );
-
-		// Assert that the pickup point was added correctly
-		$this->assertEquals( array( $pickup_point ), $pickup_points->get_pickup_points() );
-	}
-
-	/**
-	 * Test case for remove_pickup_point method.
-	 */
-	public function testRemovePickupPoint() {
-		$pickup_point = new PickupPoint( self::$pickup_point );
-
-		// Create a mock WC_Shipping_Rate object
-		/** @var \WC_Shipping_Rate&\PHPUnit\Framework\MockObject\MockObject $rate */
-		$rate = $this->getMockBuilder( 'WC_Shipping_Rate' )
-			->setMethods( array( 'get_meta_data', 'add_meta_data' ) )
-			->disableOriginalConstructor()
-			->getMock();
-
-		// Set up the mock rate object to return the mock pickup point object
-		$rate->expects( $this->exactly( 2 ) )
-			->method( 'add_meta_data' );
-
-		// Handle the consecutive calls to get_meta_data
-		$rate->expects( $this->once() )
-			->method( 'get_meta_data' )
-			->willReturn( array( 'krokedil_pickup_points', json_encode( array( self::$pickup_point ) ) ) );
-
-		// Create a new PickupPoints object
-		$pickup_points = new PickupPoints( $rate );
-
-		// Add the pickup point to the pickup points.
-		$pickup_points->add_pickup_point( $pickup_point );
-
-		// Call the remove_pickup_point method
-		$pickup_points->remove_pickup_point( $pickup_point );
-
-		// Assert that the pickup point was removed correctly
-		$this->assertEquals( array(), $pickup_points->get_pickup_points() );
-	}
-
-	/**
-	 * Test case for save_pickup_points_to_rate method.
-	 *
-	 * Supress PHP0406 since the type for the with method on the rate mock is correct in this case, but the IDE doesn't recognize it.
-	 * @suppress PHP0406
-	 */
 	public function testSavePickupPointsToRate() {
-		$pickup_point = new PickupPoint( self::$pickup_point );
-
-		// Create a mock WC_Shipping_Rate object
-		/** @var \WC_Shipping_Rate&\PHPUnit\Framework\MockObject\MockObject $rate */
 		$rate = $this->getMockBuilder( 'WC_Shipping_Rate' )
-			->setMethods( array( 'get_meta_data', 'add_meta_data' ) )
+			->setMethods( array( 'add_meta_data' ) )
 			->disableOriginalConstructor()
 			->getMock();
 
-		// Set up the mock rate object to return the mock pickup point object
-		$rate->expects( $this->once() ) // Should cover the call to add_meta_data and ensure that its been called with the correct data.
+		$rate->expects( $this->once() )
 			->method( 'add_meta_data' )
 			->with( 'krokedil_pickup_points', json_encode( array( self::$pickup_point ) ) );
 
-		// Handle the consecutive calls to get_meta_data
-		$rate->expects( $this->once() )
-			->method( 'get_meta_data' )
-			->willReturn( array() );
+		$pickupPoint = new PickupPoint( self::$pickup_point );
 
-		// Create a new PickupPoints object
-		$pickup_points = new PickupPoints( $rate );
-
-		// Set the pickup point to the pickup points.
-		$pickup_points->set_pickup_points( array( $pickup_point ) );
-
-		// Call the save_pickup_points_to_rate method
-		$pickup_points->save_pickup_points_to_rate();
-
-		// Assert that the pickup point was saved correctly
-		$this->assertEquals( array( $pickup_point ), $pickup_points->get_pickup_points() );
+		$this->pickupPoints->save_pickup_points_to_rate( $rate, array( $pickupPoint ) );
 	}
 
-	/**
-	 * Test case for save_selected_pickup_points_to_rate method.
-	 *
-	 * Supress PHP0406 since the type for the with method on the rate mock is correct in this case, but the IDE doesn't recognize it.
-	 * @suppress PHP0406
-	 */
-	public function testSavePickupPointsFromRate() {
-		$pickup_point = new PickupPoint( self::$pickup_point );
+	public function testGetPickupPointsFromRate() {
+		$rate = $this->getMockBuilder( 'WC_Shipping_Rate' )
+			->setMethods( array( 'get_meta_data' ) )
+			->disableOriginalConstructor()
+			->getMock();
 
-		// Create a mock WC_Shipping_Rate object
-		/** @var \WC_Shipping_Rate&\PHPUnit\Framework\MockObject\MockObject $rate */
+		$rate->expects( $this->once() )
+			->method( 'get_meta_data' )
+			->willReturn( array( 'krokedil_pickup_points' => $this->pickupPoints->to_json( array( new PickupPoint( self::$pickup_point ) ) ) ) );
+
+		$result = $this->pickupPoints->get_pickup_points_from_rate( $rate );
+
+		$this->assertEquals( 1, count( $result ) );
+		$this->assertEquals( self::$pickup_point['id'], $result[0]->get_id() );
+	}
+
+	public function testAddPickupPointToRate() {
 		$rate = $this->getMockBuilder( 'WC_Shipping_Rate' )
 			->setMethods( array( 'get_meta_data', 'add_meta_data' ) )
 			->disableOriginalConstructor()
 			->getMock();
 
-		// Set up the mock rate object to return the mock pickup point object
-		$rate->expects( $this->exactly( 2 ) ) // Should cover the call to add_meta_data and ensure that its been called with the correct data.
+		$rate->expects( $this->once() )
+			->method( 'add_meta_data' )
+			->with( 'krokedil_pickup_points', json_encode( array( self::$pickup_point ) ) );
+
+		$rate->expects( $this->exactly( 2 ) )
+			->method( 'get_meta_data' )
+			->willReturnOnConsecutiveCalls( array(), array( 'krokedil_pickup_points' => $this->pickupPoints->to_json( array( new PickupPoint( self::$pickup_point ) ) ) ) );
+
+		$pickupPoint = new PickupPoint( self::$pickup_point );
+
+		$this->pickupPoints->add_pickup_point_to_rate( $rate, $pickupPoint );
+
+		$result = $this->pickupPoints->get_pickup_points_from_rate( $rate );
+	}
+
+	public function testRemovePickupPointFromRate() {
+		$rate = $this->getMockBuilder( 'WC_Shipping_Rate' )
+			->setMethods( array( 'get_meta_data', 'add_meta_data' ) )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$rawPickupPoint1       = self::$pickup_point;
+		$rawPickupPoint2       = self::$pickup_point;
+		$rawPickupPoint2['id'] = '321';
+
+		$pickupPoint1 = new PickupPoint( $rawPickupPoint1 );
+		$pickupPoint2 = new PickupPoint( $rawPickupPoint2 );
+
+		$rate->expects( $this->exactly( 3 ) )
 			->method( 'add_meta_data' )
 			->withConsecutive(
-				array( 'krokedil_pickup_points' ),
-				array( 'krokedil_selected_pickup_point', json_encode( self::$pickup_point ) )
+				array( 'krokedil_pickup_points', json_encode( array( $rawPickupPoint1 ) ) ),
+				array( 'krokedil_pickup_points', json_encode( array( $rawPickupPoint1, $rawPickupPoint2 ) ) ),
+				array( 'krokedil_pickup_points', json_encode( array( $rawPickupPoint2 ) ) )
 			);
 
-		// Handle the consecutive calls to get_meta_data
+		$rate->expects( $this->exactly( 4 ) )
+			->method( 'get_meta_data' )
+			->willReturnOnConsecutiveCalls(
+				array(),
+				array( 'krokedil_pickup_points' => $this->pickupPoints->to_json( array( $pickupPoint1 ) ) ),
+				array( 'krokedil_pickup_points' => $this->pickupPoints->to_json( array( $pickupPoint1, $pickupPoint2 ) ) ),
+				array( 'krokedil_pickup_points' => $this->pickupPoints->to_json( array( $pickupPoint2 ) ) )
+			);
+
+		$this->pickupPoints->add_pickup_point_to_rate( $rate, $pickupPoint1 );
+		$this->pickupPoints->add_pickup_point_to_rate( $rate, $pickupPoint2 );
+
+		$this->pickupPoints->remove_pickup_point_from_rate( $rate, $pickupPoint1 );
+
+		$this->pickupPoints->get_pickup_points_from_rate( $rate );
+	}
+
+	public function testSaveSelectedPickupPointToRate() {
+		$rate = $this->getMockBuilder( 'WC_Shipping_Rate' )
+			->setMethods( array( 'add_meta_data' ) )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$rate->expects( $this->once() )
+			->method( 'add_meta_data' )
+			->with( 'krokedil_selected_pickup_point', json_encode( self::$pickup_point ) );
+
+		$pickupPoint = new PickupPoint( self::$pickup_point );
+
+		$this->pickupPoints->save_selected_pickup_point_to_rate( $rate, $pickupPoint );
+	}
+
+	public function testGetSelectedPickupPointFromRate() {
+		$rate = $this->getMockBuilder( 'WC_Shipping_Rate' )
+			->setMethods( array( 'get_meta_data' ) )
+			->disableOriginalConstructor()
+			->getMock();
+
 		$rate->expects( $this->once() )
 			->method( 'get_meta_data' )
-			->willReturn( array() );
+			->willReturn( array( 'krokedil_selected_pickup_point' => $this->pickupPoints->to_json( self::$pickup_point ) ) );
 
-		// Create a new PickupPoints object
-		$pickup_points = new PickupPoints( $rate );
-		$pickup_points->add_pickup_point( $pickup_point );
+		$result = $this->pickupPoints->get_selected_pickup_point_from_rate( $rate );
 
-		$pickup_points->set_selected_pickup_point( '123' );
+		$this->assertEquals( self::$pickup_point['id'], $result->get_id() );
+	}
 
-		$selected_pickup_point = $pickup_points->get_selected_pickup_point();
-		$this->assertNotEmpty( $selected_pickup_point );
-		$this->assertEquals( '123', $pickup_points->get_selected_pickup_point()->get_id() );
+	public function testGetPickupPointFromRateById() {
+		$rate = $this->getMockBuilder( 'WC_Shipping_Rate' )
+			->setMethods( array( 'get_meta_data' ) )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$rawPickupPoint1       = self::$pickup_point;
+		$rawPickupPoint2       = self::$pickup_point;
+		$rawPickupPoint2['id'] = '321';
+
+		$pickupPoint1 = new PickupPoint( $rawPickupPoint1 );
+		$pickupPoint2 = new PickupPoint( $rawPickupPoint2 );
+
+		$rate->expects( $this->exactly( 2 ) )
+			->method( 'get_meta_data' )
+			->willReturnOnConsecutiveCalls(
+				array( 'krokedil_pickup_points' => $this->pickupPoints->to_json( array( $pickupPoint1, $pickupPoint2 ) ) ),
+				array( 'krokedil_pickup_points' => $this->pickupPoints->to_json( array( $pickupPoint1, $pickupPoint2 ) ) )
+			);
+
+		$result = $this->pickupPoints->get_pickup_point_from_rate_by_id( $rate, $rawPickupPoint1['id'] );
+		$this->assertEquals( $rawPickupPoint1['id'], $result->get_id() );
+
+		$result = $this->pickupPoints->get_pickup_point_from_rate_by_id( $rate, $rawPickupPoint2['id'] );
+		$this->assertEquals( $rawPickupPoint2['id'], $result->get_id() );
 	}
 }
