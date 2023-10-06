@@ -6,13 +6,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+------------------
+
+## [2.0.0] - 2023-10-06
+
 ### Added
 * Added a field for the Selected pickup point in the PickupPoints object. Along with getters and setters for them using the PickupPoint id or the PickupPoint object directly.
 
 ### Changed
-* Changed the method arrayToJson to just toJson to cover more usecases and allow for object serialization as well.
+* The method arrayToJson has been renamed to toJson. This is a breaking change if you have used the method in your code.
+* Heavily simplified the way the PickupPoints class is being implemented, and how it is used. It is no longer a model itself but rather a service to build an array of PickupPoint objects. This is a breaking change if you have used the class in your code.
 
-------------------
+---
 
 ## [1.0.0] - 2023-09-19
 

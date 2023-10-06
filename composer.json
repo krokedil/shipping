@@ -2,6 +2,7 @@
     "name": "krokedil/shipping",
     "description": "Shipping method extensions from Krokedil",
     "type": "library",
+    "version": "2.0.0",
     "require": {
         "php": "~7.4 || ~8.0"
     },
