@@ -13,13 +13,13 @@ class JsonFormatTest extends TestCase {
 		$this->assertEquals( $array['city'], 'New York' );
 	}
 
-	public function testArrayToJson() {
+	public function testToJson() {
 		$array = array(
 			'name' => 'John',
 			'age' => 30,
 			'city' => 'New York',
 		);
-		$json = $this->array_to_json( $array );
+		$json  = $this->to_json( $array );
 		$this->assertEquals( $json, '{"name":"John","age":30,"city":"New York"}' );
 	}
 }
