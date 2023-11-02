@@ -10,8 +10,9 @@
         "wp-coding-standards/wpcs": "dev-develop",
         "php-stubs/wordpress-stubs": "*",
         "php-stubs/woocommerce-stubs": "dev-master",
-        "phpunit/phpunit": "^7.5",
-        "clean/phpdoc-md": "dev-master"
+        "phpunit/phpunit": "^9.6",
+        "clean/phpdoc-md": "dev-master",
+        "10up/wp_mock": "dev-trunk"
     },
     "autoload": {
         "psr-4": {
@@ -35,6 +36,6 @@
         }
     },
     "scripts": {
-        "phpunit": "phpunit --bootstrap vendor/autoload.php tests/"
+        "phpunit": "./vendor/bin/phpunit --bootstrap tests/bootstrap.php"
     }
 }
