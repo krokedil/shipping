@@ -1,7 +1,7 @@
 <?php
 use Krokedil\Shipping\PickupPoint\PickupPoint;
 use Krokedil\Shipping\PickupPoints;
-use PHPUnit\Framework\TestCase;
+use WP_Mock\Tools\TestCase;
 
 class PickupPointsTest extends TestCase {
 	/**
@@ -9,8 +9,26 @@ class PickupPointsTest extends TestCase {
 	 */
 	private $pickupPoints;
 
-	protected function setUp(): void {
-		include_once 'mock.php'; // phpcs:ignore WPThemeReview.CoreFunctionality.FileInclude.FileIncludeFound
+	public function setUp(): void {
+		parent::setUp();
+
+		$woocommerce = Mockery::mock( 'WooCommerce' );
+		$shipping    = Mockery::mock( 'WC_Shipping' );
+		$session     = Mockery::mock( 'WC_Session' );
+
+		$woocommerce->allows( 'session' )->andReturn( $session );
+		$woocommerce->allows( 'shipping' )->andReturn( $shipping );
+
+		$shipping->allows( 'get_packages' )->andReturn( array() );
+		$shipping->allows( 'calculate_shipping_for_package' )->andReturn( null );
+
+		$session->allows( '__unset' )->andReturn( null );
+
+		WP_Mock::userFunction( 'WC' )->andReturn( $woocommerce );
+		WP_Mock::userFunction( 'plugin_dir_url' )->andReturn( 'http://example.com/wp-content/plugins/my-plugin/' );
+		WP_Mock::userFunction( 'doing_action' )->andReturn( true );
+		WP_Mock::userFunction( 'doing_filter', )->andReturn( true );
+
 		$this->pickupPoints = new PickupPoints();
 	}
 
@@ -44,7 +62,7 @@ class PickupPointsTest extends TestCase {
 
 	public function testSavePickupPointsToRate() {
 		$rate = $this->getMockBuilder( 'WC_Shipping_Rate' )
-			->setMethods( array( 'add_meta_data' ) )
+			->setMethods( array( 'add_meta_data', 'get_id' ) )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -75,7 +93,7 @@ class PickupPointsTest extends TestCase {
 
 	public function testAddPickupPointToRate() {
 		$rate = $this->getMockBuilder( 'WC_Shipping_Rate' )
-			->setMethods( array( 'get_meta_data', 'add_meta_data' ) )
+			->setMethods( array( 'get_meta_data', 'add_meta_data', 'get_id' ) )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -96,7 +114,7 @@ class PickupPointsTest extends TestCase {
 
 	public function testRemovePickupPointFromRate() {
 		$rate = $this->getMockBuilder( 'WC_Shipping_Rate' )
-			->setMethods( array( 'get_meta_data', 'add_meta_data' ) )
+			->setMethods( array( 'get_meta_data', 'add_meta_data', 'get_id' ) )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -134,7 +152,7 @@ class PickupPointsTest extends TestCase {
 
 	public function testSaveSelectedPickupPointToRate() {
 		$rate = $this->getMockBuilder( 'WC_Shipping_Rate' )
-			->setMethods( array( 'add_meta_data' ) )
+			->setMethods( array( 'add_meta_data', 'get_id' ) )
 			->disableOriginalConstructor()
 			->getMock();
 

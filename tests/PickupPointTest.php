@@ -1,5 +1,5 @@
 <?php
-use PHPUnit\Framework\TestCase;
+use WP_Mock\Tools\TestCase;
 use Krokedil\Shipping\PickupPoint\PickupPoint;
 use Krokedil\Shipping\PickupPoint\Address;
 use Krokedil\Shipping\PickupPoint\Coordinates;
