@@ -1628,12 +1628,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "9fa21014f4c615cf231b659fb7ea18cc402e96f2"
+                "reference": "d352ff71029b724e37f2fc0745b851f79b369bfc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/9fa21014f4c615cf231b659fb7ea18cc402e96f2",
-                "reference": "9fa21014f4c615cf231b659fb7ea18cc402e96f2",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/d352ff71029b724e37f2fc0745b851f79b369bfc",
+                "reference": "d352ff71029b724e37f2fc0745b851f79b369bfc",
                 "shasum": ""
             },
             "require": {
@@ -1723,7 +1723,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-10-29T06:48:00+00:00"
+            "time": "2023-11-03T06:22:32+00:00"
         },
         {
             "name": "sebastian/cli-parser",

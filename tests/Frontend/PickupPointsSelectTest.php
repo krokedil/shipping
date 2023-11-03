@@ -45,6 +45,33 @@ class PickupPointSelectTest extends BaseTestCase {
 		$this->assertStringContainsString( 'TestName', $output );
 	}
 
+	public function testRenderPickupPointSelectOutputsNothingIfShippingRateIsNotChosen() {
+		$pickupPointObj = new PickupPoint( self::$pickupPoint );
+
+		$this->mockSession->shouldReceive( 'get' )->with( 'chosen_shipping_methods' )->andReturn( array( 'other_rate_id' ) );
+
+		$rate = $this->mockShippingRate();
+
+		ob_start();
+		$this->pickupPointSelect->render( $rate );
+		$output = ob_get_clean();
+
+		$this->assertEquals( '', $output );
+	}
+
+	public function testRenderPickupPointSelectOutputsNothingIfPickupPointsAreEmpty() {
+		$this->mockSession->shouldReceive( 'get' )->with( 'chosen_shipping_methods' )->andReturn( array( 'rate_id' ) );
+		$this->mockPickupPointService->shouldReceive( 'get_pickup_points_from_rate' )->andReturn( array() );
+
+		$rate = $this->mockShippingRate();
+
+		ob_start();
+		$this->pickupPointSelect->render( $rate );
+		$output = ob_get_clean();
+
+		$this->assertEquals( '', $output );
+	}
+
 	public function testSetSelectedPickupPointAjax() {
 		$_POST = array(
 			'pickupPointId' => '123',
@@ -82,5 +109,14 @@ class PickupPointSelectTest extends BaseTestCase {
 
 		$this->pickupPointSelect->set_selected_pickup_point_ajax();
 		$this->expectNotToPerformAssertions();
+	}
+
+	public function testSetSelectedPickupPointAjaxReturnsEarlyIfPostDataMissing() {
+		$this->expectException( Exception::class);
+		$_POST = array();
+
+		WP_Mock::userFunction( 'wp_send_json_error' )->once()->andThrows( new Exception() );
+
+		$this->pickupPointSelect->set_selected_pickup_point_ajax();
 	}
 }

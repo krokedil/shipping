@@ -64,8 +64,8 @@ class AssetsRegistry {
 	 */
 	public function enqueue_assets() {
 		foreach ( $this->scripts as $script ) {
-			// If we are on the admin pages, only enqueue the admin scripts.
-			if ( $script->get_admin() && ! is_admin() ) {
+			// Only enqueue the admin scripts on admin pages. Only enqueue the frontend scripts on frontend pages.
+			if ( is_admin() !== $script->get_admin() ) {
 				continue;
 			}
 
@@ -73,8 +73,8 @@ class AssetsRegistry {
 		}
 
 		foreach ( $this->styles as $style ) {
-			// If we are on the admin pages, only enqueue the admin styles.
-			if ( $style->get_admin() && ! is_admin() ) {
+			// Only enqueue the admin styles on admin pages. Only enqueue the frontend styles on frontend pages.
+			if ( is_admin() !== $style->get_admin() ) {
 				continue;
 			}
 

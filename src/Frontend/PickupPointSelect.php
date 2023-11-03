@@ -140,11 +140,11 @@ class PickupPointSelect {
 	 * @return void
 	 */
 	public function set_selected_pickup_point_ajax() {
-		$pickup_point_id = filter_var( $_POST['pickupPointId'], FILTER_SANITIZE_FULL_SPECIAL_CHARS );
-		$rate_id         = filter_var( $_POST['rateId'], FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+		$pickup_point_id = filter_var( $_POST['pickupPointId'] ?? '', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+		$rate_id         = filter_var( $_POST['rateId'] ?? '', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
 
 		// Ensure we have a pickup point id and a rate id.
-		if ( ! $pickup_point_id || ! $rate_id ) {
+		if ( empty( $pickup_point_id ) || empty( $rate_id ) ) {
 			wp_send_json_error( 'Missing pickup point id or rate id.' );
 		}
 

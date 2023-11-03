@@ -35,24 +35,49 @@ class AssetsRegistryTest extends TestCase {
 	}
 
 	public function testRegisterScripts() {
-		$script = $this->createMock( Script::class);
-		$script->expects( $this->once() )->method( 'register' );
+		$script = Mockery::mock( Script::class);
+		$script->shouldReceive( 'get_handle' )->once()->andReturns( 'test-handle' );
+		$script->shouldReceive( 'register' )->once();
 
-		/** @var Script $script */
 		$this->assetsRegistry->add_script( $script );
 
 		$this->assetsRegistry->register_assets();
+		$this->expectNotToPerformAssertions();
 	}
 
 	public function testEnqueueScripts() {
-		$script = $this->createMock( Script::class);
-		$script->method( 'get_admin' )->willReturn( false );
-		$script->expects( $this->once() )->method( 'enqueue' );
+		WP_Mock::userFunction( 'is_admin' )->andReturn( false );
 
-		/** @var Script $script */
+		$script = Mockery::mock( Script::class);
+		$script->shouldReceive( 'get_admin' )->once()->andReturns( false );
+		$script->shouldReceive( 'get_handle' )->once()->andReturns( 'test-handle' );
+		$script->shouldReceive( 'enqueue' )->once();
+
 		$this->assetsRegistry->add_script( $script );
 
 		$this->assetsRegistry->enqueue_assets();
+		$this->expectNotToPerformAssertions();
+	}
+
+	public function testEnqueueAdminScripts() {
+		WP_Mock::userFunction( 'is_admin' )->twice()->andReturn( true );
+
+		$adminStyle = Mockery::mock( Script::class)->makePartial();
+		$adminStyle->shouldReceive( 'get_admin' )->once()->andReturns( true );
+		$adminStyle->shouldReceive( 'get_handle' )->once()->andReturns( 'test-handle-admin' );
+		$adminStyle->shouldReceive( 'enqueue' )->once();
+
+		$style = Mockery::mock( Script::class)->makePartial();
+		$style->shouldReceive( 'get_admin' )->once()->andReturns( false );
+		$style->shouldReceive( 'get_handle' )->once()->andReturns( 'test-handle' );
+		$style->shouldReceive( 'enqueue' )->never();
+
+		$this->assetsRegistry->add_script( $adminStyle );
+		$this->assetsRegistry->add_script( $style );
+
+		$this->assetsRegistry->enqueue_assets();
+
+		$this->expectNotToPerformAssertions();
 	}
 
 	public function testGetAssetUrl() {
@@ -76,23 +101,49 @@ class AssetsRegistryTest extends TestCase {
 	}
 
 	public function testRegisterStyles() {
-		$style = $this->createMock( Style::class);
-		$style->expects( $this->once() )->method( 'register' );
+		$style = Mockery::mock( Script::class);
+		$style->shouldReceive( 'get_handle' )->once()->andReturns( 'test-handle' );
+		$style->shouldReceive( 'register' )->once();
 
 		/** @var Style $style */
 		$this->assetsRegistry->add_style( $style );
 
 		$this->assetsRegistry->register_assets();
+		$this->expectNotToPerformAssertions();
 	}
 
 	public function testEnqueueStyles() {
-		$style = $this->createMock( Style::class);
-		$style->method( 'get_admin' )->willReturn( false );
-		$style->expects( $this->once() )->method( 'enqueue' );
+		WP_Mock::userFunction( 'is_admin' )->andReturn( false );
+
+		$style = Mockery::mock( Style::class);
+		$style->shouldReceive( 'get_admin' )->once()->andReturns( false );
+		$style->shouldReceive( 'get_handle' )->once()->andReturns( 'test-handle' );
+		$style->shouldReceive( 'enqueue' )->once();
 
 		/** @var Style $style */
 		$this->assetsRegistry->add_style( $style );
 
 		$this->assetsRegistry->enqueue_assets();
+		$this->expectNotToPerformAssertions();
+	}
+
+	public function testEnqueueAdminStyles() {
+		WP_Mock::userFunction( 'is_admin' )->twice()->andReturn( true );
+
+		$adminStyle = Mockery::mock( Style::class);
+		$adminStyle->shouldReceive( 'get_admin' )->once()->andReturns( true );
+		$adminStyle->shouldReceive( 'get_handle' )->once()->andReturns( 'test-handle-admin' );
+		$adminStyle->shouldReceive( 'enqueue' )->once();
+
+		$style = Mockery::mock( Style::class);
+		$style->shouldReceive( 'get_admin' )->once()->andReturns( false );
+		$style->shouldReceive( 'get_handle' )->once()->andReturns( 'test-handle' );
+		$style->shouldReceive( 'enqueue' )->never();
+
+		$this->assetsRegistry->add_style( $adminStyle );
+		$this->assetsRegistry->add_style( $style );
+
+		$this->assetsRegistry->enqueue_assets();
+		$this->expectNotToPerformAssertions();
 	}
 }
