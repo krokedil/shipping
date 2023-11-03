@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+* Added a PSR 11 container for the dependencies of the package.
+* Added a AssetRegistry to handle all assets for the package.
+* Added a AjaxRegistry to handle all Ajax requests for the package.
+* Added a SessionHandler that handles all communication with the WooCommerce session. This lets us update the shipping rates in the checkout whenever we need, and no longer are reliant on the WooCommerce session to update the rates.
+* Added functionality to display the pickup points in the checkout from the package directly. It will also handle updating the rate when a pickup point is selected.
+
 ------------------
 
 ## [2.0.0] - 2023-10-06
