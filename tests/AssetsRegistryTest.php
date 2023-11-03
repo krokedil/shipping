@@ -41,7 +41,7 @@ class AssetsRegistryTest extends TestCase {
 		/** @var Script $script */
 		$this->assetsRegistry->add_script( $script );
 
-		$this->assetsRegistry->register_scripts();
+		$this->assetsRegistry->register_assets();
 	}
 
 	public function testEnqueueScripts() {
@@ -52,12 +52,47 @@ class AssetsRegistryTest extends TestCase {
 		/** @var Script $script */
 		$this->assetsRegistry->add_script( $script );
 
-		$this->assetsRegistry->enqueue_scripts();
+		$this->assetsRegistry->enqueue_assets();
 	}
 
 	public function testGetAssetUrl() {
 		$asset       = 'js/my-script.js';
 		$expectedUrl = 'http://example.com/wp-content/plugins/my-plugin/vendor/krokedil/shipping/assets/js/my-script.js';
 		$this->assertEquals( $expectedUrl, $this->assetsRegistry->get_asset_url( $asset ) );
+	}
+
+	public function testAddScriptWithDependencies() {
+		$script = new Script( 'test-handle', 'test-src', array( 'jquery' ) );
+		$this->assetsRegistry->add_script( $script );
+		$this->assertArrayHasKey( 'test-handle', $this->assetsRegistry->scripts );
+		$this->assertEquals( array( 'jquery' ), $this->assetsRegistry->scripts['test-handle']->get_deps() );
+	}
+
+	public function testAddStyleWithDependencies() {
+		$style = new Style( 'test-handle', 'test-src', array( 'bootstrap' ) );
+		$this->assetsRegistry->add_style( $style );
+		$this->assertArrayHasKey( 'test-handle', $this->assetsRegistry->styles );
+		$this->assertEquals( array( 'bootstrap' ), $this->assetsRegistry->styles['test-handle']->get_deps() );
+	}
+
+	public function testRegisterStyles() {
+		$style = $this->createMock( Style::class);
+		$style->expects( $this->once() )->method( 'register' );
+
+		/** @var Style $style */
+		$this->assetsRegistry->add_style( $style );
+
+		$this->assetsRegistry->register_assets();
+	}
+
+	public function testEnqueueStyles() {
+		$style = $this->createMock( Style::class);
+		$style->method( 'get_admin' )->willReturn( false );
+		$style->expects( $this->once() )->method( 'enqueue' );
+
+		/** @var Style $style */
+		$this->assetsRegistry->add_style( $style );
+
+		$this->assetsRegistry->enqueue_assets();
 	}
 }

@@ -2,7 +2,7 @@
 namespace Krokedil\Shipping\Interfaces;
 
 use Krokedil\Shipping\PickupPoint\PickupPoint;
-use Krokedil\Shipping\Container;
+use Krokedil\Shipping\Container\Container;
 
 /**
  * Interface PickupPointServiceInterface

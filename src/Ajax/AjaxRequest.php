@@ -76,7 +76,9 @@ class AjaxRequest {
 	 */
 	public function process() {
 		// Check the nonce.
-		check_ajax_referer( $this->action, 'nonce' );
+		if ( check_ajax_referer( $this->action, 'nonce' ) === false ) {
+			wp_die( 'bad nonce' );
+		}
 
 		call_user_func( $this->callback );
 

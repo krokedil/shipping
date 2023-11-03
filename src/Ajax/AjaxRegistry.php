@@ -31,10 +31,11 @@ class AjaxRegistry {
 	public function register_requests() {
 		foreach ( $this->requests as $request ) {
 			$action = $request->get_action();
-			add_action( 'wp_ajax_woocommerce_' . $action, $request->get_callback() );
+			$callback = $request->get_callback();
+			add_action( 'wp_ajax_woocommerce_' . $action, $callback );
 			if ( $request->get_no_priv() ) {
-				add_action( 'wp_ajax_nopriv_woocommerce_' . $action, $request->get_callback() );
-				add_action( 'wc_ajax_' . $action, $request->get_callback() );
+				add_action( 'wp_ajax_nopriv_woocommerce_' . $action, $callback );
+				add_action( 'wc_ajax_' . $action, $callback );
 			}
 		}
 	}

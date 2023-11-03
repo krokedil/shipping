@@ -1,9 +1,9 @@
 <?php
 use Krokedil\Shipping\PickupPoint\PickupPoint;
 use Krokedil\Shipping\PickupPoints;
-use WP_Mock\Tools\TestCase;
+use Krokedil\Shipping\Container\Container;
 
-class PickupPointsTest extends TestCase {
+class PickupPointsTest extends BaseTestCase {
 	/**
 	 * @var PickupPoints
 	 */
@@ -12,198 +12,237 @@ class PickupPointsTest extends TestCase {
 	public function setUp(): void {
 		parent::setUp();
 
-		$woocommerce = Mockery::mock( 'WooCommerce' );
-		$shipping    = Mockery::mock( 'WC_Shipping' );
-		$session     = Mockery::mock( 'WC_Session' );
+		$this->mockWooCommerce();
 
-		$woocommerce->allows( 'session' )->andReturn( $session );
-		$woocommerce->allows( 'shipping' )->andReturn( $shipping );
+		$this->mockShipping->allows( 'get_packages' )->andReturn( array() );
+		$this->mockShipping->allows( 'calculate_shipping_for_package' )->andReturn( null );
+		$this->mockSession->allows( '__unset' )->andReturn( null );
 
-		$shipping->allows( 'get_packages' )->andReturn( array() );
-		$shipping->allows( 'calculate_shipping_for_package' )->andReturn( null );
-
-		$session->allows( '__unset' )->andReturn( null );
-
-		WP_Mock::userFunction( 'WC' )->andReturn( $woocommerce );
 		WP_Mock::userFunction( 'plugin_dir_url' )->andReturn( 'http://example.com/wp-content/plugins/my-plugin/' );
+
+		WP_Mock::userFunction( 'wp_create_nonce', array(
+			'args'   => array( 'krokedil_shipping_set_selected_pickup_point' ),
+			'return' => 'some_nonce',
+		) );
+
+		$wcAjaxMock = Mockery::mock( 'alias:WC_AJAX' );
+		$wcAjaxMock->shouldReceive( 'get_endpoint' )
+			->with( 'krokedil_shipping_set_selected_pickup_point' )
+			->andReturn( 'some_url' );
+
+		$this->pickupPoints = new PickupPoints( '', true );
+	}
+
+	public function testGetContainer() {
+		$result = $this->pickupPoints->get_container();
+
+		$this->assertInstanceOf( Container::class, $result );
+	}
+
+	public function testSavePickupPointsToRate() {
+		$rate = $this->mockShippingRate();
+		$rate->shouldReceive( 'add_meta_data' )
+			->with( 'krokedil_pickup_points', json_encode( array( self::$pickupPoint ) ) )
+			->once();
+
 		WP_Mock::userFunction( 'doing_action' )->andReturn( true );
 		WP_Mock::userFunction( 'doing_filter', )->andReturn( true );
 
-		$this->pickupPoints = new PickupPoints();
-	}
-
-	public static $pickup_point = array(
-		'id'          => '123',
-		'name'        => 'Test',
-		'description' => 'Test',
-		'address'     => array(
-			'street'   => 'Test',
-			'city'     => 'Test',
-			'postcode' => '12345',
-			'country'  => 'SE',
-		),
-		'coordinates' => array(
-			'latitude'  => 123,
-			'longitude' => 123,
-		),
-		'open_hours'  => array(
-			array(
-				'day'   => 'monday',
-				'open'  => '08:00',
-				'close' => '17:00',
-			)
-		),
-		'eta'         => array(
-			'utc'   => '2019-01-01T00:00:00+00:00',
-			'local' => '2019-01-01T00:00:00+10:00',
-		),
-		'meta_data'   => array(),
-	);
-
-	public function testSavePickupPointsToRate() {
-		$rate = $this->getMockBuilder( 'WC_Shipping_Rate' )
-			->setMethods( array( 'add_meta_data', 'get_id' ) )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$rate->expects( $this->once() )
-			->method( 'add_meta_data' )
-			->with( 'krokedil_pickup_points', json_encode( array( self::$pickup_point ) ) );
-
-		$pickupPoint = new PickupPoint( self::$pickup_point );
+		$pickupPoint = new PickupPoint( self::$pickupPoint );
 
 		$this->pickupPoints->save_pickup_points_to_rate( $rate, array( $pickupPoint ) );
+
+		$this->expectNotToPerformAssertions();
+	}
+
+	public function testSavePickupPointsToRateForceSave() {
+		$rate = $this->mockShippingRate();
+
+		WP_Mock::userFunction( 'doing_action' )->andReturn( false );
+		WP_Mock::userFunction( 'doing_filter', )->andReturn( false );
+
+		$pickupPoint = new PickupPoint( self::$pickupPoint );
+
+		$this->pickupPoints->save_pickup_points_to_rate( $rate, array( $pickupPoint ) );
+
+		$this->expectNotToPerformAssertions();
 	}
 
 	public function testGetPickupPointsFromRate() {
-		$rate = $this->getMockBuilder( 'WC_Shipping_Rate' )
-			->setMethods( array( 'get_meta_data' ) )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$rate->expects( $this->once() )
-			->method( 'get_meta_data' )
-			->willReturn( array( 'krokedil_pickup_points' => $this->pickupPoints->to_json( array( new PickupPoint( self::$pickup_point ) ) ) ) );
+		$rate = $this->mockShippingRate();
+		$rate->shouldReceive( 'get_meta_data' )
+			->andReturn( array( 'krokedil_pickup_points' => json_encode( array( self::$pickupPoint ) ) ) )
+			->once();
 
 		$result = $this->pickupPoints->get_pickup_points_from_rate( $rate );
 
 		$this->assertEquals( 1, count( $result ) );
-		$this->assertEquals( self::$pickup_point['id'], $result[0]->get_id() );
+		$this->assertEquals( self::$pickupPoint['id'], $result[0]->get_id() );
+	}
+
+	public function testGetPickupPointsFromRateReturnsEmptyIfNotExists() {
+		$rate = $this->mockShippingRate();
+		$rate->shouldReceive( 'get_meta_data' )
+			->andReturn( array( 'krokedil_pickup_points' => json_encode( array() ) ) )
+			->once();
+
+		$result = $this->pickupPoints->get_pickup_points_from_rate( $rate );
+
+		$this->assertEquals( 0, count( $result ) );
 	}
 
 	public function testAddPickupPointToRate() {
-		$rate = $this->getMockBuilder( 'WC_Shipping_Rate' )
-			->setMethods( array( 'get_meta_data', 'add_meta_data', 'get_id' ) )
-			->disableOriginalConstructor()
-			->getMock();
+		$pickupPoint = new PickupPoint( self::$pickupPoint );
 
-		$rate->expects( $this->once() )
-			->method( 'add_meta_data' )
-			->with( 'krokedil_pickup_points', json_encode( array( self::$pickup_point ) ) );
+		WP_Mock::userFunction( 'doing_action' )->andReturn( true );
+		WP_Mock::userFunction( 'doing_filter', )->andReturn( true );
 
-		$rate->expects( $this->exactly( 2 ) )
-			->method( 'get_meta_data' )
-			->willReturnOnConsecutiveCalls( array(), array( 'krokedil_pickup_points' => $this->pickupPoints->to_json( array( new PickupPoint( self::$pickup_point ) ) ) ) );
+		$rate = $this->mockShippingRate();
+		$rate->shouldReceive( 'add_meta_data' )
+			->with( 'krokedil_pickup_points', json_encode( array( self::$pickupPoint ) ) )
+			->once();
 
-		$pickupPoint = new PickupPoint( self::$pickup_point );
+		$rate->shouldReceive( 'get_meta_data' )
+			->andReturn( array() )
+			->once();
 
 		$this->pickupPoints->add_pickup_point_to_rate( $rate, $pickupPoint );
 
-		$result = $this->pickupPoints->get_pickup_points_from_rate( $rate );
+		$this->expectNotToPerformAssertions();
+	}
+
+	public function testAddPickupPointToRateDoesNotOverride() {
+		$pickupPoint = new PickupPoint( self::$pickupPoint );
+
+		$rate = $this->mockShippingRate();
+
+		$rate->shouldReceive( 'get_meta_data' )
+			->andReturn( array( 'krokedil_pickup_points' => json_encode( array( self::$pickupPoint ) ) ) )
+			->once();
+
+		$this->pickupPoints->add_pickup_point_to_rate( $rate, $pickupPoint );
+
+		$this->expectNotToPerformAssertions();
 	}
 
 	public function testRemovePickupPointFromRate() {
-		$rate = $this->getMockBuilder( 'WC_Shipping_Rate' )
-			->setMethods( array( 'get_meta_data', 'add_meta_data', 'get_id' ) )
-			->disableOriginalConstructor()
-			->getMock();
+		$rate = $this->mockShippingRate();
 
-		$rawPickupPoint1       = self::$pickup_point;
-		$rawPickupPoint2       = self::$pickup_point;
-		$rawPickupPoint2['id'] = '321';
+		WP_Mock::userFunction( 'doing_action' )->andReturn( true );
+		WP_Mock::userFunction( 'doing_filter', )->andReturn( true );
 
-		$pickupPoint1 = new PickupPoint( $rawPickupPoint1 );
-		$pickupPoint2 = new PickupPoint( $rawPickupPoint2 );
+		$pickupPoint2       = self::$pickupPoint;
+		$pickupPoint2['id'] = '321';
 
-		$rate->expects( $this->exactly( 3 ) )
-			->method( 'add_meta_data' )
-			->withConsecutive(
-				array( 'krokedil_pickup_points', json_encode( array( $rawPickupPoint1 ) ) ),
-				array( 'krokedil_pickup_points', json_encode( array( $rawPickupPoint1, $rawPickupPoint2 ) ) ),
-				array( 'krokedil_pickup_points', json_encode( array( $rawPickupPoint2 ) ) )
-			);
+		$toRemove = new PickupPoint( self::$pickupPoint );
 
-		$rate->expects( $this->exactly( 4 ) )
-			->method( 'get_meta_data' )
-			->willReturnOnConsecutiveCalls(
-				array(),
-				array( 'krokedil_pickup_points' => $this->pickupPoints->to_json( array( $pickupPoint1 ) ) ),
-				array( 'krokedil_pickup_points' => $this->pickupPoints->to_json( array( $pickupPoint1, $pickupPoint2 ) ) ),
-				array( 'krokedil_pickup_points' => $this->pickupPoints->to_json( array( $pickupPoint2 ) ) )
-			);
+		$rate->shouldReceive( 'get_meta_data' )
+			->andReturn( array( 'krokedil_pickup_points' => json_encode( array( self::$pickupPoint, $pickupPoint2 ) ) ) )
+			->once();
 
-		$this->pickupPoints->add_pickup_point_to_rate( $rate, $pickupPoint1 );
-		$this->pickupPoints->add_pickup_point_to_rate( $rate, $pickupPoint2 );
+		$rate->shouldReceive( 'add_meta_data' )
+			->with( 'krokedil_pickup_points', json_encode( array( $pickupPoint2 ) ) )
+			->once();
 
-		$this->pickupPoints->remove_pickup_point_from_rate( $rate, $pickupPoint1 );
+		$this->pickupPoints->remove_pickup_point_from_rate( $rate, $toRemove );
 
-		$this->pickupPoints->get_pickup_points_from_rate( $rate );
+		$this->expectNotToPerformAssertions();
+	}
+
+	public function testRemovePickupPointFromRateExistsIfRateDoesNotExist() {
+		$rate = $this->mockShippingRate();
+
+		$toRemove = new PickupPoint( self::$pickupPoint );
+
+		$rate->shouldReceive( 'get_meta_data' )
+			->andReturn( array( 'krokedil_pickup_points' => json_encode( array() ) ) )
+			->once();
+
+		$this->pickupPoints->remove_pickup_point_from_rate( $rate, $toRemove );
+
+		$this->expectNotToPerformAssertions();
 	}
 
 	public function testSaveSelectedPickupPointToRate() {
-		$rate = $this->getMockBuilder( 'WC_Shipping_Rate' )
-			->setMethods( array( 'add_meta_data', 'get_id' ) )
-			->disableOriginalConstructor()
-			->getMock();
+		$rate = $this->mockShippingRate();
 
-		$rate->expects( $this->once() )
-			->method( 'add_meta_data' )
-			->with( 'krokedil_selected_pickup_point', json_encode( self::$pickup_point ) );
+		WP_Mock::userFunction( 'doing_action' )->andReturn( true );
+		WP_Mock::userFunction( 'doing_filter', )->andReturn( true );
 
-		$pickupPoint = new PickupPoint( self::$pickup_point );
+		$rate->shouldReceive( 'add_meta_data' )
+			->andReturn( 'krokedil_selected_pickup_point', json_encode( self::$pickupPoint ) )
+			->once();
+
+		$pickupPoint = new PickupPoint( self::$pickupPoint );
 
 		$this->pickupPoints->save_selected_pickup_point_to_rate( $rate, $pickupPoint );
+
+		$this->expectNotToPerformAssertions();
 	}
 
 	public function testGetSelectedPickupPointFromRate() {
-		$rate = $this->getMockBuilder( 'WC_Shipping_Rate' )
-			->setMethods( array( 'get_meta_data' ) )
-			->disableOriginalConstructor()
-			->getMock();
+		$rate = $this->mockShippingRate();
 
-		$rate->expects( $this->once() )
-			->method( 'get_meta_data' )
-			->willReturn( array( 'krokedil_selected_pickup_point' => $this->pickupPoints->to_json( self::$pickup_point ) ) );
+		$rate->shouldReceive( 'get_meta_data' )
+			->andReturn( array( 'krokedil_selected_pickup_point' => json_encode( self::$pickupPoint ) ) )
+			->once();
 
 		$result = $this->pickupPoints->get_selected_pickup_point_from_rate( $rate );
 
-		$this->assertEquals( self::$pickup_point['id'], $result->get_id() );
+		$this->assertEquals( self::$pickupPoint['id'], $result->get_id() );
+	}
+
+	public function testGetSelectedPickupPointFromRateFalseIfNoSelectedExists() {
+		$rate = $this->mockShippingRate();
+
+		$rate->shouldReceive( 'get_meta_data' )
+			->andReturn( array() )
+			->once();
+
+		$result = $this->pickupPoints->get_selected_pickup_point_from_rate( $rate );
+
+		$this->assertFalse( $result );
 	}
 
 	public function testGetPickupPointFromRateById() {
-		$rate = $this->getMockBuilder( 'WC_Shipping_Rate' )
-			->setMethods( array( 'get_meta_data' ) )
-			->disableOriginalConstructor()
-			->getMock();
+		$rate = $this->mockShippingRate();
 
-		$rawPickupPoint1       = self::$pickup_point;
-		$rawPickupPoint2       = self::$pickup_point;
-		$rawPickupPoint2['id'] = '321';
+		$pickupPoint2       = self::$pickupPoint;
+		$pickupPoint2['id'] = '321';
 
-		$pickupPoint1 = new PickupPoint( $rawPickupPoint1 );
-		$pickupPoint2 = new PickupPoint( $rawPickupPoint2 );
+		$rate->shouldReceive( 'get_meta_data' )
+			->andReturn( array( 'krokedil_pickup_points' => json_encode( array( self::$pickupPoint, $pickupPoint2 ) ) ) )
+			->times( 3 );
 
-		$rate->expects( $this->exactly( 2 ) )
-			->method( 'get_meta_data' )
-			->willReturnOnConsecutiveCalls(
-				array( 'krokedil_pickup_points' => $this->pickupPoints->to_json( array( $pickupPoint1, $pickupPoint2 ) ) ),
-				array( 'krokedil_pickup_points' => $this->pickupPoints->to_json( array( $pickupPoint1, $pickupPoint2 ) ) )
-			);
+		$result = $this->pickupPoints->get_pickup_point_from_rate_by_id( $rate, self::$pickupPoint['id'] );
+		$this->assertEquals( self::$pickupPoint['id'], $result->get_id() );
 
-		$result = $this->pickupPoints->get_pickup_point_from_rate_by_id( $rate, $rawPickupPoint1['id'] );
-		$this->assertEquals( $rawPickupPoint1['id'], $result->get_id() );
+		$result = $this->pickupPoints->get_pickup_point_from_rate_by_id( $rate, $pickupPoint2['id'] );
+		$this->assertEquals( $pickupPoint2['id'], $result->get_id() );
 
-		$result = $this->pickupPoints->get_pickup_point_from_rate_by_id( $rate, $rawPickupPoint2['id'] );
-		$this->assertEquals( $rawPickupPoint2['id'], $result->get_id() );
+		$result = $this->pickupPoints->get_pickup_point_from_rate_by_id( $rate, 'non-existing' );
+		$this->assertNull( $result );
+	}
+
+	public function testGetPickupPointFromRateByIdNullIfNoneExist() {
+		$rate = $this->mockShippingRate();
+
+		$pickupPoint2       = self::$pickupPoint;
+		$pickupPoint2['id'] = '321';
+
+		$rate->shouldReceive( 'get_meta_data' )
+			->andReturn( array() )
+			->once();
+
+		$result = $this->pickupPoints->get_pickup_point_from_rate_by_id( $rate, 'non-existing' );
+		$this->assertNull( $result );
+	}
+
+	public function testAddHiddenOrderItemMeta() {
+		$result = $this->pickupPoints->add_hidden_order_itemmeta( array() );
+
+		$this->assertEquals( 2, count( $result ) );
+		$this->assertEquals( 'krokedil_pickup_points', $result[0] );
+		$this->assertEquals( 'krokedil_selected_pickup_point', $result[1] );
 	}
 }

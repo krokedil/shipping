@@ -1,108 +1,153 @@
 <?php
-use WP_Mock\Tools\TestCase;
 use Krokedil\Shipping\PickupPoint\PickupPoint;
 use Krokedil\Shipping\PickupPoint\Address;
 use Krokedil\Shipping\PickupPoint\Coordinates;
 use Krokedil\Shipping\PickupPoint\OpenHours;
 use Krokedil\Shipping\PickupPoint\EstimatedTimeOfArrival;
 
-class PickupPointTest extends TestCase {
-    public function testCanCreatePickupPoint() {
-        $pickup_point_data = array(
-            'id' => '123',
-            'name' => 'Test Pickup Point',
-            'description' => 'This is a test pickup point',
-            'address' => array(
-                'street' => '123 Main St',
-                'city' => 'Anytown',
-                'postcode' => '12345',
-                'country' => 'US'
-            ),
-            'coordinates' => array(
-                'latitude' => '37.7749',
-                'longitude' => '-122.4194'
-            ),
-            'open_hours' => array(
-                array(
-                    'day' => 'Monday',
-                    'open' => '09:00',
-                    'close' => '17:00'
-                ),
-                array(
-                    'day' => 'Tuesday',
-                    'open' => '09:00',
-                    'close' => '17:00'
-                ),
-                array(
-                    'day' => 'Wednesday',
-                    'open' => '09:00',
-                    'close' => '17:00'
-                ),
-                array(
-                    'day' => 'Thursday',
-                    'open' => '09:00',
-                    'close' => '17:00'
-                ),
-                array(
-                    'day' => 'Friday',
-                    'open' => '09:00',
-                    'close' => '17:00'
-                ),
-                array(
-                    'day' => 'Saturday',
-                    'open' => '10:00',
-                    'close' => '14:00'
-                ),
-                array(
-                    'day' => 'Sunday',
-                    'open' => 'Closed',
-                    'close' => 'Closed'
-                )
-            ),
-            'eta' => array(
-                'utc' => '2022-01-01T12:00:00Z',
-                'local' => '2022-01-01T12:00:00+01:00'
-            ),
-            'meta_data' => array(
-                'key1' => 'value1',
-                'key2' => 'value2'
-            )
+class PickupPointTest extends BaseTestCase {
+
+	public function testConstructor() {
+		$pickup_point = new PickupPoint();
+
+		$this->assertInstanceOf( PickupPoint::class, $pickup_point );
+	}
+
+	public function testConstructorWithArray() {
+		// Add metadata to pickup point
+		$pickupPointArray              = self::$pickupPoint;
+		$pickupPointArray['meta_data'] = array(
+			'test' => 'test'
         );
 
-        $pickup_point = new PickupPoint($pickup_point_data);
+		$pickup_point = new PickupPoint( $pickupPointArray );
 
-        $this->assertInstanceOf(PickupPoint::class, $pickup_point);
-        $this->assertEquals('123', $pickup_point->get_id());
-        $this->assertEquals('Test Pickup Point', $pickup_point->get_name());
-        $this->assertEquals('This is a test pickup point', $pickup_point->get_description());
+		$this->assertInstanceOf( PickupPoint::class, $pickup_point );
+		$this->assertEquals( self::$pickupPoint['id'], $pickup_point->get_id() );
+		$this->assertEquals( self::$pickupPoint['name'], $pickup_point->get_name() );
+		$this->assertEquals( self::$pickupPoint['description'], $pickup_point->get_description() );
+		$this->assertEquals( 'test', $pickup_point->get_meta_data( 'test' ) );
+	}
 
-        $address = $pickup_point->get_address();
-        $this->assertInstanceOf(Address::class, $address);
-        $this->assertEquals('123 Main St', $address->get_street());
-        $this->assertEquals('Anytown', $address->get_city());
-        $this->assertEquals('12345', $address->get_postcode());
-        $this->assertEquals('US', $address->get_country());
+	public function testConstructorWithJson() {
+		$pickup_point = new PickupPoint( json_encode( self::$pickupPoint ) );
 
-        $coordinates = $pickup_point->get_coordinates();
-        $this->assertInstanceOf(Coordinates::class, $coordinates);
-        $this->assertEquals('37.7749', $coordinates->get_latitude());
-        $this->assertEquals('-122.4194', $coordinates->get_longitude());
+		$this->assertInstanceOf( PickupPoint::class, $pickup_point );
+		$this->assertEquals( self::$pickupPoint['id'], $pickup_point->get_id() );
+		$this->assertEquals( self::$pickupPoint['name'], $pickup_point->get_name() );
+		$this->assertEquals( self::$pickupPoint['description'], $pickup_point->get_description() );
+	}
 
-        $open_hours = $pickup_point->get_open_hours();
-        $this->assertIsArray($open_hours);
-        $this->assertCount(7, $open_hours);
-        $this->assertInstanceOf(OpenHours::class, $open_hours[0]);
-        $this->assertEquals('Monday', $open_hours[0]->get_day());
-        $this->assertEquals('09:00', $open_hours[0]->get_open());
-        $this->assertEquals('17:00', $open_hours[0]->get_close());
+	public function testGetId() {
+		$pickup_point = new PickupPoint( self::$pickupPoint );
 
-        $eta = $pickup_point->get_eta();
-        $this->assertInstanceOf(EstimatedTimeOfArrival::class, $eta);
-        $this->assertEquals('2022-01-01T12:00:00Z', $eta->get_utc());
-        $this->assertEquals('2022-01-01T12:00:00+01:00', $eta->get_local());
+		$this->assertEquals( self::$pickupPoint['id'], $pickup_point->get_id() );
+	}
 
-        $meta_data = $pickup_point->get_meta_data('key1');
-        $this->assertIsString($meta_data);
-        $this->assertEquals('value1', $meta_data);
-    }
+	public function testGetName() {
+		$pickup_point = new PickupPoint( self::$pickupPoint );
+
+		$this->assertEquals( self::$pickupPoint['name'], $pickup_point->get_name() );
+	}
+
+	public function testGetDescription() {
+		$pickup_point = new PickupPoint( self::$pickupPoint );
+
+		$this->assertEquals( self::$pickupPoint['description'], $pickup_point->get_description() );
+	}
+
+	public function testGetAddress() {
+		$pickup_point = new PickupPoint( self::$pickupPoint );
+
+		$this->assertInstanceOf( Address::class, $pickup_point->get_address() );
+	}
+
+	public function testGetCoordinates() {
+		$pickup_point = new PickupPoint( self::$pickupPoint );
+
+		$this->assertInstanceOf( Coordinates::class, $pickup_point->get_coordinates() );
+	}
+
+	public function testGetOpenHours() {
+		$pickup_point = new PickupPoint( self::$pickupPoint );
+
+		$this->assertIsArray( $pickup_point->get_open_hours() );
+		$this->assertInstanceOf( OpenHours::class, $pickup_point->get_open_hours()[0] );
+	}
+
+	public function testGetEstimatedTimeOfArrival() {
+		$pickup_point = new PickupPoint( self::$pickupPoint );
+
+		$this->assertInstanceOf( EstimatedTimeOfArrival::class, $pickup_point->get_eta() );
+	}
+
+	public function testSetId() {
+		$pickup_point = new PickupPoint();
+		$pickup_point->set_id( self::$pickupPoint['id'] );
+
+		$this->assertEquals( self::$pickupPoint['id'], $pickup_point->get_id() );
+	}
+
+	public function testSetName() {
+		$pickup_point = new PickupPoint();
+		$pickup_point->set_name( self::$pickupPoint['name'] );
+
+		$this->assertEquals( self::$pickupPoint['name'], $pickup_point->get_name() );
+	}
+
+	public function testSetDescription() {
+		$pickup_point = new PickupPoint();
+		$pickup_point->set_description( self::$pickupPoint['description'] );
+
+		$this->assertEquals( self::$pickupPoint['description'], $pickup_point->get_description() );
+	}
+
+	public function testSetAddress() {
+		$pickup_point = new PickupPoint();
+		$pickup_point->set_address( '', '', '', '' );
+
+		$this->assertInstanceOf( Address::class, $pickup_point->get_address() );
+	}
+
+	public function testSetCoordinates() {
+		$pickup_point = new PickupPoint();
+		$pickup_point->set_coordinates( '', '' );
+
+		$this->assertInstanceOf( Coordinates::class, $pickup_point->get_coordinates() );
+	}
+
+	public function testSetOpenHours() {
+		$pickup_point = new PickupPoint();
+		$pickup_point->set_open_hours( array() );
+
+		$this->assertIsArray( $pickup_point->get_open_hours() );
+	}
+
+	public function testSetOpenHour() {
+		$pickup_point = new PickupPoint();
+		$pickup_point->set_open_hour( '', '', '' );
+
+		$this->assertIsArray( $pickup_point->get_open_hours() );
+	}
+
+	public function testSetEstimatedTimeOfArrival() {
+		$pickup_point = new PickupPoint();
+		$pickup_point->set_eta( '', '' );
+
+		$this->assertInstanceOf( EstimatedTimeOfArrival::class, $pickup_point->get_eta() );
+	}
+
+	public function testGetMetaData() {
+		$pickup_point = new PickupPoint( self::$pickupPoint );
+		$pickup_point->add_meta_data( 'test', 'test' );
+
+		$this->assertEquals( 'test', $pickup_point->get_meta_data( 'test' ) );
+	}
+
+	public function testAddMetaData() {
+		$pickup_point = new PickupPoint( self::$pickupPoint );
+		$pickup_point->add_meta_data( 'test', 'test' );
+
+		$this->assertEquals( 'test', $pickup_point->get_meta_data( 'test' ) );
+	}
 }

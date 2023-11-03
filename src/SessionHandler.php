@@ -56,18 +56,7 @@ class SessionHandler {
 		$packages = WC()->shipping()->get_packages();
 		// Loop the packages to unset the session and then recalculate the shipping rates.
 		foreach ( $packages as $package_key => $package ) {
-			// Loop each of the shipping rates.
-			/** @var \WC_Shipping_Rate $rate */
-			foreach ( $package['rates'] as $rate_key => $rate ) {
-				$rate_meta   = $rate->get_meta_data();
-				$stored_meta = $this->shipping_rate_data[ $rate->get_id()] ?? array();
-
-				foreach ( $stored_meta as $key => $value ) {
-					$rate_meta[ $key ] = $value;
-				}
-
-				$this->shipping_rate_data[ $rate->get_id()] = $rate_meta;
-			}
+			$this->preserve_old_meta_data( $package );
 
 			// Unset the shipping rates from the session.
 			WC()->session->__unset( 'shipping_for_package_' . $package_key );
@@ -91,6 +80,16 @@ class SessionHandler {
 	 */
 	public function set_shipping_rate_data( $rate_id, $data ) {
 		$this->shipping_rate_data[ $rate_id ] = $data;
+	}
+
+	/**
+	 * Retrieve the data we want to set to the shipping rate with the matching id.
+	 *
+	 * @param string $rate_id The shipping rate id to get the data for.
+	 * @return array<string, mixed> The data to set to the shipping rate.
+	 */
+	public function get_shipping_rate_data( $rate_id ) {
+		return $this->shipping_rate_data[ $rate_id ] ?? array();
 	}
 
 	/**
@@ -118,5 +117,26 @@ class SessionHandler {
 		}
 
 		return $rates;
+	}
+
+	/**
+	 * Preserve the old meta data from the shipping rates.
+	 *
+	 * @param array<string, mixed> $package The shipping package to preserve the meta data for.
+	 *
+	 * @return void
+	 */
+	public function preserve_old_meta_data( $package ) {
+		/** @var \WC_Shipping_Rate $rate */
+		foreach ( $package['rates'] as $rate_key => $rate ) {
+			$rate_meta   = $rate->get_meta_data();
+			$stored_meta = $this->get_shipping_rate_data( $rate->get_id() );
+
+			foreach ( $stored_meta as $key => $value ) {
+				$rate_meta[ $key ] = $value;
+			}
+
+			$this->shipping_rate_data[ $rate->get_id()] = $rate_meta;
+		}
 	}
 }

@@ -8,7 +8,7 @@ use Krokedil\Shipping\Interfaces\PickupPointServiceInterface;
 use Krokedil\Shipping\PickupPoint\PickupPoint;
 use Krokedil\Shipping\Traits\ArrayFormat;
 use Krokedil\Shipping\Traits\JsonFormat;
-use Krokedil\Shipping\Container;
+use Krokedil\Shipping\Container\Container;
 
 /**
  * Class PickupPoints
@@ -52,13 +52,13 @@ class PickupPoints implements PickupPointServiceInterface {
 		// Setup the container with the dependent services.
 		$this->container = Container::get_instance();
 
-		$this->container->add_service( 'session-handler', new SessionHandler() );
-		$this->container->add_service( 'assets-registry', new AssetsRegistry( $plugin_file_path ) );
-		$this->container->add_service( 'ajax-registry', new AjaxRegistry() );
+		$this->container->add( 'session-handler', new SessionHandler() );
+		$this->container->add( 'assets-registry', new AssetsRegistry( $plugin_file_path ) );
+		$this->container->add( 'ajax-registry', new AjaxRegistry() );
 
 		// If the select box should be added to the checkout page, add the service to the container.
 		if ( $add_select_box ) {
-			$this->container->add_service( 'pickup_point_select', new PickupPointSelect( $this ) );
+			$this->container->add( 'pickup_point_select', new PickupPointSelect( $this ) );
 		}
 	}
 
@@ -214,7 +214,7 @@ class PickupPoints implements PickupPointServiceInterface {
 		} else {
 			// Otherwise we want to force the shipping rates to update.
 			/** @var SessionHandler $session_handler The session handler service from the pickup point service container. */
-			$session_handler = $this->container->get_service( 'session-handler' );
+			$session_handler = $this->container->get( 'session-handler' );
 
 			// Save the data to the session handler.
 			$session_handler->set_shipping_rate_data( $rate->get_id(), $data );

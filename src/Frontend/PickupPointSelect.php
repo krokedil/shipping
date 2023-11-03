@@ -35,7 +35,7 @@ class PickupPointSelect {
 		$this->register_ajax_requests();
 
 		// Add the action to render the pickup point select box.
-		add_action( 'woocommerce_after_shipping_rate', array( $this, 'render_pickup_point_select' ) );
+		add_action( 'woocommerce_after_shipping_rate', array( $this, 'render' ) );
 	}
 
 	/**
@@ -45,7 +45,7 @@ class PickupPointSelect {
 	 */
 	private function register_assets() {
 		/** @var AssetsRegistry $registry The Assets service from the pickup point service container. */
-		$registry = $this->pickup_point_service->get_container()->get_service( 'assets-registry' );
+		$registry = $this->pickup_point_service->get_container()->get( 'assets-registry' );
 
 		$parameters = array(
 			'ajax' => array(
@@ -90,7 +90,7 @@ class PickupPointSelect {
 	 */
 	private function register_ajax_requests() {
 		/** @var AjaxRegistry $registry The Ajax service from the pickup point service container. */
-		$registry = $this->pickup_point_service->get_container()->get_service( 'ajax-registry' );
+		$registry = $this->pickup_point_service->get_container()->get( 'ajax-registry' );
 
 		// Add the Ajax request to set the selected pickup point.
 		$registry->add_request(
@@ -108,7 +108,7 @@ class PickupPointSelect {
 	 * @param \WC_Shipping_Rate $shipping_rate WooCommerce shipping rate instance.
 	 * @return void
 	 */
-	public function render_pickup_point_select( $shipping_rate ) {
+	public function render( $shipping_rate ) {
 		// Only if this is the selected shipping rate.
 		WC()->session->get( 'chosen_shipping_methods' );
 		if ( ! in_array( $shipping_rate->get_id(), WC()->session->get( 'chosen_shipping_methods' ), true ) ) {
@@ -140,8 +140,13 @@ class PickupPointSelect {
 	 * @return void
 	 */
 	public function set_selected_pickup_point_ajax() {
-		$pickup_point_id = filter_input( INPUT_POST, 'pickupPointId', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
-		$rate_id         = filter_input( INPUT_POST, 'rateId', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+		$pickup_point_id = filter_var( $_POST['pickupPointId'], FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+		$rate_id         = filter_var( $_POST['rateId'], FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+
+		// Ensure we have a pickup point id and a rate id.
+		if ( ! $pickup_point_id || ! $rate_id ) {
+			wp_send_json_error( 'Missing pickup point id or rate id.' );
+		}
 
 		WC()->cart->calculate_shipping();
 		$result = $this->set_selected_pickup_point( $pickup_point_id, $rate_id );
@@ -164,7 +169,7 @@ class PickupPointSelect {
 	 */
 	public function set_selected_pickup_point( $pickup_point_id, $rate_id ) {
 		/** @var SessionHandler $session_handler */
-		$session_handler = $this->pickup_point_service->get_container()->get_service( 'session-handler' );
+		$session_handler = $this->pickup_point_service->get_container()->get( 'session-handler' );
 
 		// Get the shipping rate and the selected pickup point for the shipping method from the ajax request.
 		$shipping_rate = $session_handler->get_shipping_rate( $rate_id );

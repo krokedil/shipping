@@ -35,11 +35,11 @@ class AssetsRegistry {
 		$this->base_path = plugin_dir_url( $plugin_file_path );
 
 		// Add the action to register the scripts and styles.
-		add_action( 'init', array( $this, 'register_scripts' ) );
+		add_action( 'init', array( $this, 'register_assets' ) );
 
 		// Add the action to enqueue the scripts and styles.
-		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
-		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
+		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_assets' ) );
+		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_assets' ) );
 	}
 
 	/**
@@ -47,7 +47,7 @@ class AssetsRegistry {
 	 *
 	 * @return void
 	 */
-	public function register_scripts() {
+	public function register_assets() {
 		foreach ( $this->scripts as $script ) {
 			$script->register();
 		}
@@ -62,7 +62,7 @@ class AssetsRegistry {
 	 *
 	 * @return void
 	 */
-	public function enqueue_scripts() {
+	public function enqueue_assets() {
 		foreach ( $this->scripts as $script ) {
 			// If we are on the admin pages, only enqueue the admin scripts.
 			if ( $script->get_admin() && ! is_admin() ) {
