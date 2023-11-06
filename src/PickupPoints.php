@@ -30,12 +30,11 @@ class PickupPoints implements PickupPointServiceInterface {
 	/**
 	 * Class constructor.
 	 *
-	 * @param string $plugin_file_path The base path of the package.
-	 * @param bool   $add_select_box Whether or not to add the pickup point select box to the checkout page.
+	 * @param bool $add_select_box Whether or not to add the pickup point select box to the checkout page.
 	 * @return void
 	 */
-	public function __construct( $plugin_file_path = '', $add_select_box = false ) {
-		$this->init( $plugin_file_path, $add_select_box );
+	public function __construct( $add_select_box = false ) {
+		$this->init( $add_select_box );
 	}
 
 	/**
@@ -45,7 +44,7 @@ class PickupPoints implements PickupPointServiceInterface {
 	 * @param bool   $add_select_box Whether or not to add the pickup point select box to the checkout page.
 	 * @return void
 	 */
-	public function init( $plugin_file_path, $add_select_box ) {
+	public function init( $add_select_box ) {
 		// Register actions and filters required by the package.
 		add_filter( 'woocommerce_hidden_order_itemmeta', array( $this, 'add_hidden_order_itemmeta' ) );
 
@@ -53,7 +52,7 @@ class PickupPoints implements PickupPointServiceInterface {
 		$this->container = Container::get_instance();
 
 		$this->container->add( 'session-handler', new SessionHandler() );
-		$this->container->add( 'assets-registry', new AssetsRegistry( $plugin_file_path ) );
+		$this->container->add( 'assets-registry', new AssetsRegistry() );
 		$this->container->add( 'ajax-registry', new AjaxRegistry() );
 
 		// If the select box should be added to the checkout page, add the service to the container.

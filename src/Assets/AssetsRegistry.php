@@ -31,8 +31,8 @@ class AssetsRegistry {
 	/**
 	 * Class constructor.
 	 */
-	public function __construct( $plugin_file_path ) {
-		$this->base_path = plugin_dir_url( $plugin_file_path );
+	public function __construct() {
+		$this->base_path = dirname( __DIR__ );
 
 		// Add the action to register the scripts and styles.
 		add_action( 'init', array( $this, 'register_assets' ) );
@@ -109,6 +109,6 @@ class AssetsRegistry {
 	 * @return string
 	 */
 	public function get_asset_url( $asset ) {
-		return $this->base_path . 'vendor/krokedil/shipping/assets/' . $asset;
+		return plugins_url( '/assets/' . $asset, $this->base_path );
 	}
 }
