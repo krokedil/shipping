@@ -11,11 +11,11 @@ class AssetsRegistryTest extends TestCase {
 	public function setUp(): void {
 		parent::setUp();
 
-		WP_Mock::userFunction( 'plugin_dir_url' )->andReturn( 'http://example.com/wp-content/plugins/my-plugin/' );
+		WP_Mock::userFunction( 'plugins_url' )->andReturn( 'http://example.com/wp-content/plugins/my-plugin/vendor/krokedil/shipping/assets/js/my-script.js' );
 		WP_Mock::userFunction( 'doing_action' )->andReturn( true );
 		WP_Mock::userFunction( 'doing_filter', )->andReturn( true );
 
-		$this->assetsRegistry = new AssetsRegistry( 'path/to/plugin/file.php' );
+		$this->assetsRegistry = new AssetsRegistry();
 	}
 
 	public function testConstruct() {
