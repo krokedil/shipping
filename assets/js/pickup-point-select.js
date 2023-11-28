@@ -12,7 +12,7 @@ jQuery(function ($) {
      *
      * @type {object}
      */
-    params: krokedilShippingPickupPointSelectParams,
+    params: ks_pp_params,
 
     /**
      * Register event listeners.

@@ -23,6 +23,10 @@ class PickupPointSelect {
 	public $pickup_point_service;
 
 	/**
+	 *
+	 */
+
+	/**
 	 * Class constructor.
 	 *
 	 * @param PickupPointServiceInterface $pickup_point_service
@@ -31,56 +35,9 @@ class PickupPointSelect {
 	public function __construct( $pickup_point_service ) {
 		$this->pickup_point_service = $pickup_point_service;
 
-		$this->register_assets();
 		$this->register_ajax_requests();
 
-		// Add the action to render the pickup point select box.
 		add_action( 'woocommerce_after_shipping_rate', array( $this, 'render' ) );
-	}
-
-	/**
-	 * Add the required assets for the pickup point selection.
-	 *
-	 * @return void
-	 */
-	private function register_assets() {
-		/** @var AssetsRegistry $registry The Assets service from the pickup point service container. */
-		$registry = $this->pickup_point_service->get_container()->get( 'assets-registry' );
-
-		$parameters = array(
-			'ajax' => array(
-				'setPickupPoint' => array(
-					'action' => 'krokedil_shipping_set_selected_pickup_point',
-					'nonce'  => wp_create_nonce( 'krokedil_shipping_set_selected_pickup_point' ),
-					'url'    => \WC_AJAX::get_endpoint( 'krokedil_shipping_set_selected_pickup_point' ),
-				)
-			)
-		);
-
-		// Add the frontend scripts.
-		$registry->add_script(
-			new Script(
-				'krokedil-shipping-pickup-point-select',
-				$registry->get_asset_url( 'js/pickup-point-select.js' ),
-				array( 'jquery', 'selectWoo' ),
-				'1.0.0',
-				false,
-				true,
-				array(
-					'krokedilShippingPickupPointSelectParams' => $parameters,
-				)
-			)
-		);
-
-		// Add the frontend styles.
-		$registry->add_style(
-			new Style(
-				'krokedil-shipping-pickup-point-select',
-				$registry->get_asset_url( 'css/pickup-point-select.css' ),
-				array( 'select2' ),
-				'1.0.0'
-			)
-		);
 	}
 
 	/**
@@ -89,17 +46,11 @@ class PickupPointSelect {
 	 * @return void
 	 */
 	private function register_ajax_requests() {
-		/** @var AjaxRegistry $registry The Ajax service from the pickup point service container. */
-		$registry = $this->pickup_point_service->get_container()->get( 'ajax-registry' );
+		/** @var AJAX $registry The Ajax service from the pickup point service container. */
+		$registry = $this->pickup_point_service->get_container()->get( 'ajax' );
 
-		// Add the Ajax request to set the selected pickup point.
-		$registry->add_request(
-			new AjaxRequest(
-				'krokedil_shipping_set_selected_pickup_point',
-				array( $this, 'set_selected_pickup_point_ajax' ),
-				true
-			)
-		);
+		// Register the AJAX request to set the selected pickup point.
+		$registry->add_ajax_event( 'ks_pp_set_selected_pickup_point', array( $this, 'set_selected_pickup_point_ajax' ) );
 	}
 
 	/**

@@ -40,8 +40,7 @@ class PickupPoints implements PickupPointServiceInterface {
 	/**
 	 * Initialize the class instance.
 	 *
-	 * @param string $plugin_file_path The base path of the package.
-	 * @param bool   $add_select_box Whether or not to add the pickup point select box to the checkout page.
+	 * @param bool $add_select_box Whether or not to add the pickup point select box to the checkout page.
 	 * @return void
 	 */
 	public function init( $add_select_box ) {
@@ -52,8 +51,8 @@ class PickupPoints implements PickupPointServiceInterface {
 		$this->container = Container::get_instance();
 
 		$this->container->add( 'session-handler', new SessionHandler() );
-		$this->container->add( 'assets-registry', new AssetsRegistry() );
-		$this->container->add( 'ajax-registry', new AjaxRegistry() );
+		$this->container->add( 'ajax', new AJAX() );
+		$this->container->add( 'assets', new Assets() );
 
 		// If the select box should be added to the checkout page, add the service to the container.
 		if ( $add_select_box ) {
@@ -140,7 +139,7 @@ class PickupPoints implements PickupPointServiceInterface {
 
 		$pickup_points = array_filter(
 			$pickup_points,
-			function ($pickup_point_in_array) use ($pickup_point) {
+			function ( $pickup_point_in_array ) use ( $pickup_point ) {
 				return $pickup_point_in_array->get_id() !== $pickup_point->get_id();
 			}
 		);
@@ -197,7 +196,7 @@ class PickupPoints implements PickupPointServiceInterface {
 	/**
 	 * Ensure the saving of the pickup point data to the shipping rate. Either by forcing the session to update or by updating the shipping rate directly.
 	 *
-	 * @param \WC_Shipping_Rate $rate The shipping rate we want to update.
+	 * @param \WC_Shipping_Rate    $rate The shipping rate we want to update.
 	 * @param array<string, mixed> $data The data to update the rate id with. The key is the meta data id and the value is the data to save.
 	 *
 	 * @return void

@@ -11,16 +11,6 @@ class PickupPointSelectTest extends BaseTestCase {
 		$this->mockWooCommerce();
 		$this->mockPickupPointService();
 
-		WP_Mock::userFunction( 'wp_create_nonce', array(
-			'args'   => array( 'krokedil_shipping_set_selected_pickup_point' ),
-			'return' => 'some_nonce',
-		) );
-
-		$wcAjaxMock = Mockery::mock( 'alias:WC_AJAX' );
-		$wcAjaxMock->shouldReceive( 'get_endpoint' )
-			->with( 'krokedil_shipping_set_selected_pickup_point' )
-			->andReturn( 'some_url' );
-
 		$this->pickupPointSelect = new PickupPointSelect( $this->mockPickupPointService );
 	}
 
@@ -33,9 +23,12 @@ class PickupPointSelectTest extends BaseTestCase {
 
 		$rate = $this->mockShippingRate();
 
-		WP_Mock::userFunction( 'selected', array(
-			'times' => 1,
-		) );
+		WP_Mock::userFunction(
+			'selected',
+			array(
+				'times' => 1,
+			)
+		);
 
 		ob_start();
 		$this->pickupPointSelect->render( $rate );
@@ -46,8 +39,6 @@ class PickupPointSelectTest extends BaseTestCase {
 	}
 
 	public function testRenderPickupPointSelectOutputsNothingIfShippingRateIsNotChosen() {
-		$pickupPointObj = new PickupPoint( self::$pickupPoint );
-
 		$this->mockSession->shouldReceive( 'get' )->with( 'chosen_shipping_methods' )->andReturn( array( 'other_rate_id' ) );
 
 		$rate = $this->mockShippingRate();
@@ -88,14 +79,20 @@ class PickupPointSelectTest extends BaseTestCase {
 		$this->mockPickupPointService->shouldReceive( 'get_pickup_point_from_rate_by_id' )->with( $rate, '123' )->once()->andReturn( $pickupPointObj );
 		$this->mockPickupPointService->shouldReceive( 'save_selected_pickup_point_to_rate' )->with( $rate, $pickupPointObj )->once()->andReturn( null );
 
-		WP_Mock::userFunction( 'is_wp_error', array(
-			'times'  => 1,
-			'return' => false,
-		) );
+		WP_Mock::userFunction(
+			'is_wp_error',
+			array(
+				'times'  => 1,
+				'return' => false,
+			)
+		);
 
-		WP_Mock::userFunction( 'wp_send_json_success', array(
-			'times' => 1,
-		) );
+		WP_Mock::userFunction(
+			'wp_send_json_success',
+			array(
+				'times' => 1,
+			)
+		);
 
 		$packages = array(
 			array(
@@ -112,7 +109,7 @@ class PickupPointSelectTest extends BaseTestCase {
 	}
 
 	public function testSetSelectedPickupPointAjaxReturnsEarlyIfPostDataMissing() {
-		$this->expectException( Exception::class);
+		$this->expectException( Exception::class );
 		$_POST = array();
 
 		WP_Mock::userFunction( 'wp_send_json_error' )->once()->andThrows( new Exception() );

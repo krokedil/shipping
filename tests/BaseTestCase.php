@@ -15,8 +15,8 @@ abstract class BaseTestCase extends TestCase {
 	// Internal mocks.
 	protected $mockPickupPointService;
 	protected $mockContainer;
-	protected $mockAssetsRegistry;
-	protected $mockAjaxRegistry;
+	protected $mockAssets;
+	protected $mockAjax;
 	protected $mockSessionHandler;
 
 	// Test data.
@@ -39,7 +39,7 @@ abstract class BaseTestCase extends TestCase {
 				'day'   => 'monday',
 				'open'  => '08:00',
 				'close' => '17:00',
-			)
+			),
 		),
 		'eta'         => array(
 			'utc'   => '2019-01-01T00:00:00+00:00',
@@ -74,40 +74,34 @@ abstract class BaseTestCase extends TestCase {
 		$this->mockAjaxRegistry();
 		$this->mockSessionHandler();
 
-		$this->mockContainer->shouldReceive( 'get' )->with( 'assets-registry' )->andReturn( $this->mockAssetsRegistry );
-		$this->mockContainer->shouldReceive( 'get' )->with( 'ajax-registry' )->andReturn( $this->mockAjaxRegistry );
+		$this->mockContainer->shouldReceive( 'get' )->with( 'assets' )->andReturn( $this->mockAssets );
+		$this->mockContainer->shouldReceive( 'get' )->with( 'ajax' )->andReturn( $this->mockAjax );
 		$this->mockContainer->shouldReceive( 'get' )->with( 'session-handler' )->andReturn( $this->mockSessionHandler );
 
-		$this->mockPickupPointService = Mockery::mock( PickupPointServiceInterface::class);
+		$this->mockPickupPointService = Mockery::mock( PickupPointServiceInterface::class );
 
 		$this->mockPickupPointService->shouldReceive( 'get_container' )->andReturn( $this->mockContainer );
 	}
 
 	public function mockContainer() {
-		$this->mockContainer = Mockery::mock( Container::class);
+		$this->mockContainer = Mockery::mock( Container::class );
 	}
 
 	public function mockAssetsRegistry() {
-		$this->mockAssetsRegistry           = Mockery::mock( AssetsRegistry::class);
-		$this->mockAssetsRegistry->basePath = 'https://krokedil-test.com/wp-content/plugins/krokedil-shipping/assets/';
+		$this->mockAssets = Mockery::mock( Assets::class );
 
-		$this->mockAssetsRegistry->shouldReceive( 'add_script' )->andReturn( null );
-		$this->mockAssetsRegistry->shouldReceive( 'add_style' )->andReturn( null );
-		$this->mockAssetsRegistry->shouldReceive( 'register_assets' )->andReturn( null );
-		$this->mockAssetsRegistry->shouldReceive( 'enqueue_assets' )->andReturn( null );
-		$this->mockAssetsRegistry->shouldReceive( 'get_asset_url' )->andReturnUsing( function ($asset) {
-			return $this->mockAssetsRegistry->basePath . 'vendor/krokedil/shipping/assets/' . $asset;
-		} );
+		$this->mockAssets->shouldReceive( 'register_assets' )->andReturn( null );
+		$this->mockAssets->shouldReceive( 'enqueue_assets' )->andReturn( null );
 	}
 
 	public function mockAjaxRegistry() {
-		$this->mockAjaxRegistry = Mockery::mock( AjaxRegistry::class);
+		$this->mockAjax = Mockery::mock( AJAX::class );
 
-		$this->mockAjaxRegistry->shouldReceive( 'add_request' )->andReturn( null );
-		$this->mockAjaxRegistry->shouldReceive( 'register_ajax_requests' )->andReturn( null );
+		$this->mockAjax->shouldReceive( 'add_ajax_events' )->andReturn( null );
+		$this->mockAjax->shouldReceive( 'add_ajax_event' )->andReturn( null );
 	}
 
 	public function mockSessionHandler() {
-		$this->mockSessionHandler = Mockery::mock( SessionHandler::class);
+		$this->mockSessionHandler = Mockery::mock( SessionHandler::class );
 	}
 }
