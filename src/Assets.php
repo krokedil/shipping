@@ -39,6 +39,10 @@ class Assets {
 	 * Enqueue scripts.
 	 */
 	public function enqueue_assets() {
+		if ( ! is_checkout() ) {
+			return;
+		}
+
 		$params = array(
 			'ajax' => array(
 				'setPickupPoint' => array(
