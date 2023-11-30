@@ -1,6 +1,6 @@
 <?php
 use Krokedil\Shipping\PickupPoint\Address;
-use PHPUnit\Framework\TestCase;
+use WP_Mock\Tools\TestCase;
 
 class AddressTest extends TestCase {
     public function testGetters() {

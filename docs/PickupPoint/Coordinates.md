@@ -11,13 +11,13 @@ Contains the coordinates for the location of a pickup point.
 | Name | Description |
 |------|-------------|
 |[__construct](#coordinates__construct)|Coordinates constructor. Sets the latitude and longitude properties.|
-|[array_to_json](#coordinatesarray_to_json)|Convert an array to a JSON string.|
 |[get_latitude](#coordinatesget_latitude)|Get latitude.|
 |[get_longitude](#coordinatesget_longitude)|Get longitude.|
 |[json_to_array](#coordinatesjson_to_array)|Convert a JSON string to an array.|
 |[set_latitude](#coordinatesset_latitude)|Set latitude.|
 |[set_longitude](#coordinatesset_longitude)|Set longitude.|
 |[to_array](#coordinatesto_array)|Convert an object to an array.|
+|[to_json](#coordinatesto_json)|Convert an array to a JSON string.|
 
 
 
@@ -45,33 +45,6 @@ If no latitude or longitude is provided, the default value is 0.0.
 **Return Values**
 
 `void`
-
-
-
-
-<hr />
-
-
-### Coordinates::array_to_json  
-
-**Description**
-
-```php
-public array_to_json (array $array)
-```
-
-Convert an array to a JSON string. 
-
- 
-
-**Parameters**
-
-* `(array) $array`
-: Array.  
-
-**Return Values**
-
-`string`
 
 
 
@@ -228,6 +201,33 @@ Convert an object to an array.
 **Return Values**
 
 `void`
+
+
+<hr />
+
+
+### Coordinates::to_json  
+
+**Description**
+
+```php
+public to_json (array|object $item)
+```
+
+Convert an array to a JSON string. 
+
+ 
+
+**Parameters**
+
+* `(array|object) $item`
+: The item to convert to a json string.  
+
+**Return Values**
+
+`string`
+
+
 
 
 <hr />

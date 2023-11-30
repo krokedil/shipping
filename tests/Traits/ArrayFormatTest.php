@@ -1,7 +1,8 @@
 <?php
 use Krokedil\Shipping\Traits\ArrayFormat;
+use WP_Mock\Tools\TestCase;
 
-class ArrayFormatTest extends \PHPUnit\Framework\TestCase {
+class ArrayFormatTest extends TestCase {
 	public function testToArray() {
 		$object = new ArrayFormatClass();
 		$array = $object->to_array();

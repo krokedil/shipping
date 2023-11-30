@@ -11,7 +11,6 @@ Contains the address for the location of a pickup point.
 | Name | Description |
 |------|-------------|
 |[__construct](#address__construct)|PickupPointAddress constructor. Sets the street, city, postcode and country properties for the pickup point address.|
-|[array_to_json](#addressarray_to_json)|Convert an array to a JSON string.|
 |[get_city](#addressget_city)|Get city.|
 |[get_country](#addressget_country)|Get country.|
 |[get_postcode](#addressget_postcode)|Get postcode.|
@@ -22,6 +21,7 @@ Contains the address for the location of a pickup point.
 |[set_postcode](#addressset_postcode)|Set postcode.|
 |[set_street](#addressset_street)|Set street.|
 |[to_array](#addressto_array)|Convert an object to an array.|
+|[to_json](#addressto_json)|Convert an array to a JSON string.|
 
 
 
@@ -52,33 +52,6 @@ PickupPointAddress constructor. Sets the street, city, postcode and country prop
 **Return Values**
 
 `void`
-
-
-
-
-<hr />
-
-
-### Address::array_to_json  
-
-**Description**
-
-```php
-public array_to_json (array $array)
-```
-
-Convert an array to a JSON string. 
-
- 
-
-**Parameters**
-
-* `(array) $array`
-: Array.  
-
-**Return Values**
-
-`string`
 
 
 
@@ -337,6 +310,33 @@ Convert an object to an array.
 **Return Values**
 
 `void`
+
+
+<hr />
+
+
+### Address::to_json  
+
+**Description**
+
+```php
+public to_json (array|object $item)
+```
+
+Convert an array to a JSON string. 
+
+ 
+
+**Parameters**
+
+* `(array|object) $item`
+: The item to convert to a json string.  
+
+**Return Values**
+
+`string`
+
+
 
 
 <hr />

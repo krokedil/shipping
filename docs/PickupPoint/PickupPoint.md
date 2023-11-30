@@ -12,7 +12,6 @@ Contains the data for a pickup point.
 |------|-------------|
 |[__construct](#pickuppoint__construct)|PickupPoint constructor. Can be passed a array or a json string to automatically set the properties.|
 |[add_meta_data](#pickuppointadd_meta_data)|Add meta data to the pickup point.|
-|[array_to_json](#pickuppointarray_to_json)|Convert an array to a JSON string.|
 |[get_address](#pickuppointget_address)|Get the address.|
 |[get_coordinates](#pickuppointget_coordinates)|Get the coordinates.|
 |[get_description](#pickuppointget_description)|Get the description.|
@@ -31,8 +30,8 @@ Contains the data for a pickup point.
 |[set_name](#pickuppointset_name)|Set the name.|
 |[set_open_hour](#pickuppointset_open_hour)|Set a single opening hour for a specific day.|
 |[set_open_hours](#pickuppointset_open_hours)|Set the opening hours.|
-|[set_rate](#pickuppointset_rate)|Set the Rate.|
 |[to_array](#pickuppointto_array)|Convert an object to an array.|
+|[to_json](#pickuppointto_json)|Convert an array to a JSON string.|
 
 
 
@@ -86,33 +85,6 @@ Add meta data to the pickup point.
 **Return Values**
 
 `void`
-
-
-<hr />
-
-
-### PickupPoint::array_to_json  
-
-**Description**
-
-```php
-public array_to_json (array $array)
-```
-
-Convert an array to a JSON string. 
-
- 
-
-**Parameters**
-
-* `(array) $array`
-: Array.  
-
-**Return Values**
-
-`string`
-
-
 
 
 <hr />
@@ -593,31 +565,6 @@ Set the opening hours.
 <hr />
 
 
-### PickupPoint::set_rate  
-
-**Description**
-
-```php
-public set_rate (\WC_Shipping_Rate $rate)
-```
-
-Set the Rate. 
-
- 
-
-**Parameters**
-
-* `(\WC_Shipping_Rate) $rate`
-: Shipping rate from WooCommerce  
-
-**Return Values**
-
-`void`
-
-
-<hr />
-
-
 ### PickupPoint::to_array  
 
 **Description**
@@ -638,6 +585,33 @@ Convert an object to an array.
 **Return Values**
 
 `void`
+
+
+<hr />
+
+
+### PickupPoint::to_json  
+
+**Description**
+
+```php
+public to_json (array|object $item)
+```
+
+Convert an array to a JSON string. 
+
+ 
+
+**Parameters**
+
+* `(array|object) $item`
+: The item to convert to a json string.  
+
+**Return Values**
+
+`string`
+
+
 
 
 <hr />

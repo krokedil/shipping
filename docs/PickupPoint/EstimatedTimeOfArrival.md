@@ -13,13 +13,13 @@ Both in UTC and local time.
 | Name | Description |
 |------|-------------|
 |[__construct](#estimatedtimeofarrival__construct)|EstimatedTimeOfArrival constructor. Sets the UTC and local time properties for the pickup points estimated time of arrival.|
-|[array_to_json](#estimatedtimeofarrivalarray_to_json)|Convert an array to a JSON string.|
 |[get_local](#estimatedtimeofarrivalget_local)|Get local time.|
 |[get_utc](#estimatedtimeofarrivalget_utc)|Get UTC.|
 |[json_to_array](#estimatedtimeofarrivaljson_to_array)|Convert a JSON string to an array.|
 |[set_local](#estimatedtimeofarrivalset_local)|Set local time.|
 |[set_utc](#estimatedtimeofarrivalset_utc)|Set UTC.|
 |[to_array](#estimatedtimeofarrivalto_array)|Convert an object to an array.|
+|[to_json](#estimatedtimeofarrivalto_json)|Convert an array to a JSON string.|
 
 
 
@@ -46,33 +46,6 @@ EstimatedTimeOfArrival constructor. Sets the UTC and local time properties for t
 **Return Values**
 
 `void`
-
-
-
-
-<hr />
-
-
-### EstimatedTimeOfArrival::array_to_json  
-
-**Description**
-
-```php
-public array_to_json (array $array)
-```
-
-Convert an array to a JSON string. 
-
- 
-
-**Parameters**
-
-* `(array) $array`
-: Array.  
-
-**Return Values**
-
-`string`
 
 
 
@@ -229,6 +202,33 @@ Convert an object to an array.
 **Return Values**
 
 `void`
+
+
+<hr />
+
+
+### EstimatedTimeOfArrival::to_json  
+
+**Description**
+
+```php
+public to_json (array|object $item)
+```
+
+Convert an array to a JSON string. 
+
+ 
+
+**Parameters**
+
+* `(array|object) $item`
+: The item to convert to a json string.  
+
+**Return Values**
+
+`string`
+
+
 
 
 <hr />
