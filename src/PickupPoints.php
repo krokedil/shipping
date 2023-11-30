@@ -1,8 +1,8 @@
 <?php
 namespace Krokedil\Shipping;
 
-use Krokedil\Shipping\Ajax\AjaxRegistry;
-use Krokedil\Shipping\Assets\AssetsRegistry;
+use Krokedil\Shipping\AJAX;
+use Krokedil\Shipping\Assets;
 use Krokedil\Shipping\Frontend\PickupPointSelect;
 use Krokedil\Shipping\Interfaces\PickupPointServiceInterface;
 use Krokedil\Shipping\PickupPoint\PickupPoint;

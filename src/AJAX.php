@@ -33,9 +33,7 @@ class AJAX {
 	 * @return void
 	 */
 	public function add_ajax_events( $events = array() ) {
-		foreach ( $events as $event ) {
-			$action   = $event['action'];
-			$callback = $event['callback'];
+		foreach ( $events as $action => $callback ) {
 			add_action( 'wc_ajax_' . $action, $callback );
 		}
 	}
