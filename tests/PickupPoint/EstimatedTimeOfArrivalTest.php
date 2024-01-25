@@ -1,6 +1,6 @@
 <?php
 use Krokedil\Shipping\PickupPoint\EstimatedTimeOfArrival;
-use PHPUnit\Framework\TestCase;
+use WP_Mock\Tools\TestCase;
 
 class EstimatedTimeOfArrivalTest extends TestCase {
 	public function testCanSetAndGetUtc() {
