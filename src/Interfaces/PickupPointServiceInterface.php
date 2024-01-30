@@ -2,11 +2,19 @@
 namespace Krokedil\Shipping\Interfaces;
 
 use Krokedil\Shipping\PickupPoint\PickupPoint;
+use Krokedil\Shipping\Container\Container;
 
 /**
  * Interface PickupPointServiceInterface
  */
 interface PickupPointServiceInterface {
+	/**
+	 * Retrieve the container that holds all the registered services for the pickup point service.
+	 *
+	 * @return Container
+	 */
+	public function get_container();
+
 	/**
 	 * Save the pickup points for a specific rate.
 	 *
@@ -67,11 +75,11 @@ interface PickupPointServiceInterface {
 	public function save_selected_pickup_point_to_rate( $rate, $pickup_point );
 
 	/**
-	 * Get the selected pickup point for a specific rate.
+	 * Get the selected pickup point for a specific rate. If no pickup point is selected, returns false.
 	 *
 	 * @param \WC_Shipping_Rate $rate The WooCommerce shipping rate to get the selected pickup point from.
 	 *
-	 * @return PickupPoint
+	 * @return PickupPoint|bool
 	 */
 	public function get_selected_pickup_point_from_rate( $rate );
 }

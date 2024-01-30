@@ -1,6 +1,6 @@
 <?php
 use Krokedil\Shipping\PickupPoint\OpenHours;
-use PHPUnit\Framework\TestCase;
+use WP_Mock\Tools\TestCase;
 
 class OpenHoursTest extends TestCase {
     public function testGetters() {

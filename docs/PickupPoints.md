@@ -1,11 +1,12 @@
 # Krokedil\Shipping\PickupPoints  
 
-Class PickupPoints.
+Class PickupPoints
 
-Automatically gets pickup points from a WooCommerce shipping rate if the metadata for it exists.
-And has functionality to add and remove pickup points from the shipping rate.  
+Handles the pickup points service and any integraction with WooCommerce that is required for the package to work properly.
+Offloading this from the plugins that implement it to a service class.  
 
-
+## Implements:
+Krokedil\Shipping\Interfaces\PickupPointServiceInterface
 
 
 
@@ -13,18 +14,20 @@ And has functionality to add and remove pickup points from the shipping rate.
 
 | Name | Description |
 |------|-------------|
-|[__construct](#pickuppoints__construct)|PickupPoints constructor. Automatically gets pickup points from a WooCommerce shipping rate if the metadata for it exists.|
-|[add_pickup_point](#pickuppointsadd_pickup_point)|Add pickup point to WooCommerce shipping rate.|
-|[array_to_json](#pickuppointsarray_to_json)|Convert an array to a JSON string.|
-|[get_pickup_points](#pickuppointsget_pickup_points)|Get pickup points.|
-|[get_rate](#pickuppointsget_rate)|Get WooCommerce shipping rate.|
+|[__construct](#pickuppoints__construct)|Class constructor.|
+|[add_hidden_order_itemmeta](#pickuppointsadd_hidden_order_itemmeta)|Add the order line metadata for pickup points to the list of hidden meta data.|
+|[add_pickup_point_to_rate](#pickuppointsadd_pickup_point_to_rate)|{@inheritDoc}|
+|[get_container](#pickuppointsget_container)|{@inheritDoc}|
+|[get_pickup_point_from_rate_by_id](#pickuppointsget_pickup_point_from_rate_by_id)|{@inheritDoc}|
+|[get_pickup_points_from_rate](#pickuppointsget_pickup_points_from_rate)|{@inheritDoc}|
+|[get_selected_pickup_point_from_rate](#pickuppointsget_selected_pickup_point_from_rate)|{@inheritDoc}|
+|[init](#pickuppointsinit)|Initialize the class instance.|
 |[json_to_array](#pickuppointsjson_to_array)|Convert a JSON string to an array.|
-|[remove_pickup_point](#pickuppointsremove_pickup_point)|Remove pickup point from WooCommerce shipping rate.|
-|[save_pickup_points_to_rate](#pickuppointssave_pickup_points_to_rate)|Save pickup points to WooCommerce shipping rate as a json string.|
-|[set_pickup_points](#pickuppointsset_pickup_points)|Set pickup points.|
-|[set_pickup_points_from_rate](#pickuppointsset_pickup_points_from_rate)|Get pickup points from WooCommerce shipping rate.|
-|[set_rate](#pickuppointsset_rate)|Set WooCommerce shipping rate.|
+|[remove_pickup_point_from_rate](#pickuppointsremove_pickup_point_from_rate)|{@inheritDoc}|
+|[save_pickup_points_to_rate](#pickuppointssave_pickup_points_to_rate)|{@inheritDoc}|
+|[save_selected_pickup_point_to_rate](#pickuppointssave_selected_pickup_point_to_rate)|{@inheritDoc}|
 |[to_array](#pickuppointsto_array)|Convert an object to an array.|
+|[to_json](#pickuppointsto_json)|Convert an array to a JSON string.|
 
 
 
@@ -34,17 +37,17 @@ And has functionality to add and remove pickup points from the shipping rate.
 **Description**
 
 ```php
-public __construct (\WC_Shipping_Rate|null $rate)
+public __construct (bool $add_select_box)
 ```
 
-PickupPoints constructor. Automatically gets pickup points from a WooCommerce shipping rate if the metadata for it exists. 
+Class constructor. 
 
-Can be passed null to create an empty PickupPoints object, that can then be manually populated. 
+ 
 
 **Parameters**
 
-* `(\WC_Shipping_Rate|null) $rate`
-: WooCommerce shipping rate.  
+* `(bool) $add_select_box`
+: Whether or not to add the pickup point select box to the checkout page.  
 
 **Return Values**
 
@@ -56,22 +59,48 @@ Can be passed null to create an empty PickupPoints object, that can then be manu
 <hr />
 
 
-### PickupPoints::add_pickup_point  
+### PickupPoints::add_hidden_order_itemmeta  
 
 **Description**
 
 ```php
-public add_pickup_point (\PickupPoint $pickup_point)
+public add_hidden_order_itemmeta (array $hidden_order_itemmeta)
 ```
 
-Add pickup point to WooCommerce shipping rate. 
+Add the order line metadata for pickup points to the list of hidden meta data. 
 
  
 
 **Parameters**
 
-* `(\PickupPoint) $pickup_point`
-: Pickup point.  
+* `(array) $hidden_order_itemmeta`
+: The list of hidden meta data.  
+
+**Return Values**
+
+`array`
+
+
+
+
+<hr />
+
+
+### PickupPoints::add_pickup_point_to_rate  
+
+**Description**
+
+```php
+public add_pickup_point_to_rate (void)
+```
+
+{@inheritDoc} 
+
+ 
+
+**Parameters**
+
+`This function has no parameters.`
 
 **Return Values**
 
@@ -81,42 +110,15 @@ Add pickup point to WooCommerce shipping rate.
 <hr />
 
 
-### PickupPoints::array_to_json  
+### PickupPoints::get_container  
 
 **Description**
 
 ```php
-public array_to_json (array $array)
+public get_container (void)
 ```
 
-Convert an array to a JSON string. 
-
- 
-
-**Parameters**
-
-* `(array) $array`
-: Array.  
-
-**Return Values**
-
-`string`
-
-
-
-
-<hr />
-
-
-### PickupPoints::get_pickup_points  
-
-**Description**
-
-```php
-public get_pickup_points (void)
-```
-
-Get pickup points. 
+{@inheritDoc} 
 
  
 
@@ -126,23 +128,21 @@ Get pickup points.
 
 **Return Values**
 
-`\PickupPoint[]`
-
-
+`void`
 
 
 <hr />
 
 
-### PickupPoints::get_rate  
+### PickupPoints::get_pickup_point_from_rate_by_id  
 
 **Description**
 
 ```php
-public get_rate (void)
+public get_pickup_point_from_rate_by_id (void)
 ```
 
-Get WooCommerce shipping rate. 
+{@inheritDoc} 
 
  
 
@@ -152,7 +152,80 @@ Get WooCommerce shipping rate.
 
 **Return Values**
 
-`\WC_Shipping_Rate`
+`void`
+
+
+<hr />
+
+
+### PickupPoints::get_pickup_points_from_rate  
+
+**Description**
+
+```php
+public get_pickup_points_from_rate (void)
+```
+
+{@inheritDoc} 
+
+ 
+
+**Parameters**
+
+`This function has no parameters.`
+
+**Return Values**
+
+`void`
+
+
+<hr />
+
+
+### PickupPoints::get_selected_pickup_point_from_rate  
+
+**Description**
+
+```php
+public get_selected_pickup_point_from_rate (void)
+```
+
+{@inheritDoc} 
+
+ 
+
+**Parameters**
+
+`This function has no parameters.`
+
+**Return Values**
+
+`void`
+
+
+<hr />
+
+
+### PickupPoints::init  
+
+**Description**
+
+```php
+public init (bool $add_select_box)
+```
+
+Initialize the class instance. 
+
+ 
+
+**Parameters**
+
+* `(bool) $add_select_box`
+: Whether or not to add the pickup point select box to the checkout page.  
+
+**Return Values**
+
+`void`
 
 
 
@@ -187,22 +260,21 @@ Convert a JSON string to an array.
 <hr />
 
 
-### PickupPoints::remove_pickup_point  
+### PickupPoints::remove_pickup_point_from_rate  
 
 **Description**
 
 ```php
-public remove_pickup_point (\PickupPoint $pickup_point)
+public remove_pickup_point_from_rate (void)
 ```
 
-Remove pickup point from WooCommerce shipping rate. 
+{@inheritDoc} 
 
  
 
 **Parameters**
 
-* `(\PickupPoint) $pickup_point`
-: Pickup point.  
+`This function has no parameters.`
 
 **Return Values**
 
@@ -220,7 +292,7 @@ Remove pickup point from WooCommerce shipping rate.
 public save_pickup_points_to_rate (void)
 ```
 
-Save pickup points to WooCommerce shipping rate as a json string. 
+{@inheritDoc} 
 
  
 
@@ -236,71 +308,21 @@ Save pickup points to WooCommerce shipping rate as a json string.
 <hr />
 
 
-### PickupPoints::set_pickup_points  
+### PickupPoints::save_selected_pickup_point_to_rate  
 
 **Description**
 
 ```php
-public set_pickup_points (\PickupPoint[] $pickup_points)
+public save_selected_pickup_point_to_rate (void)
 ```
 
-Set pickup points. 
-
- 
-
-**Parameters**
-
-* `(\PickupPoint[]) $pickup_points`
-: Pickup points.  
-
-**Return Values**
-
-`void`
-
-
-<hr />
-
-
-### PickupPoints::set_pickup_points_from_rate  
-
-**Description**
-
-```php
-public set_pickup_points_from_rate (void)
-```
-
-Get pickup points from WooCommerce shipping rate. 
+{@inheritDoc} 
 
  
 
 **Parameters**
 
 `This function has no parameters.`
-
-**Return Values**
-
-`void`
-
-
-<hr />
-
-
-### PickupPoints::set_rate  
-
-**Description**
-
-```php
-public set_rate (\WC_Shipping_Rate $rate)
-```
-
-Set WooCommerce shipping rate. 
-
- 
-
-**Parameters**
-
-* `(\WC_Shipping_Rate) $rate`
-: WooCommerce shipping rate.  
 
 **Return Values**
 
@@ -330,6 +352,33 @@ Convert an object to an array.
 **Return Values**
 
 `void`
+
+
+<hr />
+
+
+### PickupPoints::to_json  
+
+**Description**
+
+```php
+public to_json (array|object $item)
+```
+
+Convert an array to a JSON string. 
+
+ 
+
+**Parameters**
+
+* `(array|object) $item`
+: The item to convert to a json string.  
+
+**Return Values**
+
+`string`
+
+
 
 
 <hr />

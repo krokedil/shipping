@@ -1,6 +1,6 @@
 <?php
 use Krokedil\Shipping\Traits\JsonFormat;
-use PHPUnit\Framework\TestCase;
+use WP_Mock\Tools\TestCase;
 
 class JsonFormatTest extends TestCase {
 	use JsonFormat;

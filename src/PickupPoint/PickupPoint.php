@@ -162,18 +162,7 @@ class PickupPoint {
     }
     #endregion
 
-    #region Setters
-    /**
-     * Set the Rate.
-     *
-     * @param \WC_Shipping_Rate $rate Shipping rate from WooCommerce
-     */
-	public function set_rate( $rate ) {
-		$this->rate = $rate;
-
-        return $this;
-	}
-
+	#region Setters
     /**
      * Set the ID.
      *

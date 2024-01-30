@@ -1,6 +1,6 @@
 <?php
 use Krokedil\Shipping\PickupPoint\Coordinates;
-use PHPUnit\Framework\TestCase;
+use WP_Mock\Tools\TestCase;
 
 class CoordinatesTest extends TestCase {
 	public function testCanSetAndGetLatitude() {

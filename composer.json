@@ -2,15 +2,18 @@
     "name": "krokedil/shipping",
     "description": "Shipping method extensions from Krokedil",
     "type": "library",
+    "version": "2.1.0",
     "require": {
-        "php": "~7.4 || ~8.0"
+        "php": "~7.4 || ~8.0",
+        "psr/container": "2.0.x-dev"
     },
     "require-dev": {
         "wp-coding-standards/wpcs": "dev-develop",
         "php-stubs/wordpress-stubs": "*",
         "php-stubs/woocommerce-stubs": "dev-master",
-        "phpunit/phpunit": "^7.5",
-        "clean/phpdoc-md": "dev-master"
+        "phpunit/phpunit": "^9.6",
+        "clean/phpdoc-md": "dev-master",
+        "10up/wp_mock": "dev-trunk"
     },
     "autoload": {
         "psr-4": {
@@ -20,7 +23,9 @@
     "archive": {
         "exclude": [
             "tests/*",
+            "docs/*",
             "phpunit.xml",
+            "phpcs.xml",
             ".phpdoc-md",
             "composer-lock.json",
             ".gitignore",
@@ -29,11 +34,15 @@
     },
     "minimum-stability": "dev",
     "config": {
+        "platform": {
+            "php": "7.4"
+        },
         "allow-plugins": {
             "dealerdirect/phpcodesniffer-composer-installer": true
         }
     },
     "scripts": {
-        "phpunit": "phpunit --bootstrap vendor/autoload.php tests/"
+        "phpunit": "./vendor/bin/phpunit --bootstrap tests/bootstrap.php",
+        "createdocs": "./vendor/bin/phpdoc-md"
     }
 }

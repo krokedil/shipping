@@ -11,7 +11,6 @@ Contains the open hours for the pickup point location for a specific day.
 | Name | Description |
 |------|-------------|
 |[__construct](#openhours__construct)|OpenHours constructor. Sets the day, open and close properties.|
-|[array_to_json](#openhoursarray_to_json)|Convert an array to a JSON string.|
 |[get_close](#openhoursget_close)|Get close.|
 |[get_day](#openhoursget_day)|Get day.|
 |[get_open](#openhoursget_open)|Get open.|
@@ -20,6 +19,7 @@ Contains the open hours for the pickup point location for a specific day.
 |[set_day](#openhoursset_day)|Set day.|
 |[set_open](#openhoursset_open)|Set open.|
 |[to_array](#openhoursto_array)|Convert an object to an array.|
+|[to_json](#openhoursto_json)|Convert an array to a JSON string.|
 
 
 
@@ -48,33 +48,6 @@ OpenHours constructor. Sets the day, open and close properties.
 **Return Values**
 
 `void`
-
-
-
-
-<hr />
-
-
-### OpenHours::array_to_json  
-
-**Description**
-
-```php
-public array_to_json (array $array)
-```
-
-Convert an array to a JSON string. 
-
- 
-
-**Parameters**
-
-* `(array) $array`
-: Array.  
-
-**Return Values**
-
-`string`
 
 
 
@@ -282,6 +255,33 @@ Convert an object to an array.
 **Return Values**
 
 `void`
+
+
+<hr />
+
+
+### OpenHours::to_json  
+
+**Description**
+
+```php
+public to_json (array|object $item)
+```
+
+Convert an array to a JSON string. 
+
+ 
+
+**Parameters**
+
+* `(array|object) $item`
+: The item to convert to a json string.  
+
+**Return Values**
+
+`string`
+
+
 
 
 <hr />

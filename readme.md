@@ -90,11 +90,18 @@ foreach( $pickup_points as $pickup_point ) {
 }
 echo '</select>';
 ```
+Or for a select field, you can pass a true value to the pickup point service to automatically have it created for you for any shipping methods that have pickup points.
+```php
+<?php
+new Krokedil\Shipping\PickupPoints( true );
+```
+
+This will also handle the saving of the selected pickup point to the rate automatically when a change happens in the select field.
 
 ### Adding selected pickup point to the rate.
 When the customer has selected a pickup point you can add that to the rate by using the `save_selected_pickup_point_to_rate()` method on the service class and pass it the rate and the pickup point that the customer has selected.
 
-This will be automatically saved to the session data for the rate and can then be used by the shipping method to retrieve the selected pickup point. As long as this is done during the time the shipping rates are calculated, else it wont be saved to the WooCommerce session data properly, and you will have to manually handle those cases.
+This will be automatically saved to the session data for the rate and can then be used by the shipping method to retrieve the selected pickup point. This can be done at any time, since if it happens outside of the normal shipping calculations, we will trigger a recalculation of the shipping rates to ensure that the data is saved properly.
 ```php
 // Get the shipping rate that you wish to use, either through the cart, or using the hook 'woocommerce_package_rates' or similar, then create an instance of the Krokedil\Shipping\PickupPoints class using the rate.
 $pickup_points_service = new Krokedil\Shipping\PickupPoints();
@@ -108,9 +115,8 @@ $pickup_point = $pickup_points_service->get_pickup_point_from_rate_by_id( $rate,
 $pickup_points_service->save_selected_pickup_point_to_rate( $rate, $pickup_point );
 ```
 
-
 #### Add custom data as metadata to pickup points.
-You can add custom data to the pickup points by using the `add_meta_data()` method. This can be used to add data that you need to use for your pickup point that might be unique to your needs, and dont have any other field for it.
+You can add custom data to the pickup points by using the `add_meta_data()` method. This can be used to add data that you need to use for your pickup point that might be unique to your needs, and don't have any other field for it.
 ```php
 $pickup_point->add_meta_data( 'meta_key', 'My custom data' );
 ```
