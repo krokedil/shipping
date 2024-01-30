@@ -37,7 +37,7 @@ Krokedil\Shipping\Interfaces\PickupPointServiceInterface
 **Description**
 
 ```php
-public __construct (string $plugin_file_path, bool $add_select_box)
+public __construct (bool $add_select_box)
 ```
 
 Class constructor. 
@@ -46,8 +46,6 @@ Class constructor.
 
 **Parameters**
 
-* `(string) $plugin_file_path`
-: The base path of the package.  
 * `(bool) $add_select_box`
 : Whether or not to add the pickup point select box to the checkout page.  
 
@@ -213,7 +211,7 @@ public get_selected_pickup_point_from_rate (void)
 **Description**
 
 ```php
-public init (string $plugin_file_path, bool $add_select_box)
+public init (bool $add_select_box)
 ```
 
 Initialize the class instance. 
@@ -222,8 +220,6 @@ Initialize the class instance.
 
 **Parameters**
 
-* `(string) $plugin_file_path`
-: The base path of the package.  
 * `(bool) $add_select_box`
 : Whether or not to add the pickup point select box to the checkout page.  
 
