@@ -43,11 +43,16 @@ class AJAX {
 	 *
 	 * @param string   $action The action to add.
 	 * @param callable $callback The callback to add.
+	 * @param bool     $nopriv Whether the callback should be allowed for non-logged in users.
 	 *
 	 * @return self
 	 */
-	public function add_ajax_event( $action, $callback ) {
-		add_action( 'wc_ajax_' . $action, $callback );
+	public function add_ajax_event( $action, $callback, $nopriv = true ) {
+		if ( $nopriv ) {
+			add_action( 'wc_ajax_' . $action, $callback );
+		} else {
+			add_action( 'wp_ajax_' . $action, $callback );
+		}
 		return $this;
 	}
 }

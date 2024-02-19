@@ -18,7 +18,7 @@ interface PickupPointServiceInterface {
 	/**
 	 * Save the pickup points for a specific rate.
 	 *
-	 * @param \WC_Shipping_Rate $rate The WooCommerce shipping rate to save the pickup points to.
+	 * @param \WC_Shipping_Rate  $rate The WooCommerce shipping rate to save the pickup points to.
 	 * @param array<PickupPoint> $pickup_points The pickup points to save.
 	 *
 	 * @return void
@@ -38,7 +38,7 @@ interface PickupPointServiceInterface {
 	 * Get a pickup point from a rate by id.
 	 *
 	 * @param \WC_Shipping_Rate $rate The WooCommerce shipping rate to get the pickup point from.
-	 * @param string $id The id of the pickup point to get.
+	 * @param string            $id The id of the pickup point to get.
 	 *
 	 * @return PickupPoint|null
 	 */
@@ -48,7 +48,7 @@ interface PickupPointServiceInterface {
 	 * Add a pickup point to the rate.
 	 *
 	 * @param \WC_Shipping_Rate $rate The WooCommerce shipping rate to add the pickup point to.
-	 * @param PickupPoint $pickup_point The pickup point to add.
+	 * @param PickupPoint       $pickup_point The pickup point to add.
 	 *
 	 * @return void
 	 */
@@ -58,7 +58,7 @@ interface PickupPointServiceInterface {
 	 * Remove a pickup point from the rate.
 	 *
 	 * @param \WC_Shipping_Rate $rate The WooCommerce shipping rate to remove the pickup point from.
-	 * @param PickupPoint $pickup_point The pickup point to remove.
+	 * @param PickupPoint       $pickup_point The pickup point to remove.
 	 *
 	 * @return void
 	 */
@@ -68,7 +68,7 @@ interface PickupPointServiceInterface {
 	 * Save the selected pickup point for a specific rate.
 	 *
 	 * @param \WC_Shipping_Rate $rate The WooCommerce shipping rate to save the selected pickup point to.
-	 * @param PickupPoint $pickup_point The pickup point to save.
+	 * @param PickupPoint       $pickup_point The pickup point to save.
 	 *
 	 * @return void
 	 */
@@ -82,4 +82,13 @@ interface PickupPointServiceInterface {
 	 * @return PickupPoint|bool
 	 */
 	public function get_selected_pickup_point_from_rate( $rate );
+
+	/**
+	 * Return any pickup point shipping methods from a WooCommerce order.
+	 *
+	 * @param \WC_Order $order The WooCommerce order.
+	 *
+	 * @return bool|\WC_Order_Item_Shipping[]
+	 */
+	public function get_shipping_lines_from_order( $order );
 }
