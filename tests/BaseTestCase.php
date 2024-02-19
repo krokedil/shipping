@@ -1,6 +1,4 @@
 <?php
-use Krokedil\Shipping\Ajax\AjaxRegistry;
-use Krokedil\Shipping\Assets\AssetsRegistry;
 use Krokedil\Shipping\Container;
 use Krokedil\Shipping\Interfaces\PickupPointServiceInterface;
 use WP_Mock\Tools\TestCase;

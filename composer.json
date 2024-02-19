@@ -2,7 +2,7 @@
     "name": "krokedil/shipping",
     "description": "Shipping method extensions from Krokedil",
     "type": "library",
-    "version": "2.0.0",
+    "version": "2.1.0",
     "require": {
         "php": "~7.4 || ~8.0",
         "psr/container": "2.0.x-dev"
@@ -23,7 +23,9 @@
     "archive": {
         "exclude": [
             "tests/*",
+            "docs/*",
             "phpunit.xml",
+            "phpcs.xml",
             ".phpdoc-md",
             "composer-lock.json",
             ".gitignore",
@@ -32,6 +34,9 @@
     },
     "minimum-stability": "dev",
     "config": {
+        "platform": {
+            "php": "7.4"
+        },
         "allow-plugins": {
             "dealerdirect/phpcodesniffer-composer-installer": true
         }
