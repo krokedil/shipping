@@ -57,13 +57,20 @@ class EditOrderPage {
 	/**
 	 * Add the shipping metabox to the edit order page.
 	 *
-	 * @param string    $post_type The post type to add the metabox to.
-	 * @param \WC_Order $order   The WooCommerce order.
+	 * @param string   $post_type The post type to add the metabox to.
+	 * @param \WP_Post $post      The WordPress post.
 	 *
 	 * @return void
 	 */
-	public function add_shipping_metabox( $post_type, $order ) {
-		if ( ! $order instanceof \WC_Order || ! in_array( $post_type, array( 'shop_order', 'woocommerce_page_wc-orders' ), true ) ) {
+	public function add_shipping_metabox( $post_type, $post ) {
+
+		if ( ! $post instanceof \WP_Post || ! in_array( $post_type, array( 'shop_order', 'woocommerce_page_wc-orders' ), true ) ) {
+			return;
+		}
+
+		$order = wc_get_order( $post->ID );
+
+		if ( ! $order instanceof \WC_Order ) {
 			return;
 		}
 
@@ -88,17 +95,24 @@ class EditOrderPage {
 	/**
 	 * Render the shipping metabox.
 	 *
-	 * @param \WC_Order $order The WooCommerce order.
-	 * @param array     $args  The metabox arguments.
+	 * @param \WP_Post $post  The WordPress post.
+	 * @param array    $args  The metabox arguments.
 	 *
 	 * @return void
 	 */
-	public function render_shipping_metabox( $order, $args ) {
-		$shipping_lines = $args['args']['shipping_lines'] ?? array();
+	public function render_shipping_metabox( $post, $args ) {
+
+		if ( ! $post instanceof \WP_Post ) {
+			return;
+		}
+
+		$order = wc_get_order( $post->ID );
 
 		if ( ! $order instanceof \WC_Order ) {
 			return;
 		}
+
+		$shipping_lines = $args['args']['shipping_lines'] ?? array();
 
 		// Loop each method and render the pickup point information.
 		$i     = 0;
@@ -239,8 +253,11 @@ class EditOrderPage {
 			wp_send_json_error( array( 'message' => __( 'Could not save shipping line', 'krokedil-shipping' ) ) );
 		}
 
+		// Get the order again since it now have been updated with the new pickup point.
+		$order = wc_get_order( $order_id );
+
 		ob_start();
-		$this->print_selected_pickup_point_info( $selected_pickup_point, $shipping_line );
+		$this->print_selected_pickup_point_info( $order, $shipping_line );
 		$shipping_info = ob_get_clean();
 
 		wp_send_json_success(
