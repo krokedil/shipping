@@ -71,7 +71,11 @@ class Assets {
 	 * @return void
 	 */
 	public function enqueue_admin_assets( $hook ) {
-		if ( ! in_array( $hook, array( 'shop_order', 'woocommerce_page_wc-orders' ), true ) ) {
+
+		$screen    = get_current_screen();
+		$screen_id = $screen ? $screen->id : '';
+
+		if ( ! in_array( $hook, array( 'shop_order', 'woocommerce_page_wc-orders' ), true ) && ! in_array( $screen_id, array( 'shop_order' ), true ) ) {
 			return;
 		}
 
