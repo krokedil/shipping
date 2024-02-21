@@ -1,7 +1,6 @@
 <?php
 namespace Krokedil\Shipping;
 
-use Krokedil\Shipping\Admin\EditOrderPage;
 use Krokedil\Shipping\AJAX;
 use Krokedil\Shipping\Assets;
 use Krokedil\Shipping\Frontend\PickupPointSelect;
@@ -54,7 +53,6 @@ class PickupPoints implements PickupPointServiceInterface {
 		$this->container->add( 'session-handler', new SessionHandler() );
 		$this->container->add( 'ajax', new AJAX() );
 		$this->container->add( 'assets', new Assets() );
-		$this->container->add( 'edit-order-page', new EditOrderPage( $this ) );
 
 		// If the select box should be added to the checkout page, add the service to the container.
 		if ( $add_select_box ) {
