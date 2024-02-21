@@ -26,6 +26,13 @@ class EditOrderPage {
 	private $pickup_point_service;
 
 	/**
+	 * Can change pickup point.
+	 *
+	 * @var bool
+	 */
+	private $can_change_pickup_point;
+
+	/**
 	 * Class constructor.
 	 *
 	 * @param PickupPointServiceInterface $pickup_point_service The pickup point service.
@@ -33,8 +40,9 @@ class EditOrderPage {
 	 * @return void
 	 */
 	public function __construct( $pickup_point_service ) {
-		$this->pickup_point_service = $pickup_point_service;
-		$this->metabox_title        = __( 'Shipping Information', 'krokedil-shipping' );
+		$this->pickup_point_service    = $pickup_point_service;
+		$this->metabox_title           = __( 'Shipping Information', 'krokedil-shipping' );
+		$this->can_change_pickup_point = true;
 
 		add_action( 'add_meta_boxes', array( $this, 'add_shipping_metabox' ), 10, 2 );
 
@@ -57,6 +65,17 @@ class EditOrderPage {
 		return $this;
 	}
 
+	/**
+	 * Set if the pickup point can be changed.
+	 *
+	 * @param bool $can_change_pickup_point If the pickup point can be changed.
+	 *
+	 * @return self
+	 */
+	public function set_can_change_pickup_point( $can_change_pickup_point ) {
+		$this->can_change_pickup_point = $can_change_pickup_point;
+		return $this;
+	}
 
 	/**
 	 * Init the class.
@@ -108,7 +127,7 @@ class EditOrderPage {
 			array( $this, 'render_shipping_metabox' ),
 			$post_type,
 			'side',
-			'high',
+			'core',
 			array( 'shipping_lines' => $shipping_lines )
 		);
 	}
@@ -172,7 +191,9 @@ class EditOrderPage {
 			<h4><?php echo esc_html( $shipping_line->get_method_title() ); ?></h4>
 			<strong>
 				<?php esc_html_e( 'Selected pickup point', 'krokedil-shipping' ); ?>
-				<a href="#" class="ks-metabox__edit-pp" data-shipping-line-id="<?php echo esc_html( $shipping_line->get_id() ); ?>"><?php esc_html_e( 'Edit', 'woocommerce' ); //phpcs:ignore ?></a>
+				<?php if ( $this->can_change_pickup_point ) : ?>
+					<a href="#" class="ks-metabox__edit-pp" data-shipping-line-id="<?php echo esc_html( $shipping_line->get_id() ); ?>"><?php esc_html_e( 'Edit', 'woocommerce' ); //phpcs:ignore ?></a>
+				<?php endif; ?>
 			</strong>
 			<br />
 			<?php echo esc_html( $selected->get_name() ); ?>
@@ -183,7 +204,7 @@ class EditOrderPage {
 	}
 
 	/**
-	 * Print the selected pickup point selection.
+	 * Print the Select pickup point dropdown.
 	 *
 	 * @param \WC_Order               $order      The WooCommerce order.
 	 * @param \WC_Order_Item_Shipping $shipping_line The shipping line.
@@ -194,7 +215,7 @@ class EditOrderPage {
 		$selected      = PickupPoint::get_selected_from_order( $order );
 		$pickup_points = PickupPoint::get_from_order( $order );
 
-		if ( ! $selected instanceof PickupPoint || ! $pickup_points ) {
+		if ( ! $selected instanceof PickupPoint || ! $pickup_points || ! $this->can_change_pickup_point ) {
 			return;
 		}
 
