@@ -12,6 +12,13 @@ defined( 'ABSPATH' ) || exit;
  */
 class EditOrderPage {
 	/**
+	 * The metabox title.
+	 *
+	 * @var string
+	 */
+	private $metabox_title;
+
+	/**
 	 * The pickup point service.
 	 *
 	 * @var PickupPointServiceInterface
@@ -27,6 +34,7 @@ class EditOrderPage {
 	 */
 	public function __construct( $pickup_point_service ) {
 		$this->pickup_point_service = $pickup_point_service;
+		$this->metabox_title        = __( 'Shipping Information', 'krokedil-shipping' );
 
 		add_action( 'add_meta_boxes', array( $this, 'add_shipping_metabox' ), 10, 2 );
 
@@ -36,6 +44,19 @@ class EditOrderPage {
 
 		$this->init();
 	}
+
+	/**
+	 * Set the title for the metabox on the edit order page.
+	 *
+	 * @param string $title The metabox title.
+	 *
+	 * @return self
+	 */
+	public function set_metabox_title( $title ) {
+		$this->metabox_title = $title ?? $this->metabox_title;
+		return $this;
+	}
+
 
 	/**
 	 * Init the class.
@@ -83,7 +104,7 @@ class EditOrderPage {
 
 		add_meta_box(
 			'krokedil_shipping',
-			__( 'Shipping Information', 'krokedil-shipping' ),
+			$this->metabox_title,
 			array( $this, 'render_shipping_metabox' ),
 			$post_type,
 			'side',
