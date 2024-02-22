@@ -97,18 +97,14 @@ class EditOrderPage {
 	/**
 	 * Add the shipping metabox to the edit order page.
 	 *
-	 * @param string   $post_type The post type to add the metabox to.
-	 * @param \WP_Post $post      The WordPress post.
+	 * @param string            $post_type The post type to add the metabox to.
+	 * @param \WP_Post|WC_Order $post_or_order_object      The WordPress post or WooCommerce order, depending on HPOS is active or not.
 	 *
 	 * @return void
 	 */
-	public function add_shipping_metabox( $post_type, $post ) {
+	public function add_shipping_metabox( $post_type, $post_or_order_object ) {
 
-		if ( ! $post instanceof \WP_Post || ! in_array( $post_type, array( 'shop_order', 'woocommerce_page_wc-orders' ), true ) ) {
-			return;
-		}
-
-		$order = wc_get_order( $post->ID );
+		$order = ( $post_or_order_object instanceof \WP_Post ) ? wc_get_order( $post_or_order_object->ID ) : $post_or_order_object;
 
 		if ( ! $order instanceof \WC_Order ) {
 			return;
@@ -135,18 +131,14 @@ class EditOrderPage {
 	/**
 	 * Render the shipping metabox.
 	 *
-	 * @param \WP_Post $post  The WordPress post.
-	 * @param array    $args  The metabox arguments.
+	 * @param \WP_Post|WC_Order $post_or_order_object      The WordPress post or WooCommerce order, depending on HPOS is active or not.
+	 * @param array             $args  The metabox arguments.
 	 *
 	 * @return void
 	 */
-	public function render_shipping_metabox( $post, $args ) {
+	public function render_shipping_metabox( $post_or_order_object, $args ) {
 
-		if ( ! $post instanceof \WP_Post ) {
-			return;
-		}
-
-		$order = wc_get_order( $post->ID );
+		$order = ( $post_or_order_object instanceof \WP_Post ) ? wc_get_order( $post_or_order_object->ID ) : $post_or_order_object;
 
 		if ( ! $order instanceof \WC_Order ) {
 			return;
