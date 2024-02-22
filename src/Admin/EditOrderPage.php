@@ -177,7 +177,7 @@ class EditOrderPage {
 		if ( ! $selected instanceof PickupPoint ) {
 			return;
 		}
-
+		do_action( 'ks_before_print_selected_pickup_point_info', $order, $shipping_line );
 		?>
 		<div class="ks-metabox__information" data-shipping-line-id="<?php echo esc_html( $shipping_line->get_id() ); ?>">
 			<h4><?php echo esc_html( $shipping_line->get_method_title() ); ?></h4>
