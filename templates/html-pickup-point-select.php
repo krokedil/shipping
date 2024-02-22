@@ -11,7 +11,7 @@ if ( empty( $pickup_points ) ) {
 }
 
 ?>
-<div class="krokedil_shipping_pickup_point form-row">
+<div class="krokedil_shipping_pickup_point">
 	<select id="krokedil_shipping_pickup_point" name="krokedil_shipping_pickup_point"
 		class="krokedil_shipping_pickup_point__select" data-rate-id="<?php esc_attr_e( $rate_id ); ?>">
 		<?php foreach ( $pickup_points as $pickup_point ) : ?>
