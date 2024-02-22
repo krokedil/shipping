@@ -64,3 +64,7 @@ div.ks-metabox__information + div.ks-metabox__information {
     margin-top: 10px;
     padding-top: 10px;
 }
+
+select[name=ks-metabox__selected-pp] {
+    width: 178px;
+}
