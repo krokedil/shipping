@@ -57,3 +57,10 @@ div.ks-metabox p {
     margin-top: 0;
     margin-bottom:0;
 }
+
+/* Add space between any metabox__information and the information if there are more than one */
+div.ks-metabox__information + div.ks-metabox__information {
+    border-top: 1px solid #e5e5e5;
+    margin-top: 10px;
+    padding-top: 10px;
+}
