@@ -14,6 +14,7 @@ jQuery(function ($) {
      */
     init: function () {
       $(document.body).on("click", ".ks-metabox__edit-pp", (event) => {
+        event.preventDefault();
         this.toggleEditShippingInfo(event);
       });
 
