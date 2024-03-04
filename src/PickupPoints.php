@@ -67,6 +67,11 @@ class PickupPoints implements PickupPointServiceInterface {
 	 * @return array
 	 */
 	public function add_hidden_order_itemmeta( $hidden_order_itemmeta ) {
+		// If the query parameter "debug" is set, return early.
+		if ( isset( $_GET['debug'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			return $hidden_order_itemmeta;
+		}
+
 		$hidden_order_itemmeta[] = 'krokedil_pickup_points';
 		$hidden_order_itemmeta[] = 'krokedil_selected_pickup_point';
 		$hidden_order_itemmeta[] = 'krokedil_selected_pickup_point_id';
