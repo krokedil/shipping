@@ -20,7 +20,7 @@ class Assets {
 	 * Assets constructor.
 	 */
 	public function __construct() {
-		$this->assets_path = plugin_dir_url( __FILE__ ) . '../assets/';
+		$this->assets_path = plugin_dir_url( __FILE__ ) . '/assets/';
 
 		add_action( 'init', array( $this, 'register_assets' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_assets' ) );

@@ -77,7 +77,7 @@ class PickupPointSelect {
 		$selected_pickup_point = $this->pickup_point_service->get_selected_pickup_point_from_rate( $shipping_rate );
 
 		// Get the pickup point select box template.
-		$template_path = apply_filters( 'krokedil_shipping_pickup_point_select_template_path', __DIR__ . '/../../templates/html-pickup-point-select.php' );
+		$template_path = apply_filters( 'krokedil_shipping_pickup_point_select_template_path', __DIR__ . '/../templates/html-pickup-point-select.php' );
 
 		include $template_path;
 	}
