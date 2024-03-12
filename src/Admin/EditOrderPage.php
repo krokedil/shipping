@@ -114,7 +114,7 @@ class EditOrderPage {
 		$shipping_lines = $this->pickup_point_service->get_shipping_lines_from_order( $order );
 
 		// Possibility for plugins to display metabox even if shipping has no pickup points.
-		$display_metabox = apply_filters( 'krokedil_shipping_display_metabox', true, $order );
+		$display_metabox = apply_filters( 'krokedil_shipping_display_metabox', false, $order );
 
 		if ( ! $shipping_lines && ! $display_metabox ) {
 			return;
