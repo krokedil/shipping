@@ -289,30 +289,30 @@ class PickupPoint {
 	 * @param array $pickup_point Pickup point data as a array.
 	 */
 	public function set_from_array( $pickup_point = array() ) {
-		$this->set_id( $pickup_point['id'] ?? '' );
-		$this->set_name( $pickup_point['name'] ?? '' );
-		$this->set_description( $pickup_point['description'] ?? '' );
+		$this->set_id( html_entity_decode( $pickup_point['id'] ?? '' ) );
+		$this->set_name( html_entity_decode( $pickup_point['name'] ?? '' ) );
+		$this->set_description( html_entity_decode( $pickup_point['description'] ?? '' ) );
 
 		$address = $pickup_point['address'] ?? array();
 		$this->set_address(
-			$address['street'] ?? '',
-			$address['city'] ?? '',
-			$address['postcode'] ?? '',
-			$address['country'] ?? ''
+			html_entity_decode( $address['street'] ?? '' ),
+			html_entity_decode( $address['city'] ?? '' ),
+			html_entity_decode( $address['postcode'] ?? '' ),
+			html_entity_decode( $address['country'] ?? '' )
 		);
 
 		$coordinates = $pickup_point['coordinates'] ?? array();
 		$this->set_coordinates(
-			$coordinates['latitude'] ?? '',
-			$coordinates['longitude'] ?? ''
+			html_entity_decode( $coordinates['latitude'] ?? '' ),
+			html_entity_decode( $coordinates['longitude'] ?? '' )
 		);
 
 		$this->set_open_hours( $pickup_point['open_hours'] ?? array() );
 
 		$eta = $pickup_point['eta'] ?? array();
 		$this->set_eta(
-			$eta['utc'] ?? '',
-			$eta['local'] ?? ''
+			html_entity_decode( $eta['utc'] ?? '' ),
+			html_entity_decode( $eta['local'] ?? '' )
 		);
 
 		$meta_data = $pickup_point['meta_data'] ?? array();
