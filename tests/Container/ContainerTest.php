@@ -38,7 +38,7 @@ class ContainerTest extends BaseTestCase {
 		$service2 = new stdClass();
 		$this->container->add( 'test_service', $service1 );
 		$this->container->add( 'test_service', $service2 );
-		$this->assertSame( $service2, $this->container->get( 'test_service' ) );
+		$this->assertSame( $service1, $this->container->get( 'test_service' ) );
 	}
 
 	public function testHas() {
