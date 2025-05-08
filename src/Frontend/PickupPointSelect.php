@@ -1,12 +1,8 @@
 <?php
 namespace Krokedil\Shipping\Frontend;
 
+use Krokedil\Shipping\AJAX;
 use Krokedil\Shipping\SessionHandler;
-use Krokedil\Shipping\Ajax\AjaxRegistry;
-use Krokedil\Shipping\Ajax\AjaxRequest;
-use Krokedil\Shipping\Assets\AssetsRegistry;
-use Krokedil\Shipping\Assets\Script;
-use Krokedil\Shipping\Assets\Style;
 use Krokedil\Shipping\Interfaces\PickupPointServiceInterface;
 
 /**
@@ -37,7 +33,7 @@ class PickupPointSelect {
 
 		$this->register_ajax_requests();
 
-		add_action( 'woocommerce_after_shipping_rate', array( $this, 'render' ) );
+		add_action( 'woocommerce_after_shipping_rate', array( $this, 'render' ), 10 );
 	}
 
 	/**
@@ -61,7 +57,6 @@ class PickupPointSelect {
 	 */
 	public function render( $shipping_rate ) {
 		// Only if this is the selected shipping rate.
-		WC()->session->get( 'chosen_shipping_methods' );
 		if ( ! in_array( $shipping_rate->get_id(), WC()->session->get( 'chosen_shipping_methods' ), true ) ) {
 			return;
 		}
