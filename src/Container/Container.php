@@ -45,6 +45,11 @@ class Container implements ContainerInterface {
 	 * @return void
 	 */
 	public function add( $id, $service ) {
+		// If the service is already registered, return.
+		if( $this->has( $id ) ) {
+			return;
+		}
+
 		$this->services[ $id ] = $service;
 	}
 
