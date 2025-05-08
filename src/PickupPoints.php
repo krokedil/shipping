@@ -8,6 +8,7 @@ use Krokedil\Shipping\Interfaces\PickupPointServiceInterface;
 use Krokedil\Shipping\PickupPoint\PickupPoint;
 use Krokedil\Shipping\Traits\ArrayFormat;
 use Krokedil\Shipping\Traits\JsonFormat;
+use Krokedil\Shipping\Traits\RateData;
 use Krokedil\Shipping\Container\Container;
 
 /**
@@ -19,6 +20,7 @@ use Krokedil\Shipping\Container\Container;
 class PickupPoints implements PickupPointServiceInterface {
 	use JsonFormat;
 	use ArrayFormat;
+	use RateData;
 
 	/**
 	 * The container instance.
