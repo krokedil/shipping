@@ -123,7 +123,7 @@ class EditOrderPage {
 			return;
 		}
 
-		\add_meta_box(
+		add_meta_box(
 			'krokedil_shipping',
 			$this->metabox_title,
 			array( $this, 'render_shipping_metabox' ),
