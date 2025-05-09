@@ -9,6 +9,9 @@ defined( 'ABSPATH' ) || exit;
 
 /**
  * Class to handle the edit order page in WooCommerce.
+ *
+ * @codeCoverageIgnore
+ * No tests made yet.
  */
 class EditOrderPage {
 	/**
@@ -44,12 +47,6 @@ class EditOrderPage {
 		$this->metabox_title           = __( 'Shipping Information', 'krokedil-shipping' );
 		$this->can_change_pickup_point = true;
 
-		add_action( 'add_meta_boxes', array( $this, 'add_shipping_metabox' ), 10, 2 );
-
-		// Add actions for the metabox outputs.
-		add_action( 'ks_metabox_content', array( $this, 'print_selected_pickup_point_info' ), 10, 2 );
-		add_action( 'ks_metabox_content', array( $this, 'print_selected_pickup_point_selection' ), 20, 2 );
-
 		$this->init();
 	}
 
@@ -83,6 +80,12 @@ class EditOrderPage {
 	 * @return void
 	 */
 	public function init() {
+		add_action( 'add_meta_boxes', array( $this, 'add_shipping_metabox' ), 10, 2 );
+
+		// Add actions for the metabox outputs.
+		add_action( 'ks_metabox_content', array( $this, 'print_selected_pickup_point_info' ), 10, 2 );
+		add_action( 'ks_metabox_content', array( $this, 'print_selected_pickup_point_selection' ), 20, 2 );
+
 		/**
 		 * The Ajax service from the pickup point service container.
 		 *
@@ -98,7 +101,7 @@ class EditOrderPage {
 	 * Add the shipping metabox to the edit order page.
 	 *
 	 * @param string            $post_type The post type to add the metabox to.
-	 * @param \WP_Post|WC_Order $post_or_order_object      The WordPress post or WooCommerce order, depending on HPOS is active or not.
+	 * @param \WP_Post|\WC_Order $post_or_order_object      The WordPress post or WooCommerce order, depending on HPOS is active or not.
 	 *
 	 * @return void
 	 */
@@ -120,7 +123,7 @@ class EditOrderPage {
 			return;
 		}
 
-		add_meta_box(
+		\add_meta_box(
 			'krokedil_shipping',
 			$this->metabox_title,
 			array( $this, 'render_shipping_metabox' ),
@@ -134,7 +137,7 @@ class EditOrderPage {
 	/**
 	 * Render the shipping metabox.
 	 *
-	 * @param \WP_Post|WC_Order $post_or_order_object      The WordPress post or WooCommerce order, depending on HPOS is active or not.
+	 * @param \WP_Post|\WC_Order $post_or_order_object      The WordPress post or WooCommerce order, depending on HPOS is active or not.
 	 * @param array             $args  The metabox arguments.
 	 *
 	 * @return void
