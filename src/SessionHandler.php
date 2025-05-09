@@ -26,7 +26,8 @@ class SessionHandler {
 	/**
 	 * Get the shipping rate from the WooCommerce session from the rate id.
 	 *
-	 * @param string $rate_id
+	 * @param string $rate_id The shipping rate id to get.
+	 *
 	 * @return \WC_Shipping_Rate|null
 	 */
 	public function get_shipping_rate( $rate_id ) {
@@ -73,7 +74,7 @@ class SessionHandler {
 	/**
 	 * Sets the data to be updated to the shipping rate when its calculated.
 	 *
-	 * @param string $rate_id The shipping rate id to update.
+	 * @param string               $rate_id The shipping rate id to update.
 	 * @param array<string, mixed> $data The data to update the rate id with.
 	 *
 	 * @return void
@@ -100,14 +101,14 @@ class SessionHandler {
 	 * @return \WC_Shipping_Rate[] The updated shipping rates.
 	 */
 	public function package_rates_handler( $rates ) {
-		// If the shipping rate data is empty, return the rates as is. Since we dont need to do any extra checks.
+		// If the shipping rate data is empty, return the rates as is. Since we don't need to do any extra checks.
 		if ( empty( $this->shipping_rate_data ) ) {
 			return $rates;
 		}
 
 		// Loop the rates to update the once we have data to set for.
 		foreach ( $rates as $rate ) {
-			$data_array = $this->shipping_rate_data[ $rate->get_id()] ?? null;
+			$data_array = $this->shipping_rate_data[ $rate->get_id() ] ?? null;
 			// If we have data to set for the rate, set it.
 			if ( ! empty( $data_array ) ) {
 				foreach ( $data_array as $key => $value ) {
@@ -127,7 +128,11 @@ class SessionHandler {
 	 * @return void
 	 */
 	public function preserve_old_meta_data( $package ) {
-		/** @var \WC_Shipping_Rate $rate */
+		/**
+		 * Loop the shipping rates to get the meta data and store it in the session handler.
+		 *
+		 * @var \WC_Shipping_Rate $rate
+		 */
 		foreach ( $package['rates'] as $rate_key => $rate ) {
 			$rate_meta   = $rate->get_meta_data();
 			$stored_meta = $this->get_shipping_rate_data( $rate->get_id() );
@@ -136,7 +141,7 @@ class SessionHandler {
 				$rate_meta[ $key ] = $value;
 			}
 
-			$this->shipping_rate_data[ $rate->get_id()] = $rate_meta;
+			$this->shipping_rate_data[ $rate->get_id() ] = $rate_meta;
 		}
 	}
 }

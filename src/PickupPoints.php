@@ -13,7 +13,7 @@ use Krokedil\Shipping\Container\Container;
 /**
  * Class PickupPoints
  *
- * Handles the pickup points service and any integraction with WooCommerce that is required for the package to work properly.
+ * Handles the pickup points service and any interaction with WooCommerce that is required for the package to work properly.
  * Offloading this from the plugins that implement it to a service class.
  */
 class PickupPoints implements PickupPointServiceInterface {
@@ -67,8 +67,14 @@ class PickupPoints implements PickupPointServiceInterface {
 	 * @return array
 	 */
 	public function add_hidden_order_itemmeta( $hidden_order_itemmeta ) {
+		// If the query parameter "debug" is set, return early.
+		if ( isset( $_GET['debug'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			return $hidden_order_itemmeta;
+		}
+
 		$hidden_order_itemmeta[] = 'krokedil_pickup_points';
 		$hidden_order_itemmeta[] = 'krokedil_selected_pickup_point';
+		$hidden_order_itemmeta[] = 'krokedil_selected_pickup_point_id';
 
 		return $hidden_order_itemmeta;
 	}
@@ -80,7 +86,14 @@ class PickupPoints implements PickupPointServiceInterface {
 	 */
 	private $packages = null;
 
-	/** {@inheritDoc} */
+	/**
+	 * Save the pickup points for a specific rate.
+	 *
+	 * @param \WC_Shipping_Rate  $rate The WooCommerce shipping rate to save the pickup points to.
+	 * @param array<PickupPoint> $pickup_points The pickup points to save.
+	 *
+	 * @return void
+	 */
 	public function save_pickup_points_to_rate( $rate, $pickup_points ) {
 		$pickup_points_json = $this->to_json( $pickup_points );
 
@@ -88,10 +101,21 @@ class PickupPoints implements PickupPointServiceInterface {
 			'krokedil_pickup_points' => $pickup_points_json,
 		);
 
+		// Does the rate have any selected pickup points? If not set the first one as the selected pickup point.
+		if ( ! $this->get_selected_pickup_point_from_rate( $rate ) && ! empty( $pickup_points ) ) {
+			$this->save_selected_pickup_point_to_rate( $rate, $pickup_points[0] );
+		}
+
 		$this->save_shipping_rate_data( $rate, $data );
 	}
 
-	/** {@inheritDoc} */
+	/**
+	 * Get the pickup points for a specific rate.
+	 *
+	 * @param \WC_Shipping_Rate $rate The WooCommerce shipping rate to get the pickup points from.
+	 *
+	 * @return array<PickupPoint>
+	 */
 	public function get_pickup_points_from_rate( $rate ) {
 		$meta_data = $rate->get_meta_data();
 		if ( ! array_key_exists( 'krokedil_pickup_points', $meta_data ) ) {
@@ -109,7 +133,14 @@ class PickupPoints implements PickupPointServiceInterface {
 		return $pickup_points;
 	}
 
-	/** {@inheritDoc} */
+	/**
+	 * Add a pickup point to the rate.
+	 *
+	 * @param \WC_Shipping_Rate $rate The WooCommerce shipping rate to add the pickup point to.
+	 * @param PickupPoint       $pickup_point The pickup point to add.
+	 *
+	 * @return void
+	 */
 	public function add_pickup_point_to_rate( $rate, $pickup_point ) {
 		$pickup_points = $this->get_pickup_points_from_rate( $rate );
 
@@ -129,7 +160,14 @@ class PickupPoints implements PickupPointServiceInterface {
 		$this->save_pickup_points_to_rate( $rate, $pickup_points );
 	}
 
-	/** {@inheritDoc} */
+	/**
+	 * Remove a pickup point from the rate.
+	 *
+	 * @param \WC_Shipping_Rate $rate The WooCommerce shipping rate to remove the pickup point from.
+	 * @param PickupPoint       $pickup_point The pickup point to remove.
+	 *
+	 * @return void
+	 */
 	public function remove_pickup_point_from_rate( $rate, $pickup_point ) {
 		$pickup_points = $this->get_pickup_points_from_rate( $rate );
 
@@ -150,18 +188,32 @@ class PickupPoints implements PickupPointServiceInterface {
 		$this->save_pickup_points_to_rate( $rate, $pickup_points );
 	}
 
-	/** {@inheritDoc} */
+	/**
+	 * Save the selected pickup point for a specific rate.
+	 *
+	 * @param \WC_Shipping_Rate $rate The WooCommerce shipping rate to save the selected pickup point to.
+	 * @param PickupPoint       $pickup_point The pickup point to save.
+	 *
+	 * @return void
+	 */
 	public function save_selected_pickup_point_to_rate( $rate, $pickup_point ) {
 		$pickup_point_json = $this->to_json( $pickup_point );
 
 		$data = array(
-			'krokedil_selected_pickup_point' => $pickup_point_json,
+			'krokedil_selected_pickup_point'    => $pickup_point_json,
+			'krokedil_selected_pickup_point_id' => $pickup_point->get_id(),
 		);
 
 		$this->save_shipping_rate_data( $rate, $data );
 	}
 
-	/** {@inheritDoc} */
+	/**
+	 * Get the selected pickup point for a specific rate. If no pickup point is selected, returns false.
+	 *
+	 * @param \WC_Shipping_Rate $rate The WooCommerce shipping rate to get the selected pickup point from.
+	 *
+	 * @return PickupPoint|bool
+	 */
 	public function get_selected_pickup_point_from_rate( $rate ) {
 		$meta_data = $rate->get_meta_data();
 		if ( ! array_key_exists( 'krokedil_selected_pickup_point', $meta_data ) ) {
@@ -173,7 +225,14 @@ class PickupPoints implements PickupPointServiceInterface {
 		return new PickupPoint( $pickup_point_array );
 	}
 
-	/** {@inheritDoc} */
+	/**
+	 * Get a pickup point from a rate by id.
+	 *
+	 * @param \WC_Shipping_Rate $rate The WooCommerce shipping rate to get the pickup point from.
+	 * @param string            $id The id of the pickup point to get.
+	 *
+	 * @return PickupPoint|null
+	 */
 	public function get_pickup_point_from_rate_by_id( $rate, $id ) {
 		$pickup_points = $this->get_pickup_points_from_rate( $rate );
 
@@ -188,7 +247,11 @@ class PickupPoints implements PickupPointServiceInterface {
 		}
 	}
 
-	/** {@inheritDoc} */
+	/**
+	 * Retrieve the container that holds all the registered services for the pickup point service.
+	 *
+	 * @return Container
+	 */
 	public function get_container() {
 		return $this->container;
 	}
@@ -211,7 +274,11 @@ class PickupPoints implements PickupPointServiceInterface {
 			}
 		} else {
 			// Otherwise we want to force the shipping rates to update.
-			/** @var SessionHandler $session_handler The session handler service from the pickup point service container. */
+			/**
+			 * The session handler service from the pickup point service container.
+			 *
+			 *  @var SessionHandler $session_handler
+			 */
 			$session_handler = $this->container->get( 'session-handler' );
 
 			// Save the data to the session handler.
@@ -220,5 +287,32 @@ class PickupPoints implements PickupPointServiceInterface {
 			// Force the shipping rates to update.
 			$session_handler->update_shipping_rates();
 		}
+	}
+
+	/**
+	 * Return any pickup point shipping methods from a WooCommerce order.
+	 *
+	 * @param \WC_Order $order The WooCommerce order.
+	 *
+	 * @return array|bool
+	 */
+	public function get_shipping_lines_from_order( $order ) {
+		$shipping_methods = $order->get_shipping_methods();
+
+		if ( ! $shipping_methods ) {
+			return false;
+		}
+
+		$pickup_point_shipping_methods = array_filter(
+			$shipping_methods,
+			function ( $shipping_method ) {
+				$pickup_points = $shipping_method->get_meta( 'krokedil_pickup_points' );
+				$selected      = $shipping_method->get_meta( 'krokedil_selected_pickup_point' );
+
+				return $pickup_points || $selected;
+			}
+		);
+
+		return empty( $pickup_point_shipping_methods ) ? false : $pickup_point_shipping_methods;
 	}
 }

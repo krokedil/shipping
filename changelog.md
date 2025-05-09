@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
+Added a metabox to show the pickup point and shipping information on the edit order page.
+Added support for showing hidden order line metadata on shipping lines with pickup points when adding the query tag "debug".
+
+### Fixed
+Fixed an issue with not properly setting the selected pickup point to the first option if none are selected when calculating shipping methods.
 
 ### Changed
 * The pickup point information is now decoded using `html_entity_decode`.
