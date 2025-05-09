@@ -1,8 +1,7 @@
 <?php
 use Krokedil\Shipping\Assets;
-use WP_Mock\Tools\TestCase;
 
-class AssetsTest extends TestCase {
+class AssetsTest extends BaseTestCase {
 	public function testCanRegisterAssets() {
 		$this->expectNotToPerformAssertions();
 		WP_Mock::userFunction(
