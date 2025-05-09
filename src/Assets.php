@@ -69,6 +69,9 @@ class Assets {
 	 * @param string $hook The current admin page.
 	 *
 	 * @return void
+	 *
+	 * @codeCoverageIgnore
+ 	 * No tests made yet.
 	 */
 	public function enqueue_admin_assets( $hook ) {
 

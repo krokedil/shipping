@@ -2,9 +2,7 @@
 namespace Krokedil\Shipping\Container;
 
 use Krokedil\Shipping\Container\Exceptions\NotFoundException;
-use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
-use Psr\Container\NotFoundExceptionInterface;
 
 /**
  * Class Container

@@ -318,8 +318,9 @@ class PickupPoint {
 	 * Print the address as a formatted HTML output.
 	 *
 	 * @param bool $no_title Whether to print the title or not.
-	 *
 	 * @return void
+	 * @codeCoverageIgnore
+ 	 * No tests made yet.
 	 */
 	public function print_address( $no_title = false ) {
 		if ( ! $this->address ) {
@@ -350,6 +351,9 @@ class PickupPoint {
 	 * Print the Opening hours as a formatted HTML output.
 	 *
 	 * @return void
+	 *
+	 * @codeCoverageIgnore
+ 	 * No tests made yet.
 	 */
 	public function print_open_hours() {
 		if ( ! $this->open_hours ) {
@@ -371,6 +375,9 @@ class PickupPoint {
 	 * Print a google maps link to the pickup point.
 	 *
 	 * @return void
+	 *
+	 * @codeCoverageIgnore
+ 	 * No tests made yet.
 	 */
 	public function print_google_maps_link() {
 		if ( ! $this->coordinates ) {
@@ -417,6 +424,9 @@ class PickupPoint {
 	 * @param \WC_Order $order The WooCommerce order.
 	 *
 	 * @return array<PickupPoint>|bool
+	 *
+	 * @codeCoverageIgnore
+ 	 * No tests made yet.
 	 */
 	public static function get_from_order( $order ) {
 		$shipping_lines = $order->get_items( 'shipping' );
