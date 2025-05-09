@@ -62,6 +62,11 @@ class ShippingRate implements ShippingRateServiceInterface {
 	 * @return array
 	 */
 	public function add_hidden_order_itemmeta( $hidden_order_itemmeta ) {
+		// If the query parameter "debug" is set, return early.
+		if ( isset( $_GET['debug'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			return $hidden_order_itemmeta;
+		}
+
 		$hidden_order_itemmeta[] = 'krokedil_description';
 
 		return $hidden_order_itemmeta;
