@@ -19,7 +19,7 @@ class Calculations {
 
 		foreach ( $tax_rates as $tax_rate ) {
 			if ( $tax_rate['rate'] === $percentage ) {
-				return $tax_rate['rate'];
+				return $tax_rate;
 			}
 		}
 
