@@ -47,7 +47,7 @@ abstract class BaseTestCase extends TestCase {
 	);
 
 	public function mockShippingRate( $rate_id = 'rate_id' ) {
-		$shippingRate = Mockery::mock( 'WC_Shipping_Rate' );
+		$shippingRate = Mockery::mock( 'alias:WC_Shipping_Rate' );
 		$shippingRate->shouldReceive( 'get_id' )->andReturn( $rate_id );
 
 		return $shippingRate;

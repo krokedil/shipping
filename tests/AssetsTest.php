@@ -15,13 +15,13 @@ class AssetsTest extends TestCase {
 		WP_Mock::userFunction(
 			'wp_register_script',
 			array(
-				'times' => 1,
+				'times' => 2,
 			)
 		);
 		WP_Mock::userFunction(
 			'wp_register_style',
 			array(
-				'times' => 1,
+				'times' => 2,
 			)
 		);
 
