@@ -42,7 +42,7 @@
         }
     },
     "scripts": {
-        "phpunit": "./vendor/bin/phpunit --bootstrap tests/bootstrap.php",
+        "phpunit": "./vendor/bin/phpunit --bootstrap tests/bootstrap.php --coverage-html=coverage",
         "createdocs": "./vendor/bin/phpdoc-md"
     }
 }
