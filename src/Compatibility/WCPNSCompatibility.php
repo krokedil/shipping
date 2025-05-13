@@ -31,7 +31,7 @@ class WCPNSCompatibility {
 			return;
 		}
 
-		$this->wcpns_checkout = WCPNS_Checkout::get_instance();
+		$this->wcpns_checkout = \WCPNS_Checkout::get_instance();
 
 		add_filter( 'woocommerce_package_rates', array( $this, 'maybe_set_postnord_servicepoints' ), 10, 3 );
 		add_action( 'woocommerce_checkout_order_processed', array( $this, 'save_postnord_servicepoint_data_to_order' ), 10, 3 );
