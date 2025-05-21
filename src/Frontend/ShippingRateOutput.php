@@ -33,7 +33,7 @@ class ShippingRateOutput {
 	 */
 	public function should_output( $element, $shipping_rate ) {
 		// Only if this is the selected shipping rate.
-		if ( ! in_array( $shipping_rate->id, WC()->session->get( 'chosen_shipping_methods' ), true ) ) {
+		if ( ! in_array( $shipping_rate->get_id(), WC()->session->get( 'chosen_shipping_methods' ), true ) ) {
 			return false;
 		}
 
