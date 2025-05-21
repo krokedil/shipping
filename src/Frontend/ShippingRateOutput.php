@@ -25,6 +25,12 @@ class ShippingRateOutput {
 		add_action( 'woocommerce_after_shipping_rate', array( $this, 'render_description' ), 5 );
 	}
 
+	/**
+	 * Returns true if the element should be output for the shipping rate.
+	 *
+	 * @param string $element
+	 * @param \WC_Shipping_Rate $shipping_rate
+	 */
 	public function should_output( $element, $shipping_rate ) {
 		// Only if this is the selected shipping rate.
 		if ( ! in_array( $shipping_rate->id, WC()->session->get( 'chosen_shipping_methods' ), true ) ) {
