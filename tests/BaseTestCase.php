@@ -1,5 +1,7 @@
 <?php
-use Krokedil\Shipping\Container;
+use Krokedil\Shipping\AJAX;
+use Krokedil\Shipping\Assets;
+use Krokedil\Shipping\Container\Container;
 use Krokedil\Shipping\Interfaces\PickupPointServiceInterface;
 use WP_Mock\Tools\TestCase;
 
@@ -9,6 +11,7 @@ abstract class BaseTestCase extends TestCase {
 	protected $mockShipping;
 	protected $mockSession;
 	protected $mockCart;
+	protected $mockCountries;
 
 	// Internal mocks.
 	protected $mockPickupPointService;
@@ -47,7 +50,7 @@ abstract class BaseTestCase extends TestCase {
 	);
 
 	public function mockShippingRate( $rate_id = 'rate_id' ) {
-		$shippingRate = Mockery::mock( 'WC_Shipping_Rate' );
+		$shippingRate = Mockery::mock( 'alias:WC_Shipping_Rate' );
 		$shippingRate->shouldReceive( 'get_id' )->andReturn( $rate_id );
 
 		return $shippingRate;
@@ -58,10 +61,12 @@ abstract class BaseTestCase extends TestCase {
 		$this->mockShipping    = Mockery::mock( 'WC_Shipping' );
 		$this->mockSession     = Mockery::mock( 'WC_Session' );
 		$this->mockCart        = Mockery::mock( 'WC_Cart' );
+		$this->mockCountries   = Mockery::mock( 'WC_Countries' );
 
 		$this->mockWoocommerce->shouldReceive( 'shipping' )->andReturn( $this->mockShipping );
-		$this->mockWoocommerce->session = $this->mockSession;
-		$this->mockWoocommerce->cart    = $this->mockCart;
+		$this->mockWoocommerce->session   = $this->mockSession;
+		$this->mockWoocommerce->cart      = $this->mockCart;
+		$this->mockWoocommerce->countries = $this->mockCountries;
 
 		WP_Mock::userFunction( 'WC' )->andReturn( $this->mockWoocommerce );
 	}

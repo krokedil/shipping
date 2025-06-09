@@ -1,12 +1,8 @@
 <?php
 namespace Krokedil\Shipping\Frontend;
 
+use Krokedil\Shipping\AJAX;
 use Krokedil\Shipping\SessionHandler;
-use Krokedil\Shipping\Ajax\AjaxRegistry;
-use Krokedil\Shipping\Ajax\AjaxRequest;
-use Krokedil\Shipping\Assets\AssetsRegistry;
-use Krokedil\Shipping\Assets\Script;
-use Krokedil\Shipping\Assets\Style;
 use Krokedil\Shipping\Interfaces\PickupPointServiceInterface;
 
 /**
@@ -23,13 +19,10 @@ class PickupPointSelect {
 	public $pickup_point_service;
 
 	/**
-	 *
-	 */
-
-	/**
 	 * Class constructor.
 	 *
-	 * @param PickupPointServiceInterface $pickup_point_service
+	 * @param PickupPointServiceInterface $pickup_point_service The PickupPoint service instance.
+	 *
 	 * @return void
 	 */
 	public function __construct( $pickup_point_service ) {
@@ -37,7 +30,7 @@ class PickupPointSelect {
 
 		$this->register_ajax_requests();
 
-		add_action( 'woocommerce_after_shipping_rate', array( $this, 'render' ) );
+		add_action( 'woocommerce_after_shipping_rate', array( $this, 'render' ), 10 );
 	}
 
 	/**
@@ -46,7 +39,11 @@ class PickupPointSelect {
 	 * @return void
 	 */
 	private function register_ajax_requests() {
-		/** @var AJAX $registry The Ajax service from the pickup point service container. */
+		/**
+		 * The Ajax service from the pickup point service container.
+		 *
+		 * @var AJAX $registry The Ajax service.
+		 */
 		$registry = $this->pickup_point_service->get_container()->get( 'ajax' );
 
 		// Register the AJAX request to set the selected pickup point.
@@ -61,7 +58,6 @@ class PickupPointSelect {
 	 */
 	public function render( $shipping_rate ) {
 		// Only if this is the selected shipping rate.
-		WC()->session->get( 'chosen_shipping_methods' );
 		if ( ! in_array( $shipping_rate->get_id(), WC()->session->get( 'chosen_shipping_methods' ), true ) ) {
 			return;
 		}
@@ -80,7 +76,7 @@ class PickupPointSelect {
 		$selected_pickup_point = $this->pickup_point_service->get_selected_pickup_point_from_rate( $shipping_rate );
 
 		// Get the pickup point select box template.
-		$template_path = apply_filters( 'krokedil_shipping_pickup_point_select_template_path', __DIR__ . '/../../templates/html-pickup-point-select.php' );
+		$template_path = apply_filters( 'krokedil_shipping_pickup_point_select_template_path', __DIR__ . '/../templates/html-pickup-point-select.php' );
 
 		include $template_path;
 	}
@@ -91,8 +87,8 @@ class PickupPointSelect {
 	 * @return void
 	 */
 	public function set_selected_pickup_point_ajax() {
-		$pickup_point_id = filter_var( $_POST['pickupPointId'] ?? '', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
-		$rate_id         = filter_var( $_POST['rateId'] ?? '', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+		$pickup_point_id = filter_var( $_POST['pickupPointId'] ?? '', FILTER_SANITIZE_FULL_SPECIAL_CHARS ); // phpcs:ignore
+		$rate_id         = filter_var( $_POST['rateId'] ?? '', FILTER_SANITIZE_FULL_SPECIAL_CHARS ); // phpcs:ignore
 
 		// Ensure we have a pickup point id and a rate id.
 		if ( empty( $pickup_point_id ) || empty( $rate_id ) ) {
@@ -119,7 +115,11 @@ class PickupPointSelect {
 	 * @return \WP_Error|bool
 	 */
 	public function set_selected_pickup_point( $pickup_point_id, $rate_id ) {
-		/** @var SessionHandler $session_handler */
+		/**
+		 * Get the SessionHandler instance.
+		 *
+		 * @var SessionHandler $session_handler
+		 */
 		$session_handler = $this->pickup_point_service->get_container()->get( 'session-handler' );
 
 		// Get the shipping rate and the selected pickup point for the shipping method from the ajax request.

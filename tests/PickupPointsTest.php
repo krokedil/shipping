@@ -41,6 +41,15 @@ class PickupPointsTest extends BaseTestCase {
 
 	public function testSavePickupPointsToRate() {
 		$rate = $this->mockShippingRate();
+		$rate->shouldReceive( 'get_meta_data' )
+			->andReturn( array(  ) )
+			->once();
+		$rate->shouldReceive( 'add_meta_data' )
+			->with( 'krokedil_selected_pickup_point', json_encode( self::$pickupPoint ) )
+			->once();
+		$rate->shouldReceive( 'add_meta_data' )
+			->with( 'krokedil_selected_pickup_point_id', self::$pickupPoint['id'] )
+			->once();
 		$rate->shouldReceive( 'add_meta_data' )
 			->with( 'krokedil_pickup_points', json_encode( array( self::$pickupPoint ) ) )
 			->once();
@@ -57,7 +66,9 @@ class PickupPointsTest extends BaseTestCase {
 
 	public function testSavePickupPointsToRateForceSave() {
 		$rate = $this->mockShippingRate();
-
+		$rate->shouldReceive( 'get_meta_data' )
+			->andReturn( array(  ) )
+			->once();
 		WP_Mock::userFunction( 'doing_action' )->andReturn( false );
 		WP_Mock::userFunction( 'doing_filter', )->andReturn( false );
 
@@ -99,12 +110,18 @@ class PickupPointsTest extends BaseTestCase {
 
 		$rate = $this->mockShippingRate();
 		$rate->shouldReceive( 'add_meta_data' )
+			->with( 'krokedil_selected_pickup_point', json_encode( self::$pickupPoint) )
+			->once();
+		$rate->shouldReceive( 'add_meta_data' )
+			->with( 'krokedil_selected_pickup_point_id', self::$pickupPoint['id'] )
+			->once();
+		$rate->shouldReceive( 'add_meta_data' )
 			->with( 'krokedil_pickup_points', json_encode( array( self::$pickupPoint ) ) )
 			->once();
 
 		$rate->shouldReceive( 'get_meta_data' )
 			->andReturn( array() )
-			->once();
+			->times( 2 );
 
 		$this->pickupPoints->add_pickup_point_to_rate( $rate, $pickupPoint );
 
@@ -138,10 +155,16 @@ class PickupPointsTest extends BaseTestCase {
 
 		$rate->shouldReceive( 'get_meta_data' )
 			->andReturn( array( 'krokedil_pickup_points' => json_encode( array( self::$pickupPoint, $pickupPoint2 ) ) ) )
-			->once();
+			->twice();
 
 		$rate->shouldReceive( 'add_meta_data' )
 			->with( 'krokedil_pickup_points', json_encode( array( $pickupPoint2 ) ) )
+			->once();
+		$rate->shouldReceive( 'add_meta_data' )
+			->with( 'krokedil_selected_pickup_point', json_encode( $pickupPoint2) )
+			->once();
+		$rate->shouldReceive( 'add_meta_data' )
+			->with( 'krokedil_selected_pickup_point_id', $pickupPoint2['id'] )
 			->once();
 
 		$this->pickupPoints->remove_pickup_point_from_rate( $rate, $toRemove );
@@ -170,7 +193,10 @@ class PickupPointsTest extends BaseTestCase {
 		WP_Mock::userFunction( 'doing_filter', )->andReturn( true );
 
 		$rate->shouldReceive( 'add_meta_data' )
-			->andReturn( 'krokedil_selected_pickup_point', json_encode( self::$pickupPoint ) )
+			->with( 'krokedil_selected_pickup_point', json_encode( self::$pickupPoint ) )
+			->once();
+		$rate->shouldReceive( 'add_meta_data' )
+			->with( 'krokedil_selected_pickup_point_id', self::$pickupPoint['id'] )
 			->once();
 
 		$pickupPoint = new PickupPoint( self::$pickupPoint );
@@ -227,9 +253,6 @@ class PickupPointsTest extends BaseTestCase {
 	public function testGetPickupPointFromRateByIdNullIfNoneExist() {
 		$rate = $this->mockShippingRate();
 
-		$pickupPoint2       = self::$pickupPoint;
-		$pickupPoint2['id'] = '321';
-
 		$rate->shouldReceive( 'get_meta_data' )
 			->andReturn( array() )
 			->once();
@@ -241,8 +264,9 @@ class PickupPointsTest extends BaseTestCase {
 	public function testAddHiddenOrderItemMeta() {
 		$result = $this->pickupPoints->add_hidden_order_itemmeta( array() );
 
-		$this->assertEquals( 2, count( $result ) );
+		$this->assertEquals( 3, count( $result ) );
 		$this->assertEquals( 'krokedil_pickup_points', $result[0] );
 		$this->assertEquals( 'krokedil_selected_pickup_point', $result[1] );
+		$this->assertEquals( 'krokedil_selected_pickup_point_id', $result[2] );
 	}
 }

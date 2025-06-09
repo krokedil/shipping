@@ -1,0 +1,70 @@
+.ks-metabox__change-pp {
+    display: none;
+    margin: 10px 0;
+}
+
+.ks-metabox__edit-pp {
+    width: 14px;
+    height: 0;
+    padding: 14px 0 0;
+    margin: 0 0 0 6px;
+    overflow: hidden;
+    position: relative;
+    color: #999;
+    border: 0;
+    float: right;
+}
+
+.ks-metabox__edit-pp::after{
+    font-family: Dashicons;
+    content: "\f464";
+    position: absolute;
+    top: 0;
+    left: 0;
+    text-align: center;
+    vertical-align: top;
+    line-height: 14px;
+    font-size: 14px;
+    font-weight: 400;
+}
+
+.ks-metabox__message-success, .ks-metabox__message-error {
+    padding: 5px;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: bold;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.ks-metabox__message-success {
+    background-color: #dff0d8;
+    color: #3c763d;
+}
+
+.ks-metabox__message-error {
+    background-color: #f2dede;
+    color: #a94442;
+}
+
+.ks-metabox__information h4 {
+    margin: 0 0 10px;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+div.ks-metabox p {
+    margin-top: 0;
+    margin-bottom:0;
+}
+
+/* Add space between any metabox__information and the information if there are more than one */
+div.ks-metabox__information + div.ks-metabox__information {
+    border-top: 1px solid #e5e5e5;
+    margin-top: 10px;
+    padding-top: 10px;
+}
+
+select[name=ks-metabox__selected-pp] {
+    width: 178px;
+}
