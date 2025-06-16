@@ -3,6 +3,7 @@ namespace Krokedil\Shipping;
 
 use Krokedil\Shipping\AJAX;
 use Krokedil\Shipping\Assets;
+use Krokedil\Shipping\Blocks\PickupPoints\PickupPointsBlock;
 use Krokedil\Shipping\Frontend\PickupPointSelect;
 use Krokedil\Shipping\Interfaces\PickupPointServiceInterface;
 use Krokedil\Shipping\PickupPoint\PickupPoint;
@@ -60,6 +61,8 @@ class PickupPoints implements PickupPointServiceInterface {
 		if ( $add_select_box ) {
 			$this->container->add( 'pickup_point_select', new PickupPointSelect( $this ) );
 		}
+
+		PickupPointsBlock::register_block( $add_select_box );
 	}
 
 	/**

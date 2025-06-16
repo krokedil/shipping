@@ -17,7 +17,8 @@
     },
     "autoload": {
         "psr-4": {
-            "Krokedil\\Shipping\\": "src/"
+            "Krokedil\\Shipping\\": "src/",
+            "Krokedil\\Shipping\\Blocks\\": "src/blocks/src/"
         }
     },
     "archive": {
@@ -29,7 +30,8 @@
             ".phpdoc-md",
             "composer-lock.json",
             ".gitignore",
-            ".gitattributes"
+            ".gitattributes",
+            "/node_modules/"
         ]
     },
     "minimum-stability": "dev",
