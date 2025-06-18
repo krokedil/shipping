@@ -154,18 +154,7 @@ class WCPNSCompatibility {
 
 		WC()->session->__unset( 'wcpns_pickup_points' );
 
-		$qliro_order_id = WC()->session->get( 'qliro_one_order_id' );
-		if ( empty( $qliro_order_id ) ) {
-			return;
-		}
-
-		$shipping_data = get_transient( 'qoc_shipping_data_' . $qliro_order_id );
-
-		if ( empty( $shipping_data ) ) {
-			return;
-		}
-
-		$chosen_pickup_id = $shipping_data['secondaryOption'] ?? array();
+		$chosen_pickup_id = $order->get_shipping_methods() ? reset( $order->get_shipping_methods() )->get_method_id() : '';
 
 		if ( empty( $chosen_pickup_id ) ) {
 			return;
