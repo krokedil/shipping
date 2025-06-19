@@ -154,7 +154,14 @@ class WCPNSCompatibility {
 
 		WC()->session->__unset( 'wcpns_pickup_points' );
 
-		$chosen_pickup_id = $order->get_shipping_methods() ? reset( $order->get_shipping_methods() )->get_method_id() : '';
+		$shipping_methods = $order->get_shipping_methods();
+		$shipping_method  = $shipping_methods ? reset( $shipping_methods ) : '';
+
+		if ( empty( $shipping_method ) ) {
+			return;
+		}
+
+		$chosen_pickup_id = $shipping_method->get_meta( 'krokedil_selected_pickup_point_id', true ) ? json_encode( $shipping_method->get_meta( 'krokedil_selected_pickup_point_id', true ) ) : '';
 
 		if ( empty( $chosen_pickup_id ) ) {
 			return;
