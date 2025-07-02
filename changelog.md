@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+* Added a improved error handling for shipping methods that have been changed during the checkout process. If the shipping package is used, instead of letting WooCommerce set the first shipping method, it will now throw an eror that stops the checkout process and informs the customer that the shipping methods have changed.
+* Added a filter `krokedil_shipping_changed_auto_correct` to allow developers to auto-correct the shipping method if it has been changed during the checkout process. This is useful if you want to automatically set the shipping method to the first available one instead of throwing an error. However this is not recommended as it can lead to unexpected issues if the chosen method is no longer available.
+* Added a filter `krokedil_shipping_changed_throw_error` to allow merchants or plugins to disable the error handling for shipping methods that have been changed during the checkout process. This is useful if you want to handle the error in your own way, or if you want to disable the error handling completely, for example for specific payment or shipping methods.
+
+### Fixed
+* Fixed an issue where the shipping methods selected pickup point would be reset in some cases when the shipping methods were recalculated.
+
 ------------------
 
 ## [2.2.0] - 2025-06-09
