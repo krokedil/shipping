@@ -34,6 +34,9 @@ class SessionHandler {
 		$this->container = Container::get_instance();
 		add_filter( 'woocommerce_package_rates', array( $this, 'package_rates_handler' ), 10, 1 );
 		add_filter( 'woocommerce_package_rates', array( $this, 'set_selected_pickup_point_from_session' ), 20, 1 );
+
+		add_filter( 'woocommerce_shipping_chosen_method', array( __CLASS__, 'maybe_register_shipping_error' ), PHP_INT_MAX, 3 );
+		add_action( 'woocommerce_shipping_method_chosen', array( __CLASS__, 'maybe_throw_shipping_error' ), PHP_INT_MAX );
 	}
 
 	/**
@@ -184,5 +187,61 @@ class SessionHandler {
 		}
 
 		return $rates;
+	}
+
+	/**
+	 * Maybe registers an error if we are attempting to set a new shipping method during the checkout process.
+	 * WooCommerce will in some cases reset the shipping selection, instead of throwing an error if shipping options
+	 * have changed. In our case its better to throw an error for the customer to see, so they can try again
+	 * or select another shipping option.
+	 *
+	 * @param string $default The shipping method id that would be set as the default method.
+	 * @param array  $rates The rates calculated when getting the default shipping method.
+	 * @param string $chosen_method The shipping method id that was chosen by the customer.
+	 *
+	 * @return string
+	 */
+	public static function maybe_register_shipping_error( $default, $rates, $chosen_method ) {
+		// Only do this if we are during the checkout process.
+		if ( did_action( 'woocommerce_checkout_process' ) <= 0 ) {
+			return $default;
+		}
+
+		// This covers for situations where the shipping rate packages may be changed through a hook, which may result in an incorrect shipping method change assessment.
+		if ( empty( $chosen_method ) || $default === $chosen_method ) {
+			return $default;
+		}
+
+		/*
+		 * Add a filter to allow people to set if they want to automatically correct shipping discrepancies instead of throwing an error.
+		 * Note however that this is not recommended. If you do this, and the shipping method that the customer selected is no longer available,
+		 * then unexpected issues might happen. Only do this if you are sure the chosen method actually exists and is available.
+		 */
+		if ( apply_filters( 'krokedil_shipping_changed_auto_correct', false, $default, $rates, $chosen_method ) ) {
+			return $chosen_method;
+		}
+
+		// If we are not auto-correcting the shipping method, we return the default, but trigger our action. This is so we can throw the error at a later time.
+		if( apply_filters( 'krokedil_shipping_changed_throw_error', true, $default, $rates, $chosen_method ) ) {
+			do_action( 'krokedil_shipping_changed_error' );
+		}
+
+		return $default;
+	}
+
+	/**
+	 * Actually throws the error registered previously.
+	 * This is moved to happen on a separate action instead, since we need to allow WooCommerce to set a couple sessions.
+	 * This prevents customers needing to reload the page.
+	 *
+	 * @return void
+	 * @throws \Exception Exception with the error message.
+	 */
+	public static function maybe_throw_shipping_error() {
+		if ( did_action( 'krokedil_shipping_changed_error' ) <= 0 ) {
+			return;
+		}
+
+		throw new \Exception( __( 'The shipping methods have been changed during the checkout process. Please verify your selected shipping method and try again.', 'krokedil-shipping' ) );
 	}
 }
