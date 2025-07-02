@@ -1,6 +1,8 @@
 <?php
 namespace Krokedil\Shipping;
 
+use Krokedil\Shipping\Container\Container;
+
 /**
  * Class SessionHandler
  *
@@ -17,10 +19,21 @@ class SessionHandler {
 	private $shipping_rate_data = array();
 
 	/**
+	 * The pickup points service to use for getting the pickup points.
+	 *
+	 * @var Container
+	 */
+	private $container;
+
+	/**
 	 * Class constructor.
+	 *
+	 * @return void
 	 */
 	public function __construct() {
+		$this->container = Container::get_instance();
 		add_filter( 'woocommerce_package_rates', array( $this, 'package_rates_handler' ), 10, 1 );
+		add_filter( 'woocommerce_package_rates', array( $this, 'set_selected_pickup_point_from_session' ), 20, 1 );
 	}
 
 	/**
@@ -143,5 +156,33 @@ class SessionHandler {
 
 			$this->shipping_rate_data[ $rate->get_id() ] = $rate_meta;
 		}
+	}
+
+	/**
+	 * Set the selected pickup point from the session after shipping has been calculated.
+	 *
+	 * @param \WC_Shipping_Rate[] $rates The shipping rates to set the selected pickup point for.
+	 *
+	 * @return \WC_Shipping_Rate[] The updated shipping rates with the selected pickup point set.
+	 */
+	public function set_selected_pickup_point_from_session( $rates ) {
+		$session_pickup_point_id = WC()->session->get( 'krokedil_selected_pickup_point_id' );
+		if ( ! $session_pickup_point_id ) {
+			return $rates;
+		}
+
+		$pickup_points_service = $this->container->get( 'pickup-points' );
+		foreach ( $rates as $rate ) {
+			$pickup_point = $pickup_points_service->get_pickup_point_from_rate_by_id( $rate, $session_pickup_point_id );
+
+			if(empty($pickup_point)) {
+				continue;
+			}
+
+			// If the pickup point is set, we can set the selected pickup point to the shipping rate.
+			$pickup_points_service->save_selected_pickup_point_to_rate( $rate, $pickup_point );
+		}
+
+		return $rates;
 	}
 }
