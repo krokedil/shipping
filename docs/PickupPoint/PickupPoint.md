@@ -16,11 +16,16 @@ Contains the data for a pickup point.
 |[get_coordinates](#pickuppointget_coordinates)|Get the coordinates.|
 |[get_description](#pickuppointget_description)|Get the description.|
 |[get_eta](#pickuppointget_eta)|Get the estimated time of arrival.|
+|[get_from_order](#pickuppointget_from_order)|Get pickup points from order.|
 |[get_id](#pickuppointget_id)|Get the ID.|
 |[get_meta_data](#pickuppointget_meta_data)|Get the meta data.|
 |[get_name](#pickuppointget_name)|Get the name.|
 |[get_open_hours](#pickuppointget_open_hours)|Get the opening hours.|
+|[get_selected_from_order](#pickuppointget_selected_from_order)|Get selected from order.|
 |[json_to_array](#pickuppointjson_to_array)|Convert a JSON string to an array.|
+|[print_address](#pickuppointprint_address)|Print the address as a formatted HTML output.|
+|[print_google_maps_link](#pickuppointprint_google_maps_link)|Print a google maps link to the pickup point.|
+|[print_open_hours](#pickuppointprint_open_hours)|Print the Opening hours as a formatted HTML output.|
 |[set_address](#pickuppointset_address)|Set the address.|
 |[set_coordinates](#pickuppointset_coordinates)|Set the coordinates.|
 |[set_description](#pickuppointset_description)|Set the description.|
@@ -194,6 +199,33 @@ Get the estimated time of arrival.
 <hr />
 
 
+### PickupPoint::get_from_order  
+
+**Description**
+
+```php
+public static get_from_order (\WC_Order $order)
+```
+
+Get pickup points from order. 
+
+ 
+
+**Parameters**
+
+* `(\WC_Order) $order`
+: The WooCommerce order.  
+
+**Return Values**
+
+`\PickupPoint[]|bool`
+
+
+
+
+<hr />
+
+
 ### PickupPoint::get_id  
 
 **Description**
@@ -299,6 +331,33 @@ Get the opening hours.
 <hr />
 
 
+### PickupPoint::get_selected_from_order  
+
+**Description**
+
+```php
+public static get_selected_from_order (\WC_Order $order)
+```
+
+Get selected from order. 
+
+ 
+
+**Parameters**
+
+* `(\WC_Order) $order`
+: The WooCommerce order.  
+
+**Return Values**
+
+`\PickupPoint|bool`
+
+
+
+
+<hr />
+
+
 ### PickupPoint::json_to_array  
 
 **Description**
@@ -319,6 +378,85 @@ Convert a JSON string to an array.
 **Return Values**
 
 `array`
+
+
+
+
+<hr />
+
+
+### PickupPoint::print_address  
+
+**Description**
+
+```php
+public print_address (bool $no_title)
+```
+
+Print the address as a formatted HTML output. 
+
+ 
+
+**Parameters**
+
+* `(bool) $no_title`
+: Whether to print the title or not.  
+
+**Return Values**
+
+`void`
+
+
+
+
+<hr />
+
+
+### PickupPoint::print_google_maps_link  
+
+**Description**
+
+```php
+public print_google_maps_link (void)
+```
+
+Print a google maps link to the pickup point. 
+
+ 
+
+**Parameters**
+
+`This function has no parameters.`
+
+**Return Values**
+
+`void`
+
+
+
+
+<hr />
+
+
+### PickupPoint::print_open_hours  
+
+**Description**
+
+```php
+public print_open_hours (void)
+```
+
+Print the Opening hours as a formatted HTML output. 
+
+ 
+
+**Parameters**
+
+`This function has no parameters.`
+
+**Return Values**
+
+`void`
 
 
 

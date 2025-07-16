@@ -2,7 +2,7 @@
 
 Class PickupPoints
 
-Handles the pickup points service and any integraction with WooCommerce that is required for the package to work properly.
+Handles the pickup points service and any interaction with WooCommerce that is required for the package to work properly.
 Offloading this from the plugins that implement it to a service class.  
 
 ## Implements:
@@ -16,16 +16,20 @@ Krokedil\Shipping\Interfaces\PickupPointServiceInterface
 |------|-------------|
 |[__construct](#pickuppoints__construct)|Class constructor.|
 |[add_hidden_order_itemmeta](#pickuppointsadd_hidden_order_itemmeta)|Add the order line metadata for pickup points to the list of hidden meta data.|
-|[add_pickup_point_to_rate](#pickuppointsadd_pickup_point_to_rate)|{@inheritDoc}|
-|[get_container](#pickuppointsget_container)|{@inheritDoc}|
-|[get_pickup_point_from_rate_by_id](#pickuppointsget_pickup_point_from_rate_by_id)|{@inheritDoc}|
-|[get_pickup_points_from_rate](#pickuppointsget_pickup_points_from_rate)|{@inheritDoc}|
-|[get_selected_pickup_point_from_rate](#pickuppointsget_selected_pickup_point_from_rate)|{@inheritDoc}|
+|[add_pickup_point_to_rate](#pickuppointsadd_pickup_point_to_rate)|Add a pickup point to the rate.|
+|[get_container](#pickuppointsget_container)|Retrieve the container that holds all the registered services for the pickup point service.|
+|[get_pickup_point_from_rate_by_id](#pickuppointsget_pickup_point_from_rate_by_id)|Get a pickup point from a rate by id.|
+|[get_pickup_points_from_rate](#pickuppointsget_pickup_points_from_rate)|Get the pickup points for a specific rate.|
+|[get_selected_pickup_point_from_rate](#pickuppointsget_selected_pickup_point_from_rate)|Get the selected pickup point for a specific rate. If no pickup point is selected, returns false.|
+|[get_selected_pickup_point_from_rate_session](#pickuppointsget_selected_pickup_point_from_rate_session)|Get the selected pickup point from the session for a rate.|
+|[get_selected_pickup_point_from_session](#pickuppointsget_selected_pickup_point_from_session)|Get the selected pickup point from the session.|
+|[get_shipping_lines_from_order](#pickuppointsget_shipping_lines_from_order)|Return any pickup point shipping methods from a WooCommerce order.|
 |[init](#pickuppointsinit)|Initialize the class instance.|
 |[json_to_array](#pickuppointsjson_to_array)|Convert a JSON string to an array.|
-|[remove_pickup_point_from_rate](#pickuppointsremove_pickup_point_from_rate)|{@inheritDoc}|
-|[save_pickup_points_to_rate](#pickuppointssave_pickup_points_to_rate)|{@inheritDoc}|
-|[save_selected_pickup_point_to_rate](#pickuppointssave_selected_pickup_point_to_rate)|{@inheritDoc}|
+|[remove_pickup_point_from_rate](#pickuppointsremove_pickup_point_from_rate)|Remove a pickup point from the rate.|
+|[save_pickup_points_to_rate](#pickuppointssave_pickup_points_to_rate)|Save the pickup points for a specific rate.|
+|[save_selected_pickup_point_to_rate](#pickuppointssave_selected_pickup_point_to_rate)|Save the selected pickup point for a specific rate.|
+|[save_selected_pickup_point_to_session](#pickuppointssave_selected_pickup_point_to_session)|Save the selected pickup point for a specific rate.|
 |[to_array](#pickuppointsto_array)|Convert an object to an array.|
 |[to_json](#pickuppointsto_json)|Convert an array to a JSON string.|
 
@@ -91,20 +95,25 @@ Add the order line metadata for pickup points to the list of hidden meta data.
 **Description**
 
 ```php
-public add_pickup_point_to_rate (void)
+public add_pickup_point_to_rate (\WC_Shipping_Rate $rate, \PickupPoint $pickup_point)
 ```
 
-{@inheritDoc} 
+Add a pickup point to the rate. 
 
  
 
 **Parameters**
 
-`This function has no parameters.`
+* `(\WC_Shipping_Rate) $rate`
+: The WooCommerce shipping rate to add the pickup point to.  
+* `(\PickupPoint) $pickup_point`
+: The pickup point to add.  
 
 **Return Values**
 
 `void`
+
+
 
 
 <hr />
@@ -118,7 +127,7 @@ public add_pickup_point_to_rate (void)
 public get_container (void)
 ```
 
-{@inheritDoc} 
+Retrieve the container that holds all the registered services for the pickup point service. 
 
  
 
@@ -128,7 +137,9 @@ public get_container (void)
 
 **Return Values**
 
-`void`
+`\Container`
+
+
 
 
 <hr />
@@ -139,20 +150,25 @@ public get_container (void)
 **Description**
 
 ```php
-public get_pickup_point_from_rate_by_id (void)
+public get_pickup_point_from_rate_by_id (\WC_Shipping_Rate $rate, string $id)
 ```
 
-{@inheritDoc} 
+Get a pickup point from a rate by id. 
 
  
 
 **Parameters**
 
-`This function has no parameters.`
+* `(\WC_Shipping_Rate) $rate`
+: The WooCommerce shipping rate to get the pickup point from.  
+* `(string) $id`
+: The id of the pickup point to get.  
 
 **Return Values**
 
-`void`
+`\PickupPoint|null`
+
+
 
 
 <hr />
@@ -163,20 +179,23 @@ public get_pickup_point_from_rate_by_id (void)
 **Description**
 
 ```php
-public get_pickup_points_from_rate (void)
+public get_pickup_points_from_rate (\WC_Shipping_Rate $rate)
 ```
 
-{@inheritDoc} 
+Get the pickup points for a specific rate. 
 
  
 
 **Parameters**
 
-`This function has no parameters.`
+* `(\WC_Shipping_Rate) $rate`
+: The WooCommerce shipping rate to get the pickup points from.  
 
 **Return Values**
 
-`void`
+`\PickupPoint[]`
+
+
 
 
 <hr />
@@ -187,10 +206,64 @@ public get_pickup_points_from_rate (void)
 **Description**
 
 ```php
-public get_selected_pickup_point_from_rate (void)
+public get_selected_pickup_point_from_rate (\WC_Shipping_Rate $rate)
 ```
 
-{@inheritDoc} 
+Get the selected pickup point for a specific rate. If no pickup point is selected, returns false. 
+
+ 
+
+**Parameters**
+
+* `(\WC_Shipping_Rate) $rate`
+: The WooCommerce shipping rate to get the selected pickup point from.  
+
+**Return Values**
+
+`\PickupPoint|bool`
+
+
+
+
+<hr />
+
+
+### PickupPoints::get_selected_pickup_point_from_rate_session  
+
+**Description**
+
+```php
+public get_selected_pickup_point_from_rate_session (\WC_Shipping_Rate $rate)
+```
+
+Get the selected pickup point from the session for a rate. 
+
+ 
+
+**Parameters**
+
+* `(\WC_Shipping_Rate) $rate`
+: The WooCommerce shipping rate to get the selected pickup point from.  
+
+**Return Values**
+
+`\PickupPoint|bool`
+
+
+
+
+<hr />
+
+
+### PickupPoints::get_selected_pickup_point_from_session  
+
+**Description**
+
+```php
+public get_selected_pickup_point_from_session (void)
+```
+
+Get the selected pickup point from the session. 
 
  
 
@@ -200,7 +273,36 @@ public get_selected_pickup_point_from_rate (void)
 
 **Return Values**
 
-`void`
+`\PickupPoint|bool`
+
+
+
+
+<hr />
+
+
+### PickupPoints::get_shipping_lines_from_order  
+
+**Description**
+
+```php
+public get_shipping_lines_from_order (\WC_Order $order)
+```
+
+Return any pickup point shipping methods from a WooCommerce order. 
+
+ 
+
+**Parameters**
+
+* `(\WC_Order) $order`
+: The WooCommerce order.  
+
+**Return Values**
+
+`array|bool`
+
+
 
 
 <hr />
@@ -265,20 +367,25 @@ Convert a JSON string to an array.
 **Description**
 
 ```php
-public remove_pickup_point_from_rate (void)
+public remove_pickup_point_from_rate (\WC_Shipping_Rate $rate, \PickupPoint $pickup_point)
 ```
 
-{@inheritDoc} 
+Remove a pickup point from the rate. 
 
  
 
 **Parameters**
 
-`This function has no parameters.`
+* `(\WC_Shipping_Rate) $rate`
+: The WooCommerce shipping rate to remove the pickup point from.  
+* `(\PickupPoint) $pickup_point`
+: The pickup point to remove.  
 
 **Return Values**
 
 `void`
+
+
 
 
 <hr />
@@ -289,20 +396,25 @@ public remove_pickup_point_from_rate (void)
 **Description**
 
 ```php
-public save_pickup_points_to_rate (void)
+public save_pickup_points_to_rate (\WC_Shipping_Rate $rate, \PickupPoint[] $pickup_points)
 ```
 
-{@inheritDoc} 
+Save the pickup points for a specific rate. 
 
  
 
 **Parameters**
 
-`This function has no parameters.`
+* `(\WC_Shipping_Rate) $rate`
+: The WooCommerce shipping rate to save the pickup points to.  
+* `(\PickupPoint[]) $pickup_points`
+: The pickup points to save.  
 
 **Return Values**
 
 `void`
+
+
 
 
 <hr />
@@ -313,20 +425,52 @@ public save_pickup_points_to_rate (void)
 **Description**
 
 ```php
-public save_selected_pickup_point_to_rate (void)
+public save_selected_pickup_point_to_rate (\WC_Shipping_Rate $rate, \PickupPoint $pickup_point)
 ```
 
-{@inheritDoc} 
+Save the selected pickup point for a specific rate. 
 
  
 
 **Parameters**
 
-`This function has no parameters.`
+* `(\WC_Shipping_Rate) $rate`
+: The WooCommerce shipping rate to save the selected pickup point to.  
+* `(\PickupPoint) $pickup_point`
+: The pickup point to save.  
 
 **Return Values**
 
 `void`
+
+
+
+
+<hr />
+
+
+### PickupPoints::save_selected_pickup_point_to_session  
+
+**Description**
+
+```php
+public save_selected_pickup_point_to_session (\PickupPoint $pickup_point)
+```
+
+Save the selected pickup point for a specific rate. 
+
+ 
+
+**Parameters**
+
+* `(\PickupPoint) $pickup_point`
+: The pickup point to save.  
+
+**Return Values**
+
+`void`
+
+
 
 
 <hr />
