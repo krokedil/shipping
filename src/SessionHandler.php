@@ -207,6 +207,11 @@ class SessionHandler {
 			return $default;
 		}
 
+		// Only if the chosen shipping or payment method enables this.
+		if ( apply_filters( 'krokedil_shipping_should_verify_shipping', false, $default, $rates, $chosen_method ) ) {
+			return $default;
+		}
+
 		// This covers for situations where the shipping rate packages may be changed through a hook, which may result in an incorrect shipping method change assessment.
 		if ( empty( $chosen_method ) || $default === $chosen_method ) {
 			return $default;
