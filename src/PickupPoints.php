@@ -211,11 +211,10 @@ class PickupPoints implements PickupPointServiceInterface {
 		$this->save_shipping_rate_data( $rate, $data );
 	}
 
-		/**
+	/**
 	 * Save the selected pickup point for a specific rate.
 	 *
-	 * @param \WC_Shipping_Rate $rate The WooCommerce shipping rate to save the selected pickup point to.
-	 * @param PickupPoint       $pickup_point The pickup point to save.
+	 * @param PickupPoint $pickup_point The pickup point to save.
 	 *
 	 * @return void
 	 */

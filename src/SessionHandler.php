@@ -178,7 +178,7 @@ class SessionHandler {
 		foreach ( $rates as $rate ) {
 			$pickup_point = $pickup_points_service->get_pickup_point_from_rate_by_id( $rate, $session_pickup_point_id );
 
-			if(empty($pickup_point)) {
+			if ( empty( $pickup_point ) ) {
 				continue;
 			}
 
