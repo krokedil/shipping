@@ -1,5 +1,8 @@
 <?php
+namespace Krokedil\Shipping\Tests\Admin;
+
 use Krokedil\Shipping\Admin\EditOrderPage;
+use Krokedil\Shipping\Tests\BaseTestCase;
 
 class EditOrderPageTest extends BaseTestCase {
 	/**
@@ -10,9 +13,9 @@ class EditOrderPageTest extends BaseTestCase {
 	public function testConstructor() {
 		$this->mockPickupPointService();
 		$editOrderPage = new EditOrderPage( $this->mockPickupPointService );
-		WP_Mock::expectActionAdded( 'add_meta_boxes', array( $editOrderPage, 'add_shipping_metabox' ), 10, 2 );
-		WP_Mock::expectActionAdded( 'ks_metabox_content', array( $editOrderPage, 'print_selected_pickup_point_info' ), 10, 2 );
-		WP_Mock::expectActionAdded( 'ks_metabox_content', array( $editOrderPage, 'print_selected_pickup_point_selection' ), 20, 2 );
+		\WP_Mock::expectActionAdded( 'add_meta_boxes', array( $editOrderPage, 'add_shipping_metabox' ), 10, 2 );
+		\WP_Mock::expectActionAdded( 'ks_metabox_content', array( $editOrderPage, 'print_selected_pickup_point_info' ), 10, 2 );
+		\WP_Mock::expectActionAdded( 'ks_metabox_content', array( $editOrderPage, 'print_selected_pickup_point_selection' ), 20, 2 );
 		$editOrderPage->init();
 		$this->assertInstanceOf( EditOrderPage::class, $editOrderPage );
 	}
@@ -20,14 +23,14 @@ class EditOrderPageTest extends BaseTestCase {
 	public function testCanAddShippingMetabox() {
 		$this->mockPickupPointService();
 		$this->editOrderPage = new EditOrderPage( $this->mockPickupPointService );
-		$order = Mockery::mock( 'alias:WC_Order' );
-		$shippingLine = Mockery::mock( 'alias:WC_Order_Item_Shipping' );
+		$order = \Mockery::mock( 'alias:WC_Order' );
+		$shippingLine = \Mockery::mock( 'alias:WC_Order_Item_Shipping' );
 		$this->mockPickupPointService
 			->shouldReceive( 'get_shipping_lines_from_order' )
 			->with($order)
 			->once()
 			->andReturn( array( $shippingLine ) );
-		WP_Mock::userFunction( 'add_meta_box' )
+		\WP_Mock::userFunction( 'add_meta_box' )
 			->once()
 			->with(
 				'krokedil_shipping',
@@ -46,8 +49,8 @@ class EditOrderPageTest extends BaseTestCase {
 	public function testRenderShippingMetabox() {
 		$this->mockPickupPointService();
 		$this->editOrderPage = new EditOrderPage( $this->mockPickupPointService );
-		$order = Mockery::mock( 'alias:WC_Order' );
-		$shippingLine = Mockery::mock( 'alias:WC_Order_Item_Shipping' );
+		$order = \Mockery::mock( 'alias:WC_Order' );
+		$shippingLine = \Mockery::mock( 'alias:WC_Order_Item_Shipping' );
 		$shippingLine->shouldReceive( 'get_id' )
 			->andReturn( '123' )
 			->once();
@@ -66,8 +69,8 @@ class EditOrderPageTest extends BaseTestCase {
 		$this->mockPickupPointService();
 
 		$this->editOrderPage = new EditOrderPage( $this->mockPickupPointService );
-		$order               = Mockery::mock( 'alias:WC_Order' );
-		$shippingLine        = Mockery::mock( 'alias:WC_Order_Item_Shipping' );
+		$order               = \Mockery::mock( 'alias:WC_Order' );
+		$shippingLine        = \Mockery::mock( 'alias:WC_Order_Item_Shipping' );
 
 		$shippingLine->shouldReceive( 'get_id' )
 			->andReturn( '123' )
@@ -81,7 +84,7 @@ class EditOrderPageTest extends BaseTestCase {
 			->andReturn( array( $shippingLine ) )
 			->once();
 
-		WP_Mock::userFunction( 'wp_kses_post' )->once();
+		\WP_Mock::userFunction( 'wp_kses_post' )->once();
 
 		ob_start();
 		$this->editOrderPage->print_selected_pickup_point_info( $order, $shippingLine );

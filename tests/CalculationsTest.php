@@ -1,4 +1,6 @@
 <?php
+namespace Krokedil\Shipping\Tests;
+
 use Krokedil\Shipping\Calculations;
 
 class CalculationsTest extends BaseTestCase {
@@ -48,7 +50,7 @@ class CalculationsTest extends BaseTestCase {
 			),
 		);
 
-		$this->mockTax = Mockery::mock( 'alias:WC_Tax' );
+		$this->mockTax = \Mockery::mock( 'alias:WC_Tax' );
 		$this->mockTax->shouldReceive( 'get_shipping_tax_rates' )
 			->andReturn( array(
 				$this->rates['25'],

@@ -1,4 +1,6 @@
 <?php
+namespace Krokedil\Shipping\Tests\Traits;
+
 use Krokedil\Shipping\Traits\ArrayFormat;
 use WP_Mock\Tools\TestCase;
 

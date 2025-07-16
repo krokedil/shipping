@@ -20,6 +20,11 @@
             "Krokedil\\Shipping\\": "src/"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "Krokedil\\Shipping\\Tests\\": "tests/"
+        }
+    },
     "archive": {
         "exclude": [
             "tests/*",
