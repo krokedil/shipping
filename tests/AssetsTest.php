@@ -1,23 +1,25 @@
 <?php
+namespace Krokedil\Shipping\Tests;
+
 use Krokedil\Shipping\Assets;
 
 class AssetsTest extends BaseTestCase {
 	public function testCanRegisterAssets() {
 		$this->expectNotToPerformAssertions();
-		WP_Mock::userFunction(
+		\WP_Mock::userFunction(
 			'plugin_dir_url',
 			array(
 				'times'  => 1,
 				'return' => 'test',
 			)
 		);
-		WP_Mock::userFunction(
+		\WP_Mock::userFunction(
 			'wp_register_script',
 			array(
 				'times' => 2,
 			)
 		);
-		WP_Mock::userFunction(
+		\WP_Mock::userFunction(
 			'wp_register_style',
 			array(
 				'times' => 2,
@@ -31,43 +33,43 @@ class AssetsTest extends BaseTestCase {
 	public function testCanEnqueueAssets() {
 		$this->expectNotToPerformAssertions();
 		// Create a mock for WC_AJAX and the get_endpoint static method.
-		$mock = Mockery::mock( 'alias:WC_AJAX' );
+		$mock = \Mockery::mock( 'alias:WC_AJAX' );
 		$mock->shouldReceive( 'get_endpoint' )->andReturn( 'test' );
 
-		WP_Mock::userFunction(
+		\WP_Mock::userFunction(
 			'plugin_dir_url',
 			array(
 				'times'  => 1,
 				'return' => 'test',
 			)
 		);
-		WP_Mock::userFunction(
+		\WP_Mock::userFunction(
 			'is_checkout',
 			array(
 				'times'  => 1,
 				'return' => true,
 			)
 		);
-		WP_Mock::userFunction(
+		\WP_Mock::userFunction(
 			'wp_create_nonce',
 			array(
 				'times'  => 1,
 				'return' => 'test',
 			)
 		);
-		WP_Mock::userFunction(
+		\WP_Mock::userFunction(
 			'wp_localize_script',
 			array(
 				'times' => 1,
 			)
 		);
-		WP_Mock::userFunction(
+		\WP_Mock::userFunction(
 			'wp_enqueue_script',
 			array(
 				'times' => 1,
 			)
 		);
-		WP_Mock::userFunction(
+		\WP_Mock::userFunction(
 			'wp_enqueue_style',
 			array(
 				'times' => 1,
@@ -81,7 +83,7 @@ class AssetsTest extends BaseTestCase {
 	public function testDoesNotEnqueueOnNonCheckoutPages() {
 		$this->expectNotToPerformAssertions();
 
-		WP_Mock::userFunction(
+		\WP_Mock::userFunction(
 			'plugin_dir_url',
 			array(
 				'times'  => 1,
@@ -89,7 +91,7 @@ class AssetsTest extends BaseTestCase {
 			)
 		);
 
-		WP_Mock::userFunction(
+		\WP_Mock::userFunction(
 			'is_checkout',
 			array(
 				'times'  => 1,
@@ -97,7 +99,7 @@ class AssetsTest extends BaseTestCase {
 			)
 		);
 
-		WP_Mock::userFunction(
+		\WP_Mock::userFunction(
 			'wp_create_nonce',
 			array(
 				'times'  => 0,

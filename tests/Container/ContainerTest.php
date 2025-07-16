@@ -1,6 +1,10 @@
 <?php
+namespace Krokedil\Shipping\Tests\Container;
+
 use Krokedil\Shipping\Container\Container;
 use Krokedil\Shipping\Container\Exceptions\NotFoundException;
+use Krokedil\Shipping\Tests\BaseTestCase;
+use stdClass;
 
 class ContainerTest extends BaseTestCase {
 	private $container;

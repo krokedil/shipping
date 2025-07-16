@@ -52,6 +52,7 @@ class PickupPoints implements PickupPointServiceInterface {
 		// Setup the container with the dependent services.
 		$this->container = Container::get_instance();
 
+		$this->container->add( 'pickup-points', $this );
 		$this->container->add( 'session-handler', new SessionHandler() );
 		$this->container->add( 'ajax', new AJAX() );
 		$this->container->add( 'assets', new Assets() );
@@ -206,7 +207,28 @@ class PickupPoints implements PickupPointServiceInterface {
 			'krokedil_selected_pickup_point_id' => $pickup_point->get_id(),
 		);
 
+		$this->save_selected_pickup_point_to_session( $pickup_point );
 		$this->save_shipping_rate_data( $rate, $data );
+	}
+
+	/**
+	 * Save the selected pickup point for a specific rate.
+	 *
+	 * @param PickupPoint $pickup_point The pickup point to save.
+	 *
+	 * @return void
+	 */
+	public function save_selected_pickup_point_to_session( $pickup_point ) {
+		$pickup_point_json = $this->to_json( $pickup_point );
+
+		$data = array(
+			'krokedil_selected_pickup_point'    => $pickup_point_json,
+			'krokedil_selected_pickup_point_id' => $pickup_point->get_id(),
+		);
+
+		// Save the data to the session 'krokedil_selected_pickup_point' and 'krokedil_selected_pickup_point_id'.
+		WC()->session->set( 'krokedil_selected_pickup_point', $data['krokedil_selected_pickup_point'] );
+		WC()->session->set( 'krokedil_selected_pickup_point_id', $data['krokedil_selected_pickup_point_id'] );
 	}
 
 	/**
@@ -217,12 +239,70 @@ class PickupPoints implements PickupPointServiceInterface {
 	 * @return PickupPoint|bool
 	 */
 	public function get_selected_pickup_point_from_rate( $rate ) {
+		// Try to get the selected pickup point id from the session if it exists.
+		$session_pickup_point_id = WC()->session->get( 'krokedil_selected_pickup_point_id' );
+
+		// See if the rate still has the pickup point for the sessions selected id.
+		if ( $session_pickup_point_id ) {
+			$session_pickup_point = $this->get_pickup_point_from_rate_by_id( $rate, $session_pickup_point_id );
+
+			// Return the pickup point if it exists in the rate.
+			if ( $session_pickup_point ) {
+				return $session_pickup_point;
+			}
+		}
+
 		$meta_data = $rate->get_meta_data();
 		if ( ! array_key_exists( 'krokedil_selected_pickup_point', $meta_data ) ) {
 			return false;
 		}
 
 		$pickup_point_array = $this->json_to_array( $meta_data['krokedil_selected_pickup_point'] );
+
+		return new PickupPoint( $pickup_point_array );
+	}
+
+	/**
+	 * Get the selected pickup point from the session for a rate.
+	 *
+	 * @param \WC_Shipping_Rate $rate The WooCommerce shipping rate to get the selected pickup point from.
+	 *
+	 * @return PickupPoint|bool
+	 */
+	public function get_selected_pickup_point_from_rate_session( $rate ) {
+		// Try to get the selected pickup point id from the session if it exists.
+		$session_pickup_point_id = WC()->session->get( 'krokedil_selected_pickup_point_id' );
+
+		// See if the rate still has the pickup point for the sessions selected id.
+		if ( empty( $session_pickup_point_id ) ) {
+			return false;
+		}
+
+		$session_pickup_point = $this->get_pickup_point_from_rate_by_id( $rate, $session_pickup_point_id );
+
+		// Return the pickup point if it exists in the rate.
+		if ( empty( $session_pickup_point ) ) {
+			return false;
+		}
+
+		return $session_pickup_point;
+	}
+
+	/**
+	 * Get the selected pickup point from the session.
+	 *
+	 * @return PickupPoint|bool
+	 */
+	public function get_selected_pickup_point_from_session() {
+		// Try to get the selected pickup point from the session.
+		$session_pickup_point = WC()->session->get( 'krokedil_selected_pickup_point' );
+
+		// See if the rate still has the pickup point for the sessions selected id.
+		if ( empty( $session_pickup_point ) ) {
+			return false;
+		}
+
+		$pickup_point_array = $this->json_to_array( $session_pickup_point['krokedil_selected_pickup_point'] );
 
 		return new PickupPoint( $pickup_point_array );
 	}

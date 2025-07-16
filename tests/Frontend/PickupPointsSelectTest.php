@@ -1,8 +1,12 @@
 <?php
+namespace Krokedil\Shipping\Tests\Frontend;
+
+use Exception;
 use Krokedil\Shipping\Frontend\PickupPointSelect;
 use Krokedil\Shipping\PickupPoint\PickupPoint;
+use Krokedil\Shipping\Tests\BaseTestCase;
 
-class PickupPointSelectTest extends BaseTestCase {
+class PickupPointsSelectTest extends BaseTestCase {
 	private $pickupPointSelect;
 
 	public function setUp(): void {
@@ -23,7 +27,7 @@ class PickupPointSelectTest extends BaseTestCase {
 
 		$rate = $this->mockShippingRate();
 
-		WP_Mock::userFunction(
+		\WP_Mock::userFunction(
 			'selected',
 			array(
 				'times' => 1,
@@ -79,7 +83,7 @@ class PickupPointSelectTest extends BaseTestCase {
 		$this->mockPickupPointService->shouldReceive( 'get_pickup_point_from_rate_by_id' )->with( $rate, '123' )->once()->andReturn( $pickupPointObj );
 		$this->mockPickupPointService->shouldReceive( 'save_selected_pickup_point_to_rate' )->with( $rate, $pickupPointObj )->once()->andReturn( null );
 
-		WP_Mock::userFunction(
+		\WP_Mock::userFunction(
 			'is_wp_error',
 			array(
 				'times'  => 1,
@@ -87,7 +91,7 @@ class PickupPointSelectTest extends BaseTestCase {
 			)
 		);
 
-		WP_Mock::userFunction(
+		\WP_Mock::userFunction(
 			'wp_send_json_success',
 			array(
 				'times' => 1,
@@ -112,7 +116,7 @@ class PickupPointSelectTest extends BaseTestCase {
 		$this->expectException( Exception::class );
 		$_POST = array();
 
-		WP_Mock::userFunction( 'wp_send_json_error' )->once()->andThrows( new Exception() );
+		\WP_Mock::userFunction( 'wp_send_json_error' )->once()->andThrows( new Exception() );
 
 		$this->pickupPointSelect->set_selected_pickup_point_ajax();
 	}

@@ -1,4 +1,6 @@
 <?php
+namespace Krokedil\Shipping\Tests;
+
 use Krokedil\Shipping\SessionHandler;
 
 class SessionHandlerTest extends BaseTestCase {
@@ -46,7 +48,7 @@ class SessionHandlerTest extends BaseTestCase {
 		$this->mockSession->shouldReceive( '__unset' )->times( 3 );
 		$this->mockShipping->shouldReceive( 'calculate_shipping_for_package' )->times( 3 );
 
-		$packages = [ 
+		$packages = [
 			[ 'rates' => [] ],
 			[ 'rates' => [] ],
 			[ 'rates' => [] ],
@@ -70,7 +72,7 @@ class SessionHandlerTest extends BaseTestCase {
 	}
 
 	public function testPackageRatesHandlerUpdatesRatesWithData() {
-		$rateData = [ 
+		$rateData = [
 			'rate_id1' => [ 'meta_key1' => 'meta_value1' ],
 			'rate_id2' => [ 'meta_key2' => 'meta_value2' ],
 		];
@@ -104,6 +106,6 @@ class SessionHandlerTest extends BaseTestCase {
 
 	public function tearDown(): void {
 		parent::tearDown();
-		Mockery::close();
+		\Mockery::close();
 	}
 }
