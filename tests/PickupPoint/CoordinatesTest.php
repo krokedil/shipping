@@ -1,4 +1,6 @@
 <?php
+namespace Krokedil\Shipping\Tests\PickupPoint;
+
 use Krokedil\Shipping\PickupPoint\Coordinates;
 use WP_Mock\Tools\TestCase;
 

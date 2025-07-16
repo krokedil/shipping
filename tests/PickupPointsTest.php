@@ -1,4 +1,6 @@
 <?php
+namespace Krokedil\Shipping\Tests;
+
 use Krokedil\Shipping\PickupPoint\PickupPoint;
 use Krokedil\Shipping\PickupPoints;
 use Krokedil\Shipping\Container\Container;
@@ -18,14 +20,14 @@ class PickupPointsTest extends BaseTestCase {
 		$this->mockShipping->allows( 'calculate_shipping_for_package' )->andReturn( null );
 		$this->mockSession->allows( '__unset' )->andReturn( null );
 
-		WP_Mock::userFunction( 'plugin_dir_url' )->andReturn( 'http://example.com/wp-content/plugins/my-plugin/' );
+		\WP_Mock::userFunction( 'plugin_dir_url' )->andReturn( 'http://example.com/wp-content/plugins/my-plugin/' );
 
-		WP_Mock::userFunction( 'wp_create_nonce', array(
+		\WP_Mock::userFunction( 'wp_create_nonce', array(
 			'args'   => array( 'krokedil_shipping_set_selected_pickup_point' ),
 			'return' => 'some_nonce',
 		) );
 
-		$wcAjaxMock = Mockery::mock( 'alias:WC_AJAX' );
+		$wcAjaxMock = \Mockery::mock( 'alias:WC_AJAX' );
 		$wcAjaxMock->shouldReceive( 'get_endpoint' )
 			->with( 'krokedil_shipping_set_selected_pickup_point' )
 			->andReturn( 'some_url' );
@@ -74,8 +76,8 @@ class PickupPointsTest extends BaseTestCase {
 			->with( 'krokedil_pickup_points', json_encode( array( self::$pickupPoint ) ) )
 			->once();
 
-		WP_Mock::userFunction( 'doing_action' )->andReturn( true );
-		WP_Mock::userFunction( 'doing_filter', )->andReturn( true );
+		\WP_Mock::userFunction( 'doing_action' )->andReturn( true );
+		\WP_Mock::userFunction( 'doing_filter', )->andReturn( true );
 
 		$pickupPoint = new PickupPoint( self::$pickupPoint );
 
@@ -91,8 +93,8 @@ class PickupPointsTest extends BaseTestCase {
 		$rate->shouldReceive( 'get_meta_data' )
 			->andReturn( array(  ) )
 			->once();
-		WP_Mock::userFunction( 'doing_action' )->andReturn( false );
-		WP_Mock::userFunction( 'doing_filter', )->andReturn( false );
+		\WP_Mock::userFunction( 'doing_action' )->andReturn( false );
+		\WP_Mock::userFunction( 'doing_filter', )->andReturn( false );
 
 		$pickupPoint = new PickupPoint( self::$pickupPoint );
 
@@ -129,8 +131,8 @@ class PickupPointsTest extends BaseTestCase {
 
 		$pickupPoint = new PickupPoint( self::$pickupPoint );
 
-		WP_Mock::userFunction( 'doing_action' )->andReturn( true );
-		WP_Mock::userFunction( 'doing_filter', )->andReturn( true );
+		\WP_Mock::userFunction( 'doing_action' )->andReturn( true );
+		\WP_Mock::userFunction( 'doing_filter', )->andReturn( true );
 
 		$rate = $this->mockShippingRate();
 		$rate->shouldReceive( 'add_meta_data' )
@@ -169,8 +171,8 @@ class PickupPointsTest extends BaseTestCase {
 	public function testRemovePickupPointFromRate() {
 		$rate = $this->mockShippingRate();
 
-		WP_Mock::userFunction( 'doing_action' )->andReturn( true );
-		WP_Mock::userFunction( 'doing_filter', )->andReturn( true );
+		\WP_Mock::userFunction( 'doing_action' )->andReturn( true );
+		\WP_Mock::userFunction( 'doing_filter', )->andReturn( true );
 
 		$pickupPoint2       = self::$pickupPoint;
 		$pickupPoint2['id'] = '321';
@@ -215,8 +217,8 @@ class PickupPointsTest extends BaseTestCase {
 		$this->mockSessionSetSelectedPickupPoint(self::$pickupPoint);
 		$rate = $this->mockShippingRate();
 
-		WP_Mock::userFunction( 'doing_action' )->andReturn( true );
-		WP_Mock::userFunction( 'doing_filter', )->andReturn( true );
+		\WP_Mock::userFunction( 'doing_action' )->andReturn( true );
+		\WP_Mock::userFunction( 'doing_filter', )->andReturn( true );
 
 		$rate->shouldReceive( 'add_meta_data' )
 			->with( 'krokedil_selected_pickup_point', json_encode( self::$pickupPoint ) )

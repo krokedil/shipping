@@ -1,9 +1,12 @@
 <?php
+namespace Krokedil\Shipping\Tests\PickupPoint;
+
 use Krokedil\Shipping\PickupPoint\PickupPoint;
 use Krokedil\Shipping\PickupPoint\Address;
 use Krokedil\Shipping\PickupPoint\Coordinates;
 use Krokedil\Shipping\PickupPoint\OpenHours;
 use Krokedil\Shipping\PickupPoint\EstimatedTimeOfArrival;
+use Krokedil\Shipping\Tests\BaseTestCase;
 
 class PickupPointTest extends BaseTestCase {
 

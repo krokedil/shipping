@@ -1,4 +1,6 @@
 <?php
+namespace Krokedil\Shipping\Tests\PickupPoint;
+
 use Krokedil\Shipping\PickupPoint\EstimatedTimeOfArrival;
 use WP_Mock\Tools\TestCase;
 
