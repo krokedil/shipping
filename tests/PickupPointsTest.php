@@ -33,6 +33,24 @@ class PickupPointsTest extends BaseTestCase {
 		$this->pickupPoints = new PickupPoints( '', true );
 	}
 
+	public function mockSessionGetAndSetSelectedPickupPoint( $pickupPoint ) {
+		$this->mockSession->shouldReceive( 'get')->with( 'krokedil_selected_pickup_point_id' )->andReturn( null )->once();
+		$this->mockSession->shouldReceive( 'set')->with( 'krokedil_selected_pickup_point_id', $pickupPoint['id'] )->once();
+		$this->mockSession->shouldReceive( 'set')->with( 'krokedil_selected_pickup_point', json_encode($pickupPoint) )->once();
+		$this->mockWooCommerce();
+	}
+
+	public function mockSessionGetSelectedPickupPoint() {
+		$this->mockSession->shouldReceive( 'get')->with( 'krokedil_selected_pickup_point_id' )->andReturn( null )->once();
+		$this->mockWooCommerce();
+	}
+
+	public function mockSessionSetSelectedPickupPoint( $pickupPoint ) {
+		$this->mockSession->shouldReceive( 'set')->with( 'krokedil_selected_pickup_point_id', $pickupPoint['id'] )->once();
+		$this->mockSession->shouldReceive( 'set')->with( 'krokedil_selected_pickup_point', json_encode($pickupPoint) )->once();
+		$this->mockWooCommerce();
+	}
+
 	public function testGetContainer() {
 		$result = $this->pickupPoints->get_container();
 
@@ -40,6 +58,8 @@ class PickupPointsTest extends BaseTestCase {
 	}
 
 	public function testSavePickupPointsToRate() {
+		$this->mockSessionGetAndSetSelectedPickupPoint( self::$pickupPoint );
+
 		$rate = $this->mockShippingRate();
 		$rate->shouldReceive( 'get_meta_data' )
 			->andReturn( array(  ) )
@@ -65,6 +85,8 @@ class PickupPointsTest extends BaseTestCase {
 	}
 
 	public function testSavePickupPointsToRateForceSave() {
+		$this->mockSessionGetAndSetSelectedPickupPoint( self::$pickupPoint );
+
 		$rate = $this->mockShippingRate();
 		$rate->shouldReceive( 'get_meta_data' )
 			->andReturn( array(  ) )
@@ -103,6 +125,8 @@ class PickupPointsTest extends BaseTestCase {
 	}
 
 	public function testAddPickupPointToRate() {
+		$this->mockSessionGetAndSetSelectedPickupPoint( self::$pickupPoint );
+
 		$pickupPoint = new PickupPoint( self::$pickupPoint );
 
 		WP_Mock::userFunction( 'doing_action' )->andReturn( true );
@@ -151,6 +175,7 @@ class PickupPointsTest extends BaseTestCase {
 		$pickupPoint2       = self::$pickupPoint;
 		$pickupPoint2['id'] = '321';
 
+		$this->mockSessionGetAndSetSelectedPickupPoint($pickupPoint2);
 		$toRemove = new PickupPoint( self::$pickupPoint );
 
 		$rate->shouldReceive( 'get_meta_data' )
@@ -187,6 +212,7 @@ class PickupPointsTest extends BaseTestCase {
 	}
 
 	public function testSaveSelectedPickupPointToRate() {
+		$this->mockSessionSetSelectedPickupPoint(self::$pickupPoint);
 		$rate = $this->mockShippingRate();
 
 		WP_Mock::userFunction( 'doing_action' )->andReturn( true );
@@ -207,6 +233,7 @@ class PickupPointsTest extends BaseTestCase {
 	}
 
 	public function testGetSelectedPickupPointFromRate() {
+		$this->mockSessionGetSelectedPickupPoint();
 		$rate = $this->mockShippingRate();
 
 		$rate->shouldReceive( 'get_meta_data' )
@@ -219,6 +246,7 @@ class PickupPointsTest extends BaseTestCase {
 	}
 
 	public function testGetSelectedPickupPointFromRateFalseIfNoSelectedExists() {
+		$this->mockSessionGetSelectedPickupPoint();
 		$rate = $this->mockShippingRate();
 
 		$rate->shouldReceive( 'get_meta_data' )
