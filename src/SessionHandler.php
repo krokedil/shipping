@@ -208,7 +208,7 @@ class SessionHandler {
 		}
 
 		// Only if the chosen shipping or payment method enables this.
-		if ( apply_filters( 'krokedil_shipping_should_verify_shipping', false, $default, $rates, $chosen_method ) ) {
+		if ( ! apply_filters( 'krokedil_shipping_should_verify_shipping', false, $default, $rates, $chosen_method ) ) {
 			return $default;
 		}
 
