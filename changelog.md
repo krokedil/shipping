@@ -8,6 +8,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ------------------
+## [2.3.2] - 2025-10-14
+
+### Fixed
+* Add array as default value to chosen_shipping_methods in render pickup point selector method to avoid PHP errors.
+
 ## [2.3.1] - 2025-09-16
 
 ### Fixed
