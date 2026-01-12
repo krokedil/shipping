@@ -28,12 +28,12 @@ class ShippingRateOutput {
 	/**
 	 * Returns true if the element should be output for the shipping rate.
 	 *
-	 * @param string $element
+	 * @param string            $element
 	 * @param \WC_Shipping_Rate $shipping_rate
 	 */
 	public function should_output( $element, $shipping_rate ) {
 		// Only if this is the selected shipping rate.
-		if ( ! in_array( $shipping_rate->get_id(), WC()->session->get( 'chosen_shipping_methods' ), true ) ) {
+		if ( ! in_array( $shipping_rate->get_id(), WC()->session->get( 'chosen_shipping_methods' ) ?? array(), true ) ) {
 			return false;
 		}
 
@@ -56,7 +56,7 @@ class ShippingRateOutput {
 		// Get the description for the shipping rate.
 		$description = $this->shipping_rate_service->get_shipping_rate_description( $shipping_rate );
 
-		if ( ! empty( $description ) && 0 === did_action('krokedil_shipping_before_rate_description') ) {
+		if ( ! empty( $description ) && 0 === did_action( 'krokedil_shipping_before_rate_description' ) ) {
 			do_action( 'krokedil_shipping_before_rate_description' );
 			echo '<div class="krokedil_shipping_description">' . wp_kses_post( $description ) . '</div>';
 			do_action( 'krokedil_shipping_after_rate_description' );
