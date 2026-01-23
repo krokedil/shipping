@@ -8,6 +8,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ------------------
+## [2.3.3] - 2026-01-23
+
+### Fixed
+* Add array as default value to chosen_shipping_methods in the shipping rate output method to avoid PHP errors. 
+
 ## [2.3.2] - 2025-10-14
 
 ### Fixed
