@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 * Added support for setting the shipping carrier to the rate using the ShippingRate class.
 
+### Fixed
+* Fixed an issue where the selected pickup point was reset when shipping methods were updated save_pickup_points_to_rate now sets the krokedil_pickup_points rate metadata before checking for the previously selected pickup point.
+
 ------------------
 ## [2.3.3] - 2026-01-23
 
