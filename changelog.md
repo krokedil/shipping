@@ -6,13 +6,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+------------------
+
+## [2.4.0] - 2026-04-29
+
 ### Added
 * Added support for setting the shipping carrier to the rate using the ShippingRate class.
+* Added filter krokedil_shipping_pickup_point_name so other plugins can modify the pickup point name.
 
 ### Fixed
 * Fixed an issue where the selected pickup point was reset when shipping methods were updated save_pickup_points_to_rate now sets the krokedil_pickup_points rate metadata before checking for the previously selected pickup point.
 
-------------------
 ## [2.3.3] - 2026-01-23
 
 ### Fixed
