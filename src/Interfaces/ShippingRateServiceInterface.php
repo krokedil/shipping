@@ -26,10 +26,18 @@ interface ShippingRateServiceInterface {
 	/**
 	 * Save the description for a shipping rate.
 	 *
-	 * @param \WC_Shipping_Rate $rate The shipping rate to save the description for.
+	 * @param \WC_Shipping_Rate $rate The shipping rate to save the description to.
 	 * @param string $description The description to save.
 	 */
 	public function save_shipping_rate_description( $rate, $description );
+
+	/**
+	 * Save the carrier for a shipping rate.
+	 *
+	 * @param \WC_Shipping_Rate $rate The shipping rate to save the carrier to.
+	 * @param string $carrier The carrier to save.
+	 */
+	public function save_shipping_rate_carrier( $rate, $carrier );
 
 	/**
 	 * Get the description for a shipping rate.
@@ -39,4 +47,13 @@ interface ShippingRateServiceInterface {
 	 * @return string
 	 */
 	public function get_shipping_rate_description( $rate );
+
+	/**
+	 * Get the carrier for a shipping rate.
+	 *
+	 * @param \WC_Shipping_Rate $rate The shipping rate to get the carrier for.
+	 *
+	 * @return string
+	 */
+	public function get_shipping_rate_carrier( $rate );
 }

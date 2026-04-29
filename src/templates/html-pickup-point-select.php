@@ -17,7 +17,7 @@ if ( empty( $pickup_points ) ) {
 		<?php foreach ( $pickup_points as $pickup_point ) : ?>
 			<option class="krokedil_shipping_pickup_point__option"
 				value="<?php echo esc_attr( $pickup_point->get_id() ); ?>" <?php selected( $pickup_point->get_id(), $selected_pickup_point ? $selected_pickup_point->get_id() : $pickup_points[0]->get_id() ); ?>>
-				<?php echo esc_html( $pickup_point->get_name() ); ?>
+				<?php echo esc_html( apply_filters( 'krokedil_shipping_pickup_point_name', $pickup_point->get_name(), $pickup_point, $rate_id, $selected_pickup_point ) ); ?>
 			</option>
 		<?php endforeach; ?>
 	</select>
