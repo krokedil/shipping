@@ -19,6 +19,7 @@ class ShippingRate implements ShippingRateServiceInterface {
 	 */
 	private $args = array(
 		'show_description' => true,
+		'show_carrier'     => false,
 	);
 
 	/**
@@ -68,6 +69,7 @@ class ShippingRate implements ShippingRateServiceInterface {
 		}
 
 		$hidden_order_itemmeta[] = 'krokedil_description';
+		$hidden_order_itemmeta[] = 'krokedil_carrier';
 
 		return $hidden_order_itemmeta;
 	}
@@ -108,5 +110,29 @@ class ShippingRate implements ShippingRateServiceInterface {
 	 */
 	public function should_output( $element ) {
 		return $this->args[ "show_{$element}" ];
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public function save_shipping_rate_carrier( $rate, $carrier ) {
+		// If the carrier is empty, return.
+		if ( empty( $carrier ) ) {
+			return;
+		}
+
+		$this->save_shipping_rate_data( $rate, array( 'krokedil_carrier' => $carrier ) );
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public function get_shipping_rate_carrier( $rate ) {
+		$meta_data = $rate->get_meta_data();
+		if ( ! array_key_exists( 'krokedil_carrier', $meta_data ) ) {
+			return '';
+		}
+
+		return $meta_data['krokedil_carrier'];
 	}
 }
