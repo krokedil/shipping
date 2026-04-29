@@ -90,34 +90,33 @@ class PickupPoints implements PickupPointServiceInterface {
 	private $packages = null;
 
 	/**
-     * Save the pickup points for a specific rate.
-     *
-     * @param \WC_Shipping_Rate  $rate The WooCommerce shipping rate to save the pickup points to.
-     * @param array<PickupPoint> $pickup_points The pickup points to save.
-     *
-     * @return void
-     */
-    public function save_pickup_points_to_rate( $rate, $pickup_points )
-    {
-        $pickup_points_json = $this->to_json( $pickup_points );
-        $data               = array( 'krokedil_pickup_points' => $pickup_points_json );
-        $rate->add_meta_data( 'krokedil_pickup_points', $pickup_points_json );
+	 * Save the pickup points for a specific rate.
+	 *
+	 * @param \WC_Shipping_Rate  $rate The WooCommerce shipping rate to save the pickup points to.
+	 * @param array<PickupPoint> $pickup_points The pickup points to save.
+	 *
+	 * @return void
+	 */
+	public function save_pickup_points_to_rate( $rate, $pickup_points ) {
+		$pickup_points_json = $this->to_json( $pickup_points );
+		$data               = array( 'krokedil_pickup_points' => $pickup_points_json );
+		$rate->add_meta_data( 'krokedil_pickup_points', $pickup_points_json );
 
-        $selected_pickup_point = $this->get_selected_pickup_point_from_rate( $rate );
+		$selected_pickup_point = $this->get_selected_pickup_point_from_rate( $rate );
 
-        // Does the rate have any selected pickup points? If not set the first one as the selected pickup point.
-        if ( ! $selected_pickup_point && ! empty( $pickup_points ) ) {
-            $pickup_point_json = $this->to_json( $pickup_points[0] );
-            $data['krokedil_selected_pickup_point']    = $pickup_point_json;
-            $data['krokedil_selected_pickup_point_id'] = $pickup_points[0]->get_id();
-        } elseif( $selected_pickup_point ) {
-            $data['krokedil_selected_pickup_point_id'] = $selected_pickup_point->get_id();
-            $data['krokedil_selected_pickup_point']    = $this->to_json($selected_pickup_point);
+		// Does the rate have any selected pickup points? If not set the first one as the selected pickup point.
+		if ( ! $selected_pickup_point && ! empty( $pickup_points ) ) {
+			$pickup_point_json                         = $this->to_json( $pickup_points[0] );
+			$data['krokedil_selected_pickup_point']    = $pickup_point_json;
+			$data['krokedil_selected_pickup_point_id'] = $pickup_points[0]->get_id();
+		} elseif ( $selected_pickup_point ) {
+			$data['krokedil_selected_pickup_point_id'] = $selected_pickup_point->get_id();
+			$data['krokedil_selected_pickup_point']    = $this->to_json( $selected_pickup_point );
 
-        }
+		}
 
-        $this->save_shipping_rate_data($rate, $data);
-    }
+		$this->save_shipping_rate_data( $rate, $data );
+	}
 
 	/**
 	 * Get the pickup points for a specific rate.
