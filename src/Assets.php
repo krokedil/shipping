@@ -10,6 +10,13 @@ defined( 'ABSPATH' ) || exit;
  */
 class Assets {
 	/**
+	 * The version used for the registered assets.
+	 *
+	 * @var string
+	 */
+	const VERSION = '2.4.0';
+
+	/**
 	 * The path to the assets directory.
 	 *
 	 * @var string
@@ -32,12 +39,12 @@ class Assets {
 	 */
 	public function register_assets() {
 		// Register the ks_pp scripts and style.
-		wp_register_script( 'ks_pp', $this->assets_path . 'js/pickup-point-select.js', array( 'jquery', 'selectWoo' ), '2.0.0', true );
-		wp_register_style( 'ks_pp', $this->assets_path . 'css/pickup-point-select.css', array( 'select2' ), '2.0.0' );
+		wp_register_script( 'ks_pp', $this->assets_path . 'js/pickup-point-select.js', array( 'jquery', 'selectWoo' ), self::VERSION, true );
+		wp_register_style( 'ks_pp', $this->assets_path . 'css/pickup-point-select.css', array( 'select2' ), self::VERSION );
 
 		// Register the ks_edit_order scripts and style.
-		wp_register_script( 'ks_edit_order', $this->assets_path . 'js/edit-order.js', array( 'jquery', 'selectWoo' ), '2.0.0', true );
-		wp_register_style( 'ks_edit_order', $this->assets_path . 'css/edit-order.css', array(), '2.0.0' );
+		wp_register_script( 'ks_edit_order', $this->assets_path . 'js/edit-order.js', array( 'jquery', 'selectWoo' ), self::VERSION, true );
+		wp_register_style( 'ks_edit_order', $this->assets_path . 'css/edit-order.css', array(), self::VERSION );
 	}
 
 	/**
@@ -71,7 +78,7 @@ class Assets {
 	 * @return void
 	 *
 	 * @codeCoverageIgnore
- 	 * No tests made yet.
+	 * No tests made yet.
 	 */
 	public function enqueue_admin_assets( $hook ) {
 
