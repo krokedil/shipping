@@ -37,7 +37,7 @@ jQuery(function ($) {
      * @return {void}
      */
     initSelectWoo: function () {
-      $(this.selectSelector).selectWoo();
+      $(this.selectSelector).selectWoo({ width: "100%" });
     },
 
     /**

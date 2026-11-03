@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ------------------
 
+## [2.4.1] - 2026-11-03
+
+### Changed
+* Pickup point selector in checkout now uses full width.
+
 ## [2.4.0] - 2026-04-29
 
 ### Added
