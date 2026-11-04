@@ -103,6 +103,12 @@ parameters:
 			path: src/PickupPoints.php
 
 		-
+			message: '#^Property Krokedil\\Shipping\\PickupPoints\:\:\$packages \(array\<mixed\>\|null\) is never assigned array\<mixed\> so it can be removed from the property type\.$#'
+			identifier: property.unusedType
+			count: 1
+			path: src/PickupPoints.php
+
+		-
 			message: '#^Property Krokedil\\Shipping\\PickupPoints\:\:\$packages is never read, only written\.$#'
 			identifier: property.onlyWritten
 			count: 1

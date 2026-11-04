@@ -85,7 +85,7 @@ class PickupPoints implements PickupPointServiceInterface {
 	/**
 	 * A list of all the WooCommerce packages for the current request.
 	 *
-	 * @var array<mixed>
+	 * @var array<mixed>|null
 	 */
 	private $packages = null;
 

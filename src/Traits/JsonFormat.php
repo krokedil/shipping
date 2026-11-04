@@ -15,7 +15,7 @@ trait JsonFormat {
 	 * Convert a JSON string to an array.
 	 *
 	 * @param string $json JSON string.
-	 * @return array<mixed>
+	 * @return mixed
 	 */
 	public function json_to_array( $json ) {
 		return json_decode( $json, true );
