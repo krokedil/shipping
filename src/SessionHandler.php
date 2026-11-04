@@ -195,9 +195,9 @@ class SessionHandler {
 	 * have changed. In our case its better to throw an error for the customer to see, so they can try again
 	 * or select another shipping option.
 	 *
-	 * @param string                   $default The shipping method id that would be set as the default method.
-	 * @param array<\WC_Shipping_Rate> $rates The rates calculated when getting the default shipping method.
-	 * @param string                   $chosen_method The shipping method id that was chosen by the customer.
+	 * @param string $default The shipping method id that would be set as the default method.
+	 * @param array<\WC_Shipping_Rate>  $rates The rates calculated when getting the default shipping method.
+	 * @param string $chosen_method The shipping method id that was chosen by the customer.
 	 *
 	 * @return string
 	 */
@@ -227,7 +227,7 @@ class SessionHandler {
 		}
 
 		// If we are not auto-correcting the shipping method, we return the default, but trigger our action. This is so we can throw the error at a later time.
-		if ( apply_filters( 'krokedil_shipping_changed_throw_error', true, $default, $rates, $chosen_method ) ) {
+		if( apply_filters( 'krokedil_shipping_changed_throw_error', true, $default, $rates, $chosen_method ) ) {
 			do_action( 'krokedil_shipping_changed_error' );
 		}
 
