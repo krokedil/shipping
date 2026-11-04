@@ -1,0 +1,589 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Method Krokedil\\Shipping\\AJAX\:\:__construct\(\) has parameter \$events with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/AJAX.php
+
+		-
+			message: '#^Method Krokedil\\Shipping\\AJAX\:\:add_ajax_events\(\) has parameter \$events with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/AJAX.php
+
+		-
+			message: '#^Property Krokedil\\Shipping\\AJAX\:\:\$get_payload is unused\.$#'
+			identifier: property.unused
+			count: 1
+			path: src/AJAX.php
+
+		-
+			message: '#^Argument of an invalid type array\<Krokedil\\Shipping\\PickupPoint\\PickupPoint\>\|true supplied for foreach, only iterables are supported\.$#'
+			identifier: foreach.nonIterable
+			count: 2
+			path: src/Admin/EditOrderPage.php
+
+		-
+			message: '#^Instanceof between WC_Order_Item_Shipping and WC_Order_Item_Shipping will always evaluate to true\.$#'
+			identifier: instanceof.alwaysTrue
+			count: 1
+			path: src/Admin/EditOrderPage.php
+
+		-
+			message: '#^Method Krokedil\\Shipping\\Admin\\EditOrderPage\:\:render_shipping_metabox\(\) has parameter \$args with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Admin/EditOrderPage.php
+
+		-
+			message: '#^Parameter \#1 \$item of class WC_Order_Item_Shipping constructor expects array\|int\|object, string\|false\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Admin/EditOrderPage.php
+
+		-
+			message: '#^Parameter \#1 \$order of method Krokedil\\Shipping\\Admin\\EditOrderPage\:\:print_selected_pickup_point_info\(\) expects WC_Order, WC_Order\|WC_Order_Refund\|false given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Admin/EditOrderPage.php
+
+		-
+			message: '#^Parameter \#1 \$text of function esc_html expects string, int given\.$#'
+			identifier: argument.type
+			count: 5
+			path: src/Admin/EditOrderPage.php
+
+		-
+			message: '#^Parameter \#2 \$value of method WC_Data\:\:update_meta_data\(\) expects array\|string, string\|false given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Admin/EditOrderPage.php
+
+		-
+			message: '#^Method Krokedil\\Shipping\\Assets\:\:enqueue_assets\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Assets.php
+
+		-
+			message: '#^Method Krokedil\\Shipping\\Assets\:\:register_assets\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Assets.php
+
+		-
+			message: '#^Method Krokedil\\Shipping\\Calculations\:\:get_tax_rate_from_percentage\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Calculations.php
+
+		-
+			message: '#^Method Krokedil\\Shipping\\Frontend\\ShippingRateOutput\:\:should_output\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Frontend/ShippingRateOutput.php
+
+		-
+			message: '#^Method Krokedil\\Shipping\\Interfaces\\ShippingRateServiceInterface\:\:save_shipping_rate_carrier\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Interfaces/ShippingRateServiceInterface.php
+
+		-
+			message: '#^Method Krokedil\\Shipping\\Interfaces\\ShippingRateServiceInterface\:\:save_shipping_rate_description\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Interfaces/ShippingRateServiceInterface.php
+
+		-
+			message: '#^Method Krokedil\\Shipping\\PickupPoint\\Address\:\:json_to_array\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/PickupPoint/Address.php
+
+		-
+			message: '#^Method Krokedil\\Shipping\\PickupPoint\\Address\:\:set_city\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/PickupPoint/Address.php
+
+		-
+			message: '#^Method Krokedil\\Shipping\\PickupPoint\\Address\:\:set_country\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/PickupPoint/Address.php
+
+		-
+			message: '#^Method Krokedil\\Shipping\\PickupPoint\\Address\:\:set_postcode\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/PickupPoint/Address.php
+
+		-
+			message: '#^Method Krokedil\\Shipping\\PickupPoint\\Address\:\:set_street\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/PickupPoint/Address.php
+
+		-
+			message: '#^Method Krokedil\\Shipping\\PickupPoint\\Address\:\:to_array\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/PickupPoint/Address.php
+
+		-
+			message: '#^Method Krokedil\\Shipping\\PickupPoint\\Address\:\:to_json\(\) has parameter \$item with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/PickupPoint/Address.php
+
+		-
+			message: '#^Method Krokedil\\Shipping\\PickupPoint\\Address\:\:to_json\(\) should return string but returns string\|false\.$#'
+			identifier: return.type
+			count: 1
+			path: src/PickupPoint/Address.php
+
+		-
+			message: '#^PHPDoc tag @param references unknown parameter\: \$object$#'
+			identifier: parameter.notFound
+			count: 1
+			path: src/PickupPoint/Address.php
+
+		-
+			message: '#^Parameter \#1 \$json of function json_decode expects string, string\|false given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/PickupPoint/Address.php
+
+		-
+			message: '#^Expression on left side of \?\? is not nullable\.$#'
+			identifier: nullCoalesce.expr
+			count: 2
+			path: src/PickupPoint/Coordinates.php
+
+		-
+			message: '#^Method Krokedil\\Shipping\\PickupPoint\\Coordinates\:\:json_to_array\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/PickupPoint/Coordinates.php
+
+		-
+			message: '#^Method Krokedil\\Shipping\\PickupPoint\\Coordinates\:\:set_latitude\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/PickupPoint/Coordinates.php
+
+		-
+			message: '#^Method Krokedil\\Shipping\\PickupPoint\\Coordinates\:\:set_longitude\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/PickupPoint/Coordinates.php
+
+		-
+			message: '#^Method Krokedil\\Shipping\\PickupPoint\\Coordinates\:\:to_array\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/PickupPoint/Coordinates.php
+
+		-
+			message: '#^Method Krokedil\\Shipping\\PickupPoint\\Coordinates\:\:to_json\(\) has parameter \$item with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/PickupPoint/Coordinates.php
+
+		-
+			message: '#^Method Krokedil\\Shipping\\PickupPoint\\Coordinates\:\:to_json\(\) should return string but returns string\|false\.$#'
+			identifier: return.type
+			count: 1
+			path: src/PickupPoint/Coordinates.php
+
+		-
+			message: '#^PHPDoc tag @param references unknown parameter\: \$object$#'
+			identifier: parameter.notFound
+			count: 1
+			path: src/PickupPoint/Coordinates.php
+
+		-
+			message: '#^Parameter \#1 \$json of function json_decode expects string, string\|false given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/PickupPoint/Coordinates.php
+
+		-
+			message: '#^Method Krokedil\\Shipping\\PickupPoint\\EstimatedTimeOfArrival\:\:json_to_array\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/PickupPoint/EstimatedTimeOfArrival.php
+
+		-
+			message: '#^Method Krokedil\\Shipping\\PickupPoint\\EstimatedTimeOfArrival\:\:set_local\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/PickupPoint/EstimatedTimeOfArrival.php
+
+		-
+			message: '#^Method Krokedil\\Shipping\\PickupPoint\\EstimatedTimeOfArrival\:\:set_utc\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/PickupPoint/EstimatedTimeOfArrival.php
+
+		-
+			message: '#^Method Krokedil\\Shipping\\PickupPoint\\EstimatedTimeOfArrival\:\:to_array\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/PickupPoint/EstimatedTimeOfArrival.php
+
+		-
+			message: '#^Method Krokedil\\Shipping\\PickupPoint\\EstimatedTimeOfArrival\:\:to_json\(\) has parameter \$item with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/PickupPoint/EstimatedTimeOfArrival.php
+
+		-
+			message: '#^Method Krokedil\\Shipping\\PickupPoint\\EstimatedTimeOfArrival\:\:to_json\(\) should return string but returns string\|false\.$#'
+			identifier: return.type
+			count: 1
+			path: src/PickupPoint/EstimatedTimeOfArrival.php
+
+		-
+			message: '#^PHPDoc tag @param references unknown parameter\: \$object$#'
+			identifier: parameter.notFound
+			count: 1
+			path: src/PickupPoint/EstimatedTimeOfArrival.php
+
+		-
+			message: '#^Parameter \#1 \$json of function json_decode expects string, string\|false given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/PickupPoint/EstimatedTimeOfArrival.php
+
+		-
+			message: '#^Method Krokedil\\Shipping\\PickupPoint\\OpenHours\:\:json_to_array\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/PickupPoint/OpenHours.php
+
+		-
+			message: '#^Method Krokedil\\Shipping\\PickupPoint\\OpenHours\:\:set_close\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/PickupPoint/OpenHours.php
+
+		-
+			message: '#^Method Krokedil\\Shipping\\PickupPoint\\OpenHours\:\:set_day\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/PickupPoint/OpenHours.php
+
+		-
+			message: '#^Method Krokedil\\Shipping\\PickupPoint\\OpenHours\:\:set_open\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/PickupPoint/OpenHours.php
+
+		-
+			message: '#^Method Krokedil\\Shipping\\PickupPoint\\OpenHours\:\:to_array\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/PickupPoint/OpenHours.php
+
+		-
+			message: '#^Method Krokedil\\Shipping\\PickupPoint\\OpenHours\:\:to_json\(\) has parameter \$item with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/PickupPoint/OpenHours.php
+
+		-
+			message: '#^Method Krokedil\\Shipping\\PickupPoint\\OpenHours\:\:to_json\(\) should return string but returns string\|false\.$#'
+			identifier: return.type
+			count: 1
+			path: src/PickupPoint/OpenHours.php
+
+		-
+			message: '#^PHPDoc tag @param references unknown parameter\: \$object$#'
+			identifier: parameter.notFound
+			count: 1
+			path: src/PickupPoint/OpenHours.php
+
+		-
+			message: '#^Parameter \#1 \$json of function json_decode expects string, string\|false given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/PickupPoint/OpenHours.php
+
+		-
+			message: '#^Method Krokedil\\Shipping\\PickupPoint\\PickupPoint\:\:__construct\(\) has parameter \$pickup_point with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/PickupPoint/PickupPoint.php
+
+		-
+			message: '#^Method Krokedil\\Shipping\\PickupPoint\\PickupPoint\:\:add_meta_data\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/PickupPoint/PickupPoint.php
+
+		-
+			message: '#^Method Krokedil\\Shipping\\PickupPoint\\PickupPoint\:\:json_to_array\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/PickupPoint/PickupPoint.php
+
+		-
+			message: '#^Method Krokedil\\Shipping\\PickupPoint\\PickupPoint\:\:set_address\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/PickupPoint/PickupPoint.php
+
+		-
+			message: '#^Method Krokedil\\Shipping\\PickupPoint\\PickupPoint\:\:set_coordinates\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/PickupPoint/PickupPoint.php
+
+		-
+			message: '#^Method Krokedil\\Shipping\\PickupPoint\\PickupPoint\:\:set_description\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/PickupPoint/PickupPoint.php
+
+		-
+			message: '#^Method Krokedil\\Shipping\\PickupPoint\\PickupPoint\:\:set_eta\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/PickupPoint/PickupPoint.php
+
+		-
+			message: '#^Method Krokedil\\Shipping\\PickupPoint\\PickupPoint\:\:set_from_array\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/PickupPoint/PickupPoint.php
+
+		-
+			message: '#^Method Krokedil\\Shipping\\PickupPoint\\PickupPoint\:\:set_from_array\(\) has parameter \$pickup_point with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/PickupPoint/PickupPoint.php
+
+		-
+			message: '#^Method Krokedil\\Shipping\\PickupPoint\\PickupPoint\:\:set_id\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/PickupPoint/PickupPoint.php
+
+		-
+			message: '#^Method Krokedil\\Shipping\\PickupPoint\\PickupPoint\:\:set_name\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/PickupPoint/PickupPoint.php
+
+		-
+			message: '#^Method Krokedil\\Shipping\\PickupPoint\\PickupPoint\:\:set_open_hour\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/PickupPoint/PickupPoint.php
+
+		-
+			message: '#^Method Krokedil\\Shipping\\PickupPoint\\PickupPoint\:\:set_open_hours\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/PickupPoint/PickupPoint.php
+
+		-
+			message: '#^Method Krokedil\\Shipping\\PickupPoint\\PickupPoint\:\:set_open_hours\(\) has parameter \$open_hours with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/PickupPoint/PickupPoint.php
+
+		-
+			message: '#^Method Krokedil\\Shipping\\PickupPoint\\PickupPoint\:\:to_array\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/PickupPoint/PickupPoint.php
+
+		-
+			message: '#^Method Krokedil\\Shipping\\PickupPoint\\PickupPoint\:\:to_json\(\) has parameter \$item with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/PickupPoint/PickupPoint.php
+
+		-
+			message: '#^Method Krokedil\\Shipping\\PickupPoint\\PickupPoint\:\:to_json\(\) should return string but returns string\|false\.$#'
+			identifier: return.type
+			count: 1
+			path: src/PickupPoint/PickupPoint.php
+
+		-
+			message: '#^PHPDoc tag @param references unknown parameter\: \$object$#'
+			identifier: parameter.notFound
+			count: 1
+			path: src/PickupPoint/PickupPoint.php
+
+		-
+			message: '#^PHPDoc tag @var has invalid value \(array;\)\: Unexpected token ";", expected TOKEN_HORIZONTAL_WS at offset 115 on line 4$#'
+			identifier: phpDoc.parseError
+			count: 1
+			path: src/PickupPoint/PickupPoint.php
+
+		-
+			message: '#^Parameter \#1 \$json of function json_decode expects string, string\|false given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/PickupPoint/PickupPoint.php
+
+		-
+			message: '#^Parameter \#1 \$text of function esc_attr expects string, float given\.$#'
+			identifier: argument.type
+			count: 2
+			path: src/PickupPoint/PickupPoint.php
+
+		-
+			message: '#^Property Krokedil\\Shipping\\PickupPoint\\PickupPoint\:\:\$meta_data has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: src/PickupPoint/PickupPoint.php
+
+		-
+			message: '#^Cannot call method get_id\(\) on Krokedil\\Shipping\\PickupPoint\\PickupPoint\|true\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: src/PickupPoints.php
+
+		-
+			message: '#^Method Krokedil\\Shipping\\PickupPoints\:\:add_hidden_order_itemmeta\(\) has parameter \$hidden_order_itemmeta with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/PickupPoints.php
+
+		-
+			message: '#^Method Krokedil\\Shipping\\PickupPoints\:\:add_hidden_order_itemmeta\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/PickupPoints.php
+
+		-
+			message: '#^Method Krokedil\\Shipping\\PickupPoints\:\:get_pickup_point_from_rate_by_id\(\) should return Krokedil\\Shipping\\PickupPoint\\PickupPoint\|null but empty return statement found\.$#'
+			identifier: return.empty
+			count: 1
+			path: src/PickupPoints.php
+
+		-
+			message: '#^Method Krokedil\\Shipping\\PickupPoints\:\:get_pickup_point_from_rate_by_id\(\) should return Krokedil\\Shipping\\PickupPoint\\PickupPoint\|null but return statement is missing\.$#'
+			identifier: return.missing
+			count: 1
+			path: src/PickupPoints.php
+
+		-
+			message: '#^Method Krokedil\\Shipping\\PickupPoints\:\:get_shipping_lines_from_order\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/PickupPoints.php
+
+		-
+			message: '#^Method Krokedil\\Shipping\\PickupPoints\:\:json_to_array\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/PickupPoints.php
+
+		-
+			message: '#^Method Krokedil\\Shipping\\PickupPoints\:\:to_array\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/PickupPoints.php
+
+		-
+			message: '#^Method Krokedil\\Shipping\\PickupPoints\:\:to_json\(\) has parameter \$item with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/PickupPoints.php
+
+		-
+			message: '#^Method Krokedil\\Shipping\\PickupPoints\:\:to_json\(\) should return string but returns string\|false\.$#'
+			identifier: return.type
+			count: 1
+			path: src/PickupPoints.php
+
+		-
+			message: '#^PHPDoc tag @param references unknown parameter\: \$object$#'
+			identifier: parameter.notFound
+			count: 1
+			path: src/PickupPoints.php
+
+		-
+			message: '#^Parameter \#1 \$item of method Krokedil\\Shipping\\PickupPoints\:\:to_json\(\) expects array\|object, Krokedil\\Shipping\\PickupPoint\\PickupPoint\|true given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/PickupPoints.php
+
+		-
+			message: '#^Parameter \#1 \$json of function json_decode expects string, string\|false given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/PickupPoints.php
+
+		-
+			message: '#^Property Krokedil\\Shipping\\PickupPoints\:\:\$packages is never read, only written\.$#'
+			identifier: property.onlyWritten
+			count: 1
+			path: src/PickupPoints.php
+
+		-
+			message: '#^Property Krokedil\\Shipping\\PickupPoints\:\:\$packages type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/PickupPoints.php
+
+		-
+			message: '#^Method Krokedil\\Shipping\\SessionHandler\:\:maybe_register_shipping_error\(\) has parameter \$rates with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/SessionHandler.php
+
+		-
+			message: '#^Method Krokedil\\Shipping\\ShippingRate\:\:__construct\(\) has parameter \$args with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/ShippingRate.php
+
+		-
+			message: '#^Method Krokedil\\Shipping\\ShippingRate\:\:add_hidden_order_itemmeta\(\) has parameter \$hidden_order_itemmeta with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/ShippingRate.php
+
+		-
+			message: '#^Method Krokedil\\Shipping\\ShippingRate\:\:add_hidden_order_itemmeta\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/ShippingRate.php
+
+		-
+			message: '#^Method Krokedil\\Shipping\\ShippingRate\:\:save_shipping_rate_carrier\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/ShippingRate.php
+
+		-
+			message: '#^Method Krokedil\\Shipping\\ShippingRate\:\:save_shipping_rate_description\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/ShippingRate.php
+
+		-
+			message: '#^Property Krokedil\\Shipping\\ShippingRate\:\:\$args type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/ShippingRate.php
+
+		-
+			message: '#^Variable \$rate_id might not be defined\.$#'
+			identifier: variable.undefined
+			count: 2
+			path: src/templates/html-pickup-point-select.php
+
+		-
+			message: '#^Variable \$selected_pickup_point might not be defined\.$#'
+			identifier: variable.undefined
+			count: 1
+			path: src/templates/html-pickup-point-select.php
