@@ -196,7 +196,7 @@ class SessionHandler {
 	 * or select another shipping option.
 	 *
 	 * @param string $default The shipping method id that would be set as the default method.
-	 * @param array  $rates The rates calculated when getting the default shipping method.
+	 * @param array<\WC_Shipping_Rate>  $rates The rates calculated when getting the default shipping method.
 	 * @param string $chosen_method The shipping method id that was chosen by the customer.
 	 *
 	 * @return string

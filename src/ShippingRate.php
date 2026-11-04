@@ -15,7 +15,7 @@ class ShippingRate implements ShippingRateServiceInterface {
 	/**
 	 * The arguments for the class.
 	 *
-	 * @var array
+	 * @var array<string, mixed>
 	 */
 	private $args = array(
 		'show_description' => true,
@@ -32,7 +32,7 @@ class ShippingRate implements ShippingRateServiceInterface {
 	/**
 	 * Class constructor.
 	 *
-	 * @param array $args Arguments to initialize the class with.
+	 * @param array<string, mixed> $args Arguments to initialize the class with.
 	 *
 	 * @return void
 	 */
@@ -59,8 +59,8 @@ class ShippingRate implements ShippingRateServiceInterface {
 	/**
 	 * Add the order line metadata for pickup points to the list of hidden meta data.
 	 *
-	 * @param array $hidden_order_itemmeta The list of hidden meta data.
-	 * @return array
+	 * @param array<string> $hidden_order_itemmeta The list of hidden meta data.
+	 * @return array<string>
 	 */
 	public function add_hidden_order_itemmeta( $hidden_order_itemmeta ) {
 		// If the query parameter "debug" is set, return early.

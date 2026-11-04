@@ -30,6 +30,8 @@ class ShippingRateOutput {
 	 *
 	 * @param string            $element
 	 * @param \WC_Shipping_Rate $shipping_rate
+	 *
+	 * @return bool
 	 */
 	public function should_output( $element, $shipping_rate ) {
 		// Only if this is the selected shipping rate.

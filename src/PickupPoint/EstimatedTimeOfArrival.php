@@ -75,6 +75,8 @@ class EstimatedTimeOfArrival {
      * Set UTC.
      *
      * @param string|null $utc UTC.
+     *
+     * @return self
      */
 	public function set_utc( $utc ) {
 		$this->utc = $utc ?? '';
@@ -86,6 +88,8 @@ class EstimatedTimeOfArrival {
      * Set local time.
      *
      * @param string|null $local Local time.
+     *
+     * @return self
      */
     public function set_local( $local ) {
         $this->local = $local ?? '';

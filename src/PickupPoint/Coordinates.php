@@ -73,6 +73,8 @@ class Coordinates {
      * Set latitude.
      *
      * @param float|string|null $latitude Latitude.
+     *
+     * @return self
      */
 	public function set_latitude( $latitude ) {
         // Ensure that the latitude is a float.
@@ -87,6 +89,8 @@ class Coordinates {
      * Set longitude.
      *
      * @param float|string|null $longitude Longitude.
+     *
+     * @return self
      */
 	public function set_longitude( $longitude ) {
         // Ensure that the longitude is a float.
