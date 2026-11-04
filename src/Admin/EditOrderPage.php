@@ -138,7 +138,7 @@ class EditOrderPage {
 	 * Render the shipping metabox.
 	 *
 	 * @param \WP_Post|\WC_Order $post_or_order_object      The WordPress post or WooCommerce order, depending on HPOS is active or not.
-	 * @param array             $args  The metabox arguments.
+	 * @param array<mixed>      $args  The metabox arguments.
 	 *
 	 * @return void
 	 */

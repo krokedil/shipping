@@ -79,7 +79,7 @@ interface PickupPointServiceInterface {
 	 *
 	 * @param \WC_Shipping_Rate $rate The WooCommerce shipping rate to get the selected pickup point from.
 	 *
-	 * @return PickupPoint|bool
+	 * @return PickupPoint|false
 	 */
 	public function get_selected_pickup_point_from_rate( $rate );
 

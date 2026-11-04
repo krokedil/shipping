@@ -14,7 +14,7 @@ trait ArrayFormat {
 	/**
 	 * Convert an object to an array.
 	 *
-	 * @param object $object Object.
+	 * @return array<string, mixed>
 	 */
 	public function to_array() {
 		return json_decode( json_encode( $this ), true );

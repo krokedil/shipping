@@ -12,7 +12,7 @@ class Calculations {
 	 *
 	 * @param float $percentage The percentage value.
 	 *
-	 * @return array
+	 * @return array<string, mixed>
 	 */
 	public static function get_tax_rate_from_percentage( $percentage ) {
 		$tax_rates = \WC_Tax::get_shipping_tax_rates();

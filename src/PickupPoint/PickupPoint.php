@@ -69,7 +69,7 @@ class PickupPoint {
 	/**
 	 * Meta data for the pickup point to enable plugins to add additional data they might need.
 	 *
-	 * @var array;
+	 * @var array<string, mixed>
 	 */
 	public $meta_data = array();
 
@@ -77,7 +77,7 @@ class PickupPoint {
 	 * PickupPoint constructor. Can be passed a array or a json string to automatically set the properties.
 	 * If a string is passed it will be json decoded, if a array is passed it will be set directly.
 	 *
-	 * @param array|string $pickup_point Pickup point data as a array.
+	 * @param array<string, mixed>|string $pickup_point Pickup point data as a array.
 	 *
 	 * @since 1.0.0
 	 *
@@ -162,6 +162,8 @@ class PickupPoint {
 	 * Set the ID.
 	 *
 	 * @param string|null $id ID.
+	 *
+	 * @return self
 	 */
 	public function set_id( $id ) {
 		$this->id = $id ?? '';
@@ -173,6 +175,8 @@ class PickupPoint {
 	 * Set the name.
 	 *
 	 * @param string|null $name Name.
+	 *
+	 * @return self
 	 */
 	public function set_name( $name ) {
 		$this->name = $name ?? '';
@@ -184,6 +188,8 @@ class PickupPoint {
 	 * Set the description.
 	 *
 	 * @param string|null $description Description.
+	 *
+	 * @return self
 	 */
 	public function set_description( $description ) {
 		$this->description = $description ?? '';
@@ -198,6 +204,8 @@ class PickupPoint {
 	 * @param string $city     City.
 	 * @param string $postcode Postcode.
 	 * @param string $country  Country.
+	 *
+	 * @return self
 	 */
 	public function set_address( $street, $city, $postcode, $country ) {
 		$this->address = new Address( $street, $city, $postcode, $country );
@@ -210,6 +218,8 @@ class PickupPoint {
 	 *
 	 * @param float|string|null $latitude  Latitude.
 	 * @param float|string|null $longitude Longitude.
+	 *
+	 * @return self
 	 */
 	public function set_coordinates( $latitude, $longitude ) {
 		$this->coordinates = new Coordinates( $latitude, $longitude );
@@ -220,7 +230,9 @@ class PickupPoint {
 	/**
 	 * Set the opening hours.
 	 *
-	 * @param array $open_hours Opening hours.
+	 * @param array<array<string, string>> $open_hours Opening hours.
+	 *
+	 * @return self
 	 */
 	public function set_open_hours( $open_hours ) {
 		$this->open_hours = array();
@@ -237,6 +249,8 @@ class PickupPoint {
 	 * @param string $day Day.
 	 * @param string $open Open.
 	 * @param string $close Close.
+	 *
+	 * @return self
 	 */
 	public function set_open_hour( $day, $open, $close ) {
 		$this->open_hours[] = new OpenHours( $day, $open, $close );
@@ -249,6 +263,8 @@ class PickupPoint {
 	 *
 	 * @param string|null $utc UTC.
 	 * @param string|null $local Local time.
+	 *
+	 * @return self
 	 */
 	public function set_eta( $utc = '', $local = '' ) {
 		$this->eta = new EstimatedTimeOfArrival( $utc, $local );
@@ -261,6 +277,8 @@ class PickupPoint {
 	 *
 	 * @param string $key  The meta key to store the value under.
 	 * @param mixed  $value The meta value to store.
+	 *
+	 * @return void
 	 */
 	public function add_meta_data( $key, $value ) {
 		$this->meta_data[ $key ] = $value;
@@ -279,7 +297,9 @@ class PickupPoint {
 	/**
 	 * Set the pickup point from an array.
 	 *
-	 * @param array $pickup_point Pickup point data as a array.
+	 * @param array<string, mixed> $pickup_point Pickup point data as a array.
+	 *
+	 * @return void
 	 */
 	public function set_from_array( $pickup_point = array() ) {
 		$this->set_id( html_entity_decode( $pickup_point['id'] ?? '' ) );
@@ -396,7 +416,7 @@ class PickupPoint {
 	 *
 	 * @param \WC_Order $order The WooCommerce order.
 	 *
-	 * @return PickupPoint|bool
+	 * @return PickupPoint|false
 	 */
 	public static function get_selected_from_order( $order ) {
 		$shipping_lines = $order->get_items( 'shipping' );
@@ -423,7 +443,7 @@ class PickupPoint {
 	 *
 	 * @param \WC_Order $order The WooCommerce order.
 	 *
-	 * @return array<PickupPoint>|bool
+	 * @return array<PickupPoint>|false
 	 *
 	 * @codeCoverageIgnore
  	 * No tests made yet.

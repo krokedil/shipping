@@ -84,6 +84,8 @@ class OpenHours {
 	 * Set day.
 	 *
 	 * @param string|null $day Day.
+	 *
+	 * @return self
 	 */
 	public function set_day( $day ) {
 		$this->day = $day ?? '';
@@ -95,6 +97,8 @@ class OpenHours {
 	 * Set open.
 	 *
 	 * @param string|null $open Open.
+	 *
+	 * @return self
 	 */
 	public function set_open( $open ) {
 		$this->open = $open ?? '';
@@ -106,6 +110,8 @@ class OpenHours {
 	 * Set close.
 	 *
 	 * @param string|null $close Close.
+	 *
+	 * @return self
 	 */
 	public function set_close( $close ) {
 		$this->close = $close ?? '';

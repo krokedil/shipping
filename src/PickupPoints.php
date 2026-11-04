@@ -66,8 +66,8 @@ class PickupPoints implements PickupPointServiceInterface {
 	/**
 	 * Add the order line metadata for pickup points to the list of hidden meta data.
 	 *
-	 * @param array $hidden_order_itemmeta The list of hidden meta data.
-	 * @return array
+	 * @param array<string> $hidden_order_itemmeta The list of hidden meta data.
+	 * @return array<string>
 	 */
 	public function add_hidden_order_itemmeta( $hidden_order_itemmeta ) {
 		// If the query parameter "debug" is set, return early.
@@ -85,7 +85,7 @@ class PickupPoints implements PickupPointServiceInterface {
 	/**
 	 * A list of all the WooCommerce packages for the current request.
 	 *
-	 * @var array
+	 * @var array<mixed>
 	 */
 	private $packages = null;
 
@@ -242,7 +242,7 @@ class PickupPoints implements PickupPointServiceInterface {
 	 *
 	 * @param \WC_Shipping_Rate $rate The WooCommerce shipping rate to get the selected pickup point from.
 	 *
-	 * @return PickupPoint|bool
+	 * @return PickupPoint|false
 	 */
 	public function get_selected_pickup_point_from_rate( $rate ) {
 		// Try to get the selected pickup point id from the session if it exists.
@@ -273,7 +273,7 @@ class PickupPoints implements PickupPointServiceInterface {
 	 *
 	 * @param \WC_Shipping_Rate $rate The WooCommerce shipping rate to get the selected pickup point from.
 	 *
-	 * @return PickupPoint|bool
+	 * @return PickupPoint|false
 	 */
 	public function get_selected_pickup_point_from_rate_session( $rate ) {
 		// Try to get the selected pickup point id from the session if it exists.
@@ -297,7 +297,7 @@ class PickupPoints implements PickupPointServiceInterface {
 	/**
 	 * Get the selected pickup point from the session.
 	 *
-	 * @return PickupPoint|bool
+	 * @return PickupPoint|false
 	 */
 	public function get_selected_pickup_point_from_session() {
 		// Try to get the selected pickup point from the session.
@@ -349,7 +349,7 @@ class PickupPoints implements PickupPointServiceInterface {
 	 *
 	 * @param \WC_Order $order The WooCommerce order.
 	 *
-	 * @return array|bool
+	 * @return array<\WC_Order_Item_Shipping>|false
 	 */
 	public function get_shipping_lines_from_order( $order ) {
 		$shipping_methods = $order->get_shipping_methods();

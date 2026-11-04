@@ -1,6 +1,10 @@
 <?php
 /**
  * HTML file for the pickup point select box.
+ *
+ * @var array<\Krokedil\Shipping\PickupPoint\PickupPoint>    $pickup_points         The pickup points for the rate.
+ * @var string                                               $rate_id               The shipping rate id.
+ * @var \Krokedil\Shipping\PickupPoint\PickupPoint|false     $selected_pickup_point The selected pickup point, if any.
  */
 
 defined( 'ABSPATH' ) || exit;
