@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "436a8c0ccf7abb6fbc7191ebac92686a",
+    "content-hash": "607334e8402c558ee14d6b861f3a4a22",
     "packages": [
         {
             "name": "psr/container",
@@ -64,7 +64,7 @@
     "packages-dev": [
         {
             "name": "10up/wp_mock",
-            "version": "dev-trunk",
+            "version": "1.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/10up/wp_mock.git",
@@ -96,7 +96,6 @@
                 "sebastian/comparator": "^4.0.8",
                 "sempro/phpunit-pretty-print": "^1.4"
             },
-            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-4": {
@@ -113,7 +112,7 @@
             "description": "A mocking library to take the pain out of unit testing for WordPress",
             "support": {
                 "issues": "https://github.com/10up/wp_mock/issues",
-                "source": "https://github.com/10up/wp_mock/tree/trunk"
+                "source": "https://github.com/10up/wp_mock/tree/1.1.1"
             },
             "time": "2025-12-02T21:19:19+00:00"
         },
@@ -2730,7 +2729,6 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "10up/wp_mock": 20,
         "php-stubs/woocommerce-stubs": 20,
         "psr/container": 20,
         "wp-coding-standards/wpcs": 20
