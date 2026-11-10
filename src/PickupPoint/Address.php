@@ -104,6 +104,8 @@ class Address {
      * Set street.
      *
      * @param string|null $street Street.
+     *
+     * @return self
      */
     public function set_street( $street ) {
         $this->street = $street ?? '';
@@ -115,6 +117,8 @@ class Address {
      * Set city.
      *
      * @param string|null $city City.
+     *
+     * @return self
      */
 	public function set_city( $city ) {
 		$this->city = $city ?? '';
@@ -126,6 +130,8 @@ class Address {
      * Set postcode.
      *
      * @param string|null $postcode Postcode.
+     *
+     * @return self
      */
     public function set_postcode( $postcode ) {
         $this->postcode = $postcode ?? '';
@@ -137,6 +143,8 @@ class Address {
      * Set country.
      *
      * @param string|null $country Country.
+     *
+     * @return self
      */
 	public function set_country( $country ) {
 		$this->country = $country ?? '';

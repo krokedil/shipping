@@ -19,7 +19,7 @@ class AJAX {
 	/**
 	 * AJAX constructor.
 	 *
-	 * @param array $events The AJAX events to add with their callbacks.
+	 * @param array<string, callable> $events The AJAX events to add with their callbacks.
 	 */
 	public function __construct( $events = array() ) {
 		$this->add_ajax_events( $events );
@@ -28,7 +28,7 @@ class AJAX {
 	/**
 	 * Setup hooks for the AJAX events.
 	 *
-	 * @param array $events The AJAX events to add with their callbacks.
+	 * @param array<string, callable> $events The AJAX events to add with their callbacks.
 	 *
 	 * @return void
 	 */

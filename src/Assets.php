@@ -36,6 +36,8 @@ class Assets {
 
 	/**
 	 * Register scripts.
+	 *
+	 * @return void
 	 */
 	public function register_assets() {
 		// Register the ks_pp scripts and style.
@@ -49,6 +51,8 @@ class Assets {
 
 	/**
 	 * Enqueue scripts.
+	 *
+	 * @return void
 	 */
 	public function enqueue_assets() {
 		if ( ! is_checkout() ) {

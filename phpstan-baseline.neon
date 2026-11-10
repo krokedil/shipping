@@ -1,0 +1,115 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Property Krokedil\\Shipping\\AJAX\:\:\$get_payload is unused\.$#'
+			identifier: property.unused
+			count: 1
+			path: src/AJAX.php
+
+		-
+			message: '#^Instanceof between WC_Order_Item_Shipping and WC_Order_Item_Shipping will always evaluate to true\.$#'
+			identifier: instanceof.alwaysTrue
+			count: 1
+			path: src/Admin/EditOrderPage.php
+
+		-
+			message: '#^Parameter \#1 \$item of class WC_Order_Item_Shipping constructor expects array\|int\|object, string\|false\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Admin/EditOrderPage.php
+
+		-
+			message: '#^Parameter \#1 \$order of method Krokedil\\Shipping\\Admin\\EditOrderPage\:\:print_selected_pickup_point_info\(\) expects WC_Order, WC_Order\|WC_Order_Refund\|false given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Admin/EditOrderPage.php
+
+		-
+			message: '#^Parameter \#1 \$text of function esc_html expects string, int given\.$#'
+			identifier: argument.type
+			count: 5
+			path: src/Admin/EditOrderPage.php
+
+		-
+			message: '#^Parameter \#2 \$value of method WC_Data\:\:update_meta_data\(\) expects array\|string, string\|false given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Admin/EditOrderPage.php
+
+		-
+			message: '#^Parameter \#1 \$json of function json_decode expects string, string\|false given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/PickupPoint/Address.php
+
+		-
+			message: '#^Expression on left side of \?\? is not nullable\.$#'
+			identifier: nullCoalesce.expr
+			count: 2
+			path: src/PickupPoint/Coordinates.php
+
+		-
+			message: '#^Parameter \#1 \$json of function json_decode expects string, string\|false given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/PickupPoint/Coordinates.php
+
+		-
+			message: '#^Parameter \#1 \$json of function json_decode expects string, string\|false given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/PickupPoint/EstimatedTimeOfArrival.php
+
+		-
+			message: '#^Parameter \#1 \$json of function json_decode expects string, string\|false given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/PickupPoint/OpenHours.php
+
+		-
+			message: '#^Parameter \#1 \$json of function json_decode expects string, string\|false given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/PickupPoint/PickupPoint.php
+
+		-
+			message: '#^Parameter \#1 \$text of function esc_attr expects string, float given\.$#'
+			identifier: argument.type
+			count: 2
+			path: src/PickupPoint/PickupPoint.php
+
+		-
+			message: '#^Method Krokedil\\Shipping\\PickupPoints\:\:get_pickup_point_from_rate_by_id\(\) should return Krokedil\\Shipping\\PickupPoint\\PickupPoint\|null but empty return statement found\.$#'
+			identifier: return.empty
+			count: 1
+			path: src/PickupPoints.php
+
+		-
+			message: '#^Method Krokedil\\Shipping\\PickupPoints\:\:get_pickup_point_from_rate_by_id\(\) should return Krokedil\\Shipping\\PickupPoint\\PickupPoint\|null but return statement is missing\.$#'
+			identifier: return.missing
+			count: 1
+			path: src/PickupPoints.php
+
+		-
+			message: '#^Parameter \#1 \$json of function json_decode expects string, string\|false given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/PickupPoints.php
+
+		-
+			message: '#^Parameter \#2 \$value of method WC_Shipping_Rate\:\:add_meta_data\(\) expects string, string\|false given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/PickupPoints.php
+
+		-
+			message: '#^Property Krokedil\\Shipping\\PickupPoints\:\:\$packages \(array\<mixed\>\|null\) is never assigned array\<mixed\> so it can be removed from the property type\.$#'
+			identifier: property.unusedType
+			count: 1
+			path: src/PickupPoints.php
+
+		-
+			message: '#^Property Krokedil\\Shipping\\PickupPoints\:\:\$packages is never read, only written\.$#'
+			identifier: property.onlyWritten
+			count: 1
+			path: src/PickupPoints.php
