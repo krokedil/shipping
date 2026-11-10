@@ -12,6 +12,7 @@
         "php-stubs/wordpress-stubs": "*",
         "php-stubs/woocommerce-stubs": "dev-master",
         "phpunit/phpunit": "^9.6",
+        "clean/phpdoc-md": "dev-master",
         "10up/wp_mock": "^1.1",
         "szepeviktor/phpstan-wordpress": "^2.0"
     },
@@ -31,6 +32,7 @@
             "docs/*",
             "phpunit.xml",
             "phpcs.xml",
+            ".phpdoc-md",
             "composer-lock.json",
             ".gitignore",
             ".gitattributes",
@@ -50,6 +52,7 @@
     },
     "scripts": {
         "phpunit": "./vendor/bin/phpunit --bootstrap tests/bootstrap.php",
+        "createdocs": "./vendor/bin/phpdoc-md",
         "phpstan": "./vendor/bin/phpstan analyse --memory-limit=2G",
         "phpstan:baseline": "./vendor/bin/phpstan analyse --memory-limit=2G --generate-baseline"
     },
